@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "dafm5634_ag";  // Ganti dengan username MySQL Anda
 $password = "Ag7us777__";      // Ganti dengan password MySQL Anda
-$dbname = "dafm5634_thirdparty";
+$dbname = "dafm5634_funrun_2025";
 
 // Membuat koneksi
 $conn = new mysqli($servername, $username, $password, $dbname);

@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/dafm5634/public_html/funrun_2025
+    - /bin/cp -r * $DEPLOYPATH
