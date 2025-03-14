@@ -141,28 +141,49 @@ function getPriceForSelection(item) {
     }
 }
 
-// Fetch data and display items
+// Function to render items dynamically
+function renderItems(data) {
+    const container = document.getElementById('items-container');
+    container.innerHTML = ''; // Clear current items before re-rendering
+
+    data.forEach(item => {
+        const itemElement = document.createElement('div');
+
+        const descriptionElement = document.createElement('p');
+        descriptionElement.className = 'helvetica text-gray-400 text-sm';
+        descriptionElement.textContent = `${item.description}`;
+
+        // Get the correct price based on the radio button selection
+        const priceElement = document.createElement('p');
+        priceElement.className = 'helvetica text-[#ff005b] font-bold';
+        const priceToDisplay = getPriceForSelection(item);
+        priceElement.textContent = `IDR ${formatPrice(priceToDisplay)} / Person`;
+
+        itemElement.appendChild(descriptionElement);
+        itemElement.appendChild(priceElement);
+
+        container.appendChild(itemElement);
+    });
+}
+
+// Fetch data and display items initially
 fetch('get_items.php')
     .then(response => response.json())
     .then(data => {
-        const container = document.getElementById('items-container');
-        data.forEach(item => {
-            const itemElement = document.createElement('div');
+        // Initial rendering
+        renderItems(data);
 
-            const descriptionElement = document.createElement('p');
-            descriptionElement.className = 'helvetica text-gray-400 text-sm';
-            descriptionElement.textContent = `${item.description}`;
+        // Event listeners to update prices when radio button selection changes
+        coupleRadio.addEventListener('change', function() {
+            if (this.checked) {
+                renderItems(data); // Re-render with updated prices for "Couple"
+            }
+        });
 
-            // Get the correct price based on the radio button selection
-            const priceElement = document.createElement('p');
-            priceElement.className = 'helvetica text-[#ff005b] font-bold';
-            const priceToDisplay = getPriceForSelection(item);
-            priceElement.textContent = `IDR ${formatPrice(priceToDisplay)} / Person`;
-
-            itemElement.appendChild(descriptionElement);
-            itemElement.appendChild(priceElement);
-
-            container.appendChild(itemElement);
+        singleRadio.addEventListener('change', function() {
+            if (this.checked) {
+                renderItems(data); // Re-render with updated prices for "Single"
+            }
         });
     })
     .catch(error => console.error('Error:', error));
