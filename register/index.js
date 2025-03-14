@@ -119,74 +119,83 @@ function copyToClipboard() {
 //     })
 //     .catch(error => console.error('Error:', error));
 
-// Function to format the price
-function formatPrice(price) {
-    if (price >= 1000000) {
-        return (price / 1000000).toFixed(1) + 'M';
-    } else if (price >= 1000) {
-        return (price / 1000).toFixed(0) + 'K';
-    } else {
-        return price;
+    // Function to format the price
+    function formatPrice(price) {
+        if (price >= 1000000) {
+            return (price / 1000000).toFixed(1) + 'M';
+        } else if (price >= 1000) {
+            return (price / 1000).toFixed(0) + 'K';
+        } else {
+            return price;
+        }
     }
-}
 
-// Function to calculate the correct price based on single/couple selection
-function getPriceForSelection(item) {
-    if (coupleRadio.checked) {
-        // Use couple price if 'Couple' is selected
-        return item.couplePrice ? item.couplePrice : item.price; // fallback to regular price if couplePrice isn't available
-    } else {
-        // Use single price if 'Single' is selected
-        return item.price;
+    // Function to calculate the correct price and description based on single/couple selection
+    function getPriceAndDescriptionForSelection(item) {
+        if (coupleRadio.checked) {
+            // Use couple price and couple description if 'Couple' is selected
+            return {
+                price: item.couplePrice ? item.couplePrice : item.price,
+                description: item.coupleDescription || item.description // Use couple description if available
+            };
+        } else {
+            // Use single price and single description if 'Single' is selected
+            return {
+                price: item.price,
+                description: item.description
+            };
+        }
+    }   
+
+    // Function to render items dynamically
+    function renderItems(data) {
+        const container = document.getElementById('items-container');
+        container.innerHTML = ''; // Clear current items before re-rendering
+
+        data.forEach(item => {
+            const itemElement = document.createElement('div');
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.className = 'helvetica text-gray-400 text-sm';
+
+            // Get the correct price and description based on the radio button selection
+            const { price, description } = getPriceAndDescriptionForSelection(item);
+            descriptionElement.textContent = `${description}`;
+
+            // Create price element
+            const priceElement = document.createElement('p');
+            priceElement.className = 'helvetica text-[#ff005b] font-bold';
+            priceElement.textContent = `IDR ${formatPrice(price)} / Person`;
+
+            itemElement.appendChild(descriptionElement);
+            itemElement.appendChild(priceElement);
+
+            container.appendChild(itemElement);
+        });
     }
-}
 
-// Function to render items dynamically
-function renderItems(data) {
-    const container = document.getElementById('items-container');
-    container.innerHTML = ''; // Clear current items before re-rendering
-
-    data.forEach(item => {
-        const itemElement = document.createElement('div');
-
-        const descriptionElement = document.createElement('p');
-        descriptionElement.className = 'helvetica text-gray-400 text-sm';
-        descriptionElement.textContent = `${item.description}`;
-
-        // Get the correct price based on the radio button selection
-        const priceElement = document.createElement('p');
-        priceElement.className = 'helvetica text-[#ff005b] font-bold';
-        const priceToDisplay = getPriceForSelection(item);
-        priceElement.textContent = `IDR ${formatPrice(priceToDisplay)} / Person`;
-
-        itemElement.appendChild(descriptionElement);
-        itemElement.appendChild(priceElement);
-
-        container.appendChild(itemElement);
-    });
-}
-
-// Fetch data and display items initially
-fetch('get_items.php')
+    // Fetch data and display items initially
+    fetch('get_items.php')
     .then(response => response.json())
     .then(data => {
         // Initial rendering
         renderItems(data);
 
-        // Event listeners to update prices when radio button selection changes
+        // Event listeners to update prices and descriptions when radio button selection changes
         coupleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data); // Re-render with updated prices for "Couple"
+                renderItems(data); // Re-render with updated prices and descriptions for "Couple"
             }
         });
 
         singleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data); // Re-render with updated prices for "Single"
+                renderItems(data); // Re-render with updated prices and descriptions for "Single"
             }
         });
     })
     .catch(error => console.error('Error:', error));
+
 
 
     function formatFileName(fileName) {
