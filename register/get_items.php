@@ -4,7 +4,7 @@ include '../helper/db.php';
 header('Content-Type: application/json');
 
 // Query untuk mendapatkan id, name, dan price dari tabel items
-$sql = "SELECT id, name, description, price FROM items WHERE active = '1' AND stock > 0";
+$sql = "SELECT id, name, description, price FROM items WHERE start_date <= CURDATE() AND expiry >= CURDATE() AND active = 1 LIMIT 1";
 $result = $conn->query($sql);
 
 // Cek apakah ada data

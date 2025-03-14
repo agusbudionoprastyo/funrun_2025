@@ -64,11 +64,12 @@ try {
         $stmt->execute();
     }
 
-    // Mengambil harga item yang aktif dan memiliki stok lebih dari 0
-    $query = "SELECT price FROM items WHERE active = '1' AND stock > 0 LIMIT 1"; // Ambil satu item
+    $query = "SELECT id, price, stock, start_date, expiry FROM items 
+              WHERE start_date <= CURDATE() AND expiry >= CURDATE() 
+              AND active = 1 LIMIT 1";
     $stmt = $conn->prepare($query);
     $stmt->execute();
-    $stmt->bind_result($itemPrice);
+    $stmt->bind_result($itemId, $itemPrice, $itemStock);
     $stmt->fetch();
     $stmt->close();
 
@@ -77,8 +78,8 @@ try {
         throw new Exception('Item tidak tersedia');
     }
 
-    // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2
-    $totalAmount = ($registrationType === 'couple') ? $itemPrice * 2 : $itemPrice;
+    // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2 dan kurangi stok 2 kali
+    $totalAmount = ($registrationType === 'couple') ? 300000 : $itemPrice;
 
     // Mendapatkan transaction ID dari form
     $transactionId = $_POST['transactionid'];
@@ -88,7 +89,25 @@ try {
     $stmt = $conn->prepare($query);
     $stmt->bind_param("si", $transactionId, $totalAmount);
     $stmt->execute();
-    
+
+    // Update stok item di tabel items
+    if ($itemStock > 0) {
+        // Jika pendaftaran adalah pasangan, kurangi stok 2 kali
+        $newStock = ($registrationType === 'couple') ? $itemStock - 2 : $itemStock - 1;
+        
+        if ($newStock < 0) {
+            throw new Exception('Stok item tidak mencukupi');
+        }
+
+        // Update stok di database
+        $query = "UPDATE items SET stock = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ii", $newStock, $itemId);
+        $stmt->execute();
+    } else {
+        throw new Exception('Stok item tidak mencukupi');
+    }
+
     // Commit transaksi
     $conn->commit();
 
