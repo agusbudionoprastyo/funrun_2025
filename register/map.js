@@ -21,7 +21,7 @@ distanceElement.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
 distanceElement.style.padding = '10px';
 distanceElement.style.borderRadius = '15px';
 distanceElement.style.fontSize = '16px';
-distanceElement.style.color = '#000000';
+distanceElement.style.color = '#ff005b';
 distanceElement.style.fontWeight = 'bold';
 map.getContainer().appendChild(distanceElement);
 
