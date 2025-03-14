@@ -10,14 +10,18 @@ function copyToClipboard() {
       });
   }
 
-
   const singleRadio = document.getElementById('single');
   const coupleRadio = document.getElementById('couple');
   const coupleContainer = document.getElementById('CoupleContainer');
   const coupleName = document.getElementById('coupleName');
+  const coupleMantan = document.getElementById('coupleMantan');
 
   const scouple = document.getElementById('scouple');
-  const Size = document.getElementById('Size');
+  const mcouple = document.getElementById('mcouple');
+  const lcouple = document.getElementById('lcouple');
+  const xlcouple = document.getElementById('xlcouple');
+  const xxlcouple = document.getElementById('xxlcouple');
+  const xxxlcouple = document.getElementById('xxxlcouple');
 
   const registerBtn = document.getElementById("registerBtn");
   const closeBtn = document.getElementById("closeBtn");
@@ -27,7 +31,13 @@ function copyToClipboard() {
   // Hide the Couple Section initially and remove required attributes
   if (coupleContainer.classList.contains('hidden')) {
     coupleName.removeAttribute('required');
+    coupleMantan.removeAttribute('required');
     scouple.removeAttribute('required');
+    mcouple.removeAttribute('required');
+    lcouple.removeAttribute('required');
+    xlcouple.removeAttribute('required');
+    xxlcouple.removeAttribute('required');
+    xxxlcouple.removeAttribute('required');
   }
 
   // Show Couple Section and add required attributes when "Couple" radio is checked
@@ -35,7 +45,13 @@ function copyToClipboard() {
     if (this.checked) {
       coupleContainer.classList.remove('hidden');
       coupleName.setAttribute('required', 'true');
+      coupleMantan.setAttribute('required', 'true');
       scouple.setAttribute('required', 'true');
+      mcouple.setAttribute('required', 'true');
+      lcouple.setAttribute('required', 'true');
+      xlcouple.setAttribute('required', 'true');
+      xxlcouple.setAttribute('required', 'true');
+      xxxlcouple.setAttribute('required', 'true');
     }
   });
 
@@ -44,7 +60,13 @@ function copyToClipboard() {
     if (this.checked) {
       coupleContainer.classList.add('hidden');
       coupleName.removeAttribute('required');
+      coupleMantan.removeAttribute('required');
       scouple.removeAttribute('required');
+      mcouple.removeAttribute('required');
+      lcouple.removeAttribute('required');
+      xlcouple.removeAttribute('required');
+      xxlcouple.removeAttribute('required');
+      xxxlcouple.removeAttribute('required');
     }
   });
 
@@ -133,41 +155,7 @@ function copyToClipboard() {
         }
     });
 
-    const photoInput = document.getElementById('photo');
-    const photoName = document.getElementById('photo-name');
-    const photoSize = document.getElementById('photo-size');
-
-    photoInput.addEventListener('change', function () {
-        const file = photoInput.files[0];
-        if (file) {
-            const fileName = formatFileName(file.name);
-            const fileSize = formatFileSize(file.size);
-            
-            photoName.textContent = fileName;
-            photoSize.textContent = `${fileSize}`;
-        } else {
-            photoName.textContent = ''; // Clear if no file selected
-            photoSize.textContent = ''; // Clear if no file selected
-        }
-    });
-
-    const couplePhotoInput = document.getElementById('couplePhoto');
-    const couplePhotoName = document.getElementById('couple-photo-name');
-    const couplePhotoSize = document.getElementById('couple-photo-size');
-
-    couplePhotoInput.addEventListener('change', function () {
-        const file = couplePhotoInput.files[0];
-        if (file) {
-            const fileName = formatFileName(file.name);
-            const fileSize = formatFileSize(file.size);
-            
-            couplePhotoName.textContent = fileName;
-            couplePhotoSize.textContent = `${fileSize}`;
-        } else {
-            couplePhotoName.textContent = ''; // Clear if no file selected
-            couplePhotoSize.textContent = ''; // Clear if no file selected
-        }
-    });
+    //===========================================================
 
     function generateTransactionId() {
         return 'TPE-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
@@ -177,10 +165,6 @@ function copyToClipboard() {
     const generatedTransactionId = generateTransactionId();
     transactionIdInput.value = generatedTransactionId;
 
-
-
-    //===========================================================
-
     registrationForm.addEventListener('submit', function(event) {
     event.preventDefault(); 
 
@@ -188,36 +172,26 @@ function copyToClipboard() {
 
     const registrationType = document.querySelector('input[name="registrationType"]:checked').value;
     const username = document.getElementById('name').value;
-    const age = document.getElementById('age').value;
-    const gender = document.querySelector('input[name="gender"]:checked').value;
+    const mantan = document.getElementById('mantan').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
+    const size = document.getElementById('size').value;
 
     formData.append('transactionid', generatedTransactionId);
     formData.append('registrationType', registrationType);
     formData.append('username', username);
-    formData.append('age', age);
-    formData.append('gender', gender);
+    formData.append('mantan', mantan);
     formData.append('phone', phone);
     formData.append('email', email);
-
-    const photoInput = document.getElementById('photo');
-    if (photoInput.files.length > 0) {
-        formData.append('photo', photoInput.files[0]); 
-    }
+    formData.append('size', size);
 
     if (registrationType === 'couple') {
         const coupleUsername = document.getElementById('coupleName').value;
-        const coupleAge = document.getElementById('coupleage').value;
-        const coupleGender = document.querySelector('input[name="coupleGender"]:checked').value;
+        const coupleMantan = document.getElementById('coupleMantan').value;
+        const coupleSize = document.querySelector('input[name="coupleSize"]:checked').value;
         formData.append('coupleUsername', coupleUsername);
-        formData.append('coupleAge', coupleAge);
-        formData.append('coupleGender', coupleGender);
-
-        const couplePhotoInput = document.getElementById('couplePhoto');
-        if (couplePhotoInput.files.length > 0) {
-            formData.append('couplePhoto', couplePhotoInput.files[0]); 
-        }
+        formData.append('coupleMantan', coupleMantan);
+        formData.append('coupleSize', coupleSize);
     }
 
     fetch('register.php', {
@@ -228,11 +202,8 @@ function copyToClipboard() {
     .then(data => {
         console.log(data); 
         if (data.status === 'success') {
-            // Only set to localStorage if the gender is not 'female'
-            if (gender !== 'female') {
-                localStorage.setItem('registrationSuccess', 'true');
-                localStorage.setItem('transactionid', generatedTransactionId);
-            }
+            localStorage.setItem('registrationSuccess', 'true');
+            localStorage.setItem('transactionid', generatedTransactionId);
 
             box.classList.remove("expanded");
             registerBtn.classList.remove("hidden");
@@ -242,91 +213,67 @@ function copyToClipboard() {
             
             const transactionIdFromLocalStorage = localStorage.getItem('transactionid');
 
-            // Show success modal only if the gender is male
-            if (gender === 'male') {
-                const successModal = document.getElementById('successModal');
-                successModal.classList.remove('hidden');
+            const successModal = document.getElementById('successModal');
+            successModal.classList.remove('hidden');
 
-                const transactionIdDisplay = document.getElementById('transaction-id');
-                fetch(`get_transaction.php?transaction_id=${transactionIdFromLocalStorage}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Transaction Details:', data);
+            // const transactionIdDisplay = document.getElementById('transaction-id');
+            fetch(`get_transaction.php?transaction_id=${transactionIdFromLocalStorage}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Transaction Details:', data);
 
-                    const transactionDetailsContainer = document.getElementById('transaction-details-container');
-                    if (data.error) {
-                        transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">${data.error}</p>`;
-                    } else {
-                        const totalAmount = parseFloat(data[0].total_amount); 
-                        const transactionDate = data[0].transaction_date;
+                const transactionDetailsContainer = document.getElementById('transaction-details-container');
+                if (data.error) {
+                    transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">${data.error}</p>`;
+                } else {
+                    const totalAmount = parseFloat(data[0].total_amount); 
+                    const transactionDate = data[0].transaction_date;
 
-                        const formattedDate = new Date(transactionDate.replace(' ', 'T')).toLocaleString();  
+                    const formattedDate = new Date(transactionDate.replace(' ', 'T')).toLocaleString();  
 
-                        const formattedAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
-                          maximumFractionDigits: 0 
-                        }).format(totalAmount);
+                    const formattedAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
+                        maximumFractionDigits: 0 
+                    }).format(totalAmount);
 
-                        transactionDetailsContainer.innerHTML = `
-                          <ul>
-                              <li class="flex justify-between">
-                                  <span><strong>Transaction ID</strong></span>
-                                  <span class="text-rigth">${transactionIdFromLocalStorage}</span>
-                              </li>
-                              <li class="flex justify-between">
-                                  <span><strong>Total Amount</strong></span>
-                                  <span class="text-rigth"><strong>${formattedAmount}</strong></span>
-                              </li>
-                              <li class="flex justify-between">
-                                  <span><strong>Transaction Date</strong></span>
-                                  <span class="text-right">${formattedDate}</span>
-                              </li>
-                          </ul>
-                        `;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching transaction details:', error);
-                    const transactionDetailsContainer = document.getElementById('transaction-details-container');
-                    transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">Terjadi kesalahan saat mengambil detail transaksi.</p>`;
-                });
-            }
-
-            // Show SweetAlert for female gender
-            if (gender === 'female') {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Thank you for being a part of the third-party effect.',
-                    text: 'Your payment proof has been received. Please wait for confirmation.',
-                    timer: 60000,
-                    timerProgressBar: true,
-                    showConfirmButton: false,
-                    customClass: {
-                        popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
-                        title: 'text-lg font-semibold',
-                        content: 'text-sm text-gray-500',
-                    },
-                    willClose: () => {
-                        localStorage.removeItem('transactionid');
-                        localStorage.removeItem('registrationSuccess');
-                    }
-                });
-            }
+                    transactionDetailsContainer.innerHTML = `
+                        <ul>
+                            <li class="flex justify-between">
+                                <span><strong>Transaction ID</strong></span>
+                                <span class="text-rigth">${transactionIdFromLocalStorage}</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Total Amount</strong></span>
+                                <span class="text-rigth"><strong>${formattedAmount}</strong></span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Transaction Date</strong></span>
+                                <span class="text-right">${formattedDate}</span>
+                            </li>
+                        </ul>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching transaction details:', error);
+                const transactionDetailsContainer = document.getElementById('transaction-details-container');
+                transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">Terjadi kesalahan saat mengambil detail transaksi.</p>`;
+            });
 
             registrationForm.reset();
         } else {
-            alert('Terjadi kesalahan, coba lagi.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat mengirim data.');
+                alert('Terjadi kesalahan, coba lagi.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengirim data.');
+        });
     });
-});
     //===========================================================
 
     window.addEventListener('load', function() {
