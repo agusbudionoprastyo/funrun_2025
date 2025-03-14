@@ -158,7 +158,7 @@ function copyToClipboard() {
     //===========================================================
 
     function generateTransactionId() {
-        return 'TPE-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+        return 'FR-LSM-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
     }
 
     const transactionIdInput = document.getElementById('transactionid');
@@ -179,6 +179,7 @@ function copyToClipboard() {
 
     formData.append('transactionid', generatedTransactionId);
     formData.append('registrationType', registrationType);
+    
     formData.append('username', username);
     formData.append('mantan', mantan);
     formData.append('phone', phone);

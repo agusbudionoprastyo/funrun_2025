@@ -45,7 +45,6 @@ $query = "INSERT INTO users (name, mantan, size, phone, email, username, passwor
 $stmt = $conn->prepare($query);
 $stmt->bind_param("sssssss", $name, $mantan, $size, $phone, $email, $username, $password);
 $stmt->execute();
-// $maleUserId = $stmt->insert_id;
 
 if ($registrationType === 'couple') {
 
@@ -54,11 +53,10 @@ if ($registrationType === 'couple') {
     $coupleSize = $_POST['coupleSize'];
     $coupleUsername = generateCoupleUsername($coupleName);
     // Simpan pasangan ke tabel 'users' dengan foto pasangan
-    $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO users (name, mantan, size, username, password) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssssss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleusername, $password);
+    $stmt->bind_param("sssss", $coupleName, $coupleMantan, $coupleSize, $coupleusername, $password);
     $stmt->execute();
-    // $femaleUserId = $stmt->insert_id; // ID pasangan (female)
 }
 
 // Mengambil harga item yang aktif dan memiliki stok lebih dari 0
