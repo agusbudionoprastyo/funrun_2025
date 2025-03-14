@@ -1,0 +1,152 @@
+/* Font Heading Bold */
+@font-face {
+    font-family: 'HeadingBold';
+    src: url('../fonts/heading-bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  /* Font Helvetica Bold */
+  @font-face {
+    font-family: 'HelveticaBold';
+    src: url('../fonts/Helvetica-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  /* Font Helvetica Regular */
+  @font-face {
+    font-family: 'Helvetica';
+    src: url('../fonts/Helvetica.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  /* Pengaturan font pada elemen spesifik */
+  .heading-bold {
+    font-family: 'HeadingBold', sans-serif; /* Font khusus untuk heading */
+  }
+
+  .helvetica-bold {
+    font-family: 'HelveticaBold', sans-serif; /* Font untuk teks tebal khusus */
+  }
+
+  .helvetica {
+    font-family: 'Helvetica', sans-serif; /* Font untuk teks reguler */
+  }
+
+.button {
+  padding: 12px 20px;
+  background-color: transparent;
+  border: 0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s ease;
+
+  &.is-ghost {
+    &:hover,
+    &:focus {
+      background-color: #dfdad7;
+    }
+  }
+
+  &.is-primary {
+    background-color:#ff005b;
+    color: #fff;
+    &:hover,
+    &:focus {
+      background-color:#e30351;
+    }
+  }
+}
+
+.icon-button {
+  padding: 0;
+  border: 0;
+  background-color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  cursor: pointer;
+  transition: 0.15s ease;
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover,
+  &:focus {
+    background-color: rgba(#fff, 0.75);
+  }
+}
+
+#box {
+  position: fixed;
+  bottom: -70vh;  /* Posisi awal di bawah layar (tidak terlihat) */
+  left: 0;
+  right: 0;
+  transition: bottom 0.5s ease-in-out; /* Transisi untuk bergerak ke atas */
+  height: 85vh;
+  z-index: 50;
+}
+
+#box.expanded {
+  bottom: 0; /* Menarik kotak ke atas sampai ke bawah layar */
+}
+.dark-img {
+  filter: brightness(0); /* Menggelapkan gambar */
+}
+
+.scrolling-sponsors {
+  width: 100%;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.sponsor-images {
+  display: flex;
+  animation: scroll 20s linear infinite;
+}
+
+.sponsor-images img {
+  margin-right: 20px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-220%);
+  }
+}
+
+  /* Keyframe for zoom-in effect */
+  @keyframes zoomIn {
+    0% {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* Modal animation class */
+  .zoom-in {
+    animation: zoomIn 0.4s ease-out forwards;
+  }
+
+  /* Default modal hidden state */
+  .hidden {
+    display: none;
+  }
+
+  /* When modal is active */
+  .modal-active {
+    display: flex;
+  }

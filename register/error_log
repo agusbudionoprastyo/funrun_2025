@@ -1,0 +1,235 @@
+[27-Jan-2025 13:49:01 Asia/Jakarta] PHP Warning:  Undefined variable $pdo in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:49:01 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/get_items.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:49:30 Asia/Jakarta] PHP Warning:  Undefined variable $pdo in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:49:30 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/get_items.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:51:14 Asia/Jakarta] PHP Warning:  Undefined variable $pdo in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:51:14 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/get_items.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:51:31 Asia/Jakarta] PHP Warning:  Undefined variable $pdo in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:51:31 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/get_items.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:51:52 Asia/Jakarta] PHP Warning:  Undefined variable $pdo in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:51:52 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/get_items.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:52:05 Asia/Jakarta] PHP Warning:  Undefined variable $pdo in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[27-Jan-2025 13:52:05 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/get_items.php:8
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_items.php on line 8
+[29-Jan-2025 03:35:31 Asia/Jakarta] PHP Warning:  include(db.php): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:35:31 Asia/Jakarta] PHP Warning:  include(): Failed opening 'db.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:35:31 Asia/Jakarta] PHP Warning:  Undefined variable $conn in /home/dafm5634/public_html/thirdparty/register/register.php on line 17
+[29-Jan-2025 03:35:31 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/register.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 17
+[29-Jan-2025 03:37:47 Asia/Jakarta] PHP Warning:  include(db.php): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:37:47 Asia/Jakarta] PHP Warning:  include(): Failed opening 'db.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:37:47 Asia/Jakarta] PHP Warning:  Undefined variable $conn in /home/dafm5634/public_html/thirdparty/register/register.php on line 17
+[29-Jan-2025 03:37:47 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/register.php:17
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 17
+[29-Jan-2025 03:46:53 Asia/Jakarta] PHP Warning:  include(db.php): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:46:53 Asia/Jakarta] PHP Warning:  include(): Failed opening 'db.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:46:53 Asia/Jakarta] PHP Warning:  Undefined variable $conn in /home/dafm5634/public_html/thirdparty/register/register.php on line 37
+[29-Jan-2025 03:46:53 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/register.php:37
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 37
+[29-Jan-2025 03:49:20 Asia/Jakarta] PHP Warning:  include(db.php): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:49:20 Asia/Jakarta] PHP Warning:  include(): Failed opening 'db.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:49:20 Asia/Jakarta] PHP Warning:  Undefined variable $conn in /home/dafm5634/public_html/thirdparty/register/register.php on line 37
+[29-Jan-2025 03:49:20 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/register.php:37
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 37
+[29-Jan-2025 03:53:52 Asia/Jakarta] PHP Warning:  include(db.php): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:53:52 Asia/Jakarta] PHP Warning:  include(): Failed opening 'db.php' for inclusion (include_path='.:/opt/alt/php83/usr/share/pear:/opt/alt/php83/usr/share/php:/usr/share/pear:/usr/share/php') in /home/dafm5634/public_html/thirdparty/register/register.php on line 3
+[29-Jan-2025 03:53:52 Asia/Jakarta] PHP Warning:  Undefined variable $conn in /home/dafm5634/public_html/thirdparty/register/register.php on line 22
+[29-Jan-2025 03:53:52 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/dafm5634/public_html/thirdparty/register/register.php:22
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 22
+[29-Jan-2025 05:02:50 Asia/Jakarta] PHP Warning:  move_uploaded_file(../uploads/6799540a730fc.PNG): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/register.php on line 37
+[29-Jan-2025 05:02:50 Asia/Jakarta] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpRmEVue' to '../uploads/6799540a730fc.PNG' in /home/dafm5634/public_html/thirdparty/register/register.php on line 37
+[30-Jan-2025 00:50:51 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM transactions
+        WHERE transaction_id = ?' at line 2 in /home/dafm5634/public_html/thirdparty/register/get_transaction.php:19
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/get_transaction.php(19): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 19
+[30-Jan-2025 00:51:13 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM transactions
+        WHERE transaction_id = ?' at line 2 in /home/dafm5634/public_html/thirdparty/register/get_transaction.php:19
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/get_transaction.php(19): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 19
+[30-Jan-2025 00:51:48 Asia/Jakarta] PHP Warning:  Undefined array key "transaction_id" in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 7
+[30-Jan-2025 00:52:28 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM transactions
+        WHERE transaction_id = ?' at line 2 in /home/dafm5634/public_html/thirdparty/register/get_transaction.php:19
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/get_transaction.php(19): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 19
+[30-Jan-2025 00:54:24 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM transactions
+        WHERE transaction_id = ?' at line 2 in /home/dafm5634/public_html/thirdparty/register/get_transaction.php:19
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/get_transaction.php(19): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 19
+[30-Jan-2025 00:56:58 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM transactions
+        WHERE transaction_id = ?' at line 2 in /home/dafm5634/public_html/thirdparty/register/get_transaction.php:19
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/get_transaction.php(19): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 19
+[30-Jan-2025 00:57:06 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM transactions
+        WHERE transaction_id = ?' at line 2 in /home/dafm5634/public_html/thirdparty/register/get_transaction.php:19
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/get_transaction.php(19): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/get_transaction.php on line 19
+[30-Jan-2025 10:18:52 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:18:52 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:18:52 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:18:52 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:18:53 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:20:11 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:20:38 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:20:44 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:21:26 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:23:57 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'payment_proof' in 'field list' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 10:39:00 Asia/Jakarta] PHP Warning:  move_uploaded_file(../users/paymentprooft/679af454bf777-mandiri.png): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 25
+[30-Jan-2025 10:39:00 Asia/Jakarta] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpjcTry1' to '../users/paymentprooft/679af454bf777-mandiri.png' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 25
+[30-Jan-2025 10:39:19 Asia/Jakarta] PHP Warning:  move_uploaded_file(../users/paymentprooft/679af467174f4-mandiri.png): Failed to open stream: No such file or directory in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 25
+[30-Jan-2025 10:39:19 Asia/Jakarta] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpHofTU1' to '../users/paymentprooft/679af467174f4-mandiri.png' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 25
+[30-Jan-2025 13:08:32 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'transaction_id' in 'where clause' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 13:08:46 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'transaction_id' in 'where clause' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 13:08:52 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'transaction_id' in 'where clause' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 13:09:09 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Unknown column 'transaction_id' in 'where clause' in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php:33
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/prooft_payment.php(33): mysqli->prepare()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/prooft_payment.php on line 33
+[30-Jan-2025 13:59:18 Asia/Jakarta] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/dafm5634/public_html/thirdparty/register/register.php:76
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(76): mysqli_stmt->bind_param()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[30-Jan-2025 13:59:22 Asia/Jakarta] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/dafm5634/public_html/thirdparty/register/register.php:76
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(76): mysqli_stmt->bind_param()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[30-Jan-2025 13:59:26 Asia/Jakarta] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/dafm5634/public_html/thirdparty/register/register.php:76
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(76): mysqli_stmt->bind_param()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[30-Jan-2025 13:59:38 Asia/Jakarta] PHP Fatal error:  Uncaught ArgumentCountError: The number of elements in the type definition string must match the number of bind variables in /home/dafm5634/public_html/thirdparty/register/register.php:76
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(76): mysqli_stmt->bind_param()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[30-Jan-2025 16:12:13 Asia/Jakarta] PHP Warning:  Undefined variable $coupleName in /home/dafm5634/public_html/thirdparty/register/register.php on line 83
+[11-Feb-2025 14:22:45 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /home/dafm5634/public_html/thirdparty/register/register.php on line 75
+[11-Feb-2025 14:22:45 Asia/Jakarta] PHP Warning:  Undefined array key "age" in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[11-Feb-2025 14:22:45 Asia/Jakarta] PHP Warning:  Undefined array key "phone" in /home/dafm5634/public_html/thirdparty/register/register.php on line 78
+[11-Feb-2025 14:22:45 Asia/Jakarta] PHP Warning:  Undefined array key "email" in /home/dafm5634/public_html/thirdparty/register/register.php on line 79
+[11-Feb-2025 14:22:45 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'age' cannot be null in /home/dafm5634/public_html/thirdparty/register/register.php:102
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(102): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 102
+[11-Feb-2025 14:22:56 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /home/dafm5634/public_html/thirdparty/register/register.php on line 75
+[11-Feb-2025 14:22:56 Asia/Jakarta] PHP Warning:  Undefined array key "age" in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[11-Feb-2025 14:22:56 Asia/Jakarta] PHP Warning:  Undefined array key "phone" in /home/dafm5634/public_html/thirdparty/register/register.php on line 78
+[11-Feb-2025 14:22:56 Asia/Jakarta] PHP Warning:  Undefined array key "email" in /home/dafm5634/public_html/thirdparty/register/register.php on line 79
+[11-Feb-2025 14:22:56 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'age' cannot be null in /home/dafm5634/public_html/thirdparty/register/register.php:102
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(102): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 102
+[11-Feb-2025 14:22:59 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /home/dafm5634/public_html/thirdparty/register/register.php on line 75
+[11-Feb-2025 14:22:59 Asia/Jakarta] PHP Warning:  Undefined array key "age" in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[11-Feb-2025 14:22:59 Asia/Jakarta] PHP Warning:  Undefined array key "phone" in /home/dafm5634/public_html/thirdparty/register/register.php on line 78
+[11-Feb-2025 14:22:59 Asia/Jakarta] PHP Warning:  Undefined array key "email" in /home/dafm5634/public_html/thirdparty/register/register.php on line 79
+[11-Feb-2025 14:22:59 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'age' cannot be null in /home/dafm5634/public_html/thirdparty/register/register.php:102
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(102): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 102
+[11-Feb-2025 14:34:36 Asia/Jakarta] PHP Warning:  Undefined array key "username" in /home/dafm5634/public_html/thirdparty/register/register.php on line 75
+[11-Feb-2025 14:34:36 Asia/Jakarta] PHP Warning:  Undefined array key "age" in /home/dafm5634/public_html/thirdparty/register/register.php on line 76
+[11-Feb-2025 14:34:36 Asia/Jakarta] PHP Warning:  Undefined array key "phone" in /home/dafm5634/public_html/thirdparty/register/register.php on line 78
+[11-Feb-2025 14:34:36 Asia/Jakarta] PHP Warning:  Undefined array key "email" in /home/dafm5634/public_html/thirdparty/register/register.php on line 79
+[11-Feb-2025 14:34:36 Asia/Jakarta] PHP Fatal error:  Uncaught mysqli_sql_exception: Column 'age' cannot be null in /home/dafm5634/public_html/thirdparty/register/register.php:102
+Stack trace:
+#0 /home/dafm5634/public_html/thirdparty/register/register.php(102): mysqli_stmt->execute()
+#1 {main}
+  thrown in /home/dafm5634/public_html/thirdparty/register/register.php on line 102
