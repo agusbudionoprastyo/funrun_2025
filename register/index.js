@@ -165,7 +165,7 @@ function copyToClipboard() {
             // Create price element
             const priceElement = document.createElement('p');
             priceElement.className = 'helvetica text-[#ff005b] font-bold';
-            priceElement.textContent = `IDR ${formatPrice(price)} / Person`;
+            priceElement.textContent = `IDR ${formatPrice(price)}`;
 
             itemElement.appendChild(descriptionElement);
             itemElement.appendChild(priceElement);

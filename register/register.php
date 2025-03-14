@@ -65,10 +65,10 @@ try {
     }
 
     // Mengambil harga item yang aktif dan memiliki stok lebih dari 0
-    $query = "SELECT id, price, stock FROM items WHERE NOW() BETWEEN start_date AND expiry LIMIT 1"; // Ambil satu item
+    $query = "SELECT id, price, couple_price, stock FROM items WHERE NOW() BETWEEN start_date AND expiry LIMIT 1"; // Ambil satu item
     $stmt = $conn->prepare($query);
     $stmt->execute();
-    $stmt->bind_result($itemId, $itemPrice, $itemStock);
+    $stmt->bind_result($itemId, $itemPrice, $couplePrice $itemStock);
     $stmt->fetch();
     $stmt->close();
 
@@ -78,7 +78,7 @@ try {
     }
 
     // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2 dan kurangi stok 2 kali
-    $totalAmount = ($registrationType === 'couple') ? 300000 : $itemPrice;
+    $totalAmount = ($registrationType === 'couple') ? $couplePrice : $itemPrice;
 
     // Mendapatkan transaction ID dari form
     $transactionId = $_POST['transactionid'];
