@@ -61,11 +61,27 @@
         </div>
       </div>
 
+      <div class="mt-4 mb-4">
+        <!-- <h3 class="text-lg font-semibold helvetica">Location</h3> -->
+        <div class="flex items-center mt-2">
+          <i class="fas fa-map-marker-alt text-[#ff005b]"></i>
+          <p class="ml-2 helvetica text-gray-700">Jl. Imam Bonjol No.188, Semarang</p>
+        </div>
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.2508286818183!2d110.40941237686833!3d-6.979701993021142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708b4d0808faa9%3A0x1c54882d293f1937!2sHotel%20Dafam%20Semarang!5e0!3m2!1sen!2sid!4v1737694104499!5m2!1sen!2sid" 
+          class="w-full h-32 max-w-md rounded-[24px] shadow-md" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
       <h3 id="ketentuan-umum-regulasi-dan-kesepatakan-bersama" class="text-sm font-semibold text-left mt-4 mb-2">
         KETENTUAN UMUM
       </h3>
       
-      <ul class="list-inside list-disc space-y-4">
+      <ul class="list-inside list-disc space-y-4 mb-32">
         <li class="text-sm font-medium"><strong>Lari Sama Mantan</strong>
           <p class="text-sm font-medium ml-4">diadakan hari Minggu, 25 Mei 2025 berlokasi di 
             <strong>Hotel Dafam Semarang</strong>, Jl. Imam Bonjol No. 188 Semarang.
@@ -104,38 +120,17 @@
         <li class="text-sm font-medium"><strong>Podium 3</strong>
           <p class="text-sm font-medium ml-4">Pelari tercepat ketiga yang mencapai garis finish.</p>
         </li>
-      </ul>
-      <br>
-      <p class="text-sm font-medium ml-4"><strong>Ketentuan ini mewakili personal dan couple.</strong></p>
-      <p class="text-sm font-medium ml-4"><strong>Panitia hanya menyediakan tenaga medis untuk penanganan sementara,</strong><br>selanjutnya menjadi tanggung jawab peserta.</p>
-      <p class="text-sm font-medium ml-4"><strong>Peserta yang diijinkan untuk mengikuti acara ini adalah peserta yang sudah</strong><br> 
-        mendaftarkan diri dan memiliki bukti kepersertaan dari panitia.</p>
-        <br>
-      <p class="text-sm font-medium ml-4"><strong>Lari Sama Mantan tidak memberikan perlindungan asuransi jiwa kepada peserta.</strong><br> 
+      
+      <p class="text-sm font-medium ml-4"><strong>Ketentuan ini mewakili personal dan couple. Panitia hanya menyediakan tenaga medis untuk penanganan sementara,</strong>selanjutnya menjadi tanggung jawab peserta.</p>
+      <p class="text-sm font-medium ml-4"><strong>Peserta yang diijinkan untuk mengikuti acara ini adalah peserta yang sudah</strong>mendaftarkan diri dan memiliki bukti kepersertaan dari panitia.</p>
+        
+      <p class="text-sm font-medium ml-4"><strong>Lari Sama Mantan tidak memberikan perlindungan asuransi jiwa kepada peserta.</strong>
         Setiap peserta memahami sepenuhnya bahwa olahraga ini memiliki risiko yang dapat mengakibatkan cedera, kecelakaan, cacat, bahkan kematian. 
         Para peserta dihimbau untuk tetap berhati-hati dan selalu waspada dalam mengikuti acara tersebut, dan dalam kondisi sehat.
       </p>
-      <br>
-      <p class="text-sm font-medium ml-4"><strong>Dengan ini saya menyetujui persyaratan yang ditulis oleh pihak penyelenggara.</strong></p>
-      
-      
-  
-      <div class="mt-4 mb-32">
-        <!-- <h3 class="text-lg font-semibold helvetica">Location</h3> -->
-        <div class="flex items-center mt-2">
-          <i class="fas fa-map-marker-alt text-[#ff005b]"></i>
-          <p class="ml-2 helvetica text-gray-700">Jl. Imam Bonjol No.188, Semarang</p>
-        </div>
-        <iframe 
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.2508286818183!2d110.40941237686833!3d-6.979701993021142!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e708b4d0808faa9%3A0x1c54882d293f1937!2sHotel%20Dafam%20Semarang!5e0!3m2!1sen!2sid!4v1737694104499!5m2!1sen!2sid" 
-          class="w-full h-32 max-w-md rounded-[24px] shadow-md" 
-          style="border:0;" 
-          allowfullscreen="" 
-          loading="lazy" 
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
-      </div>
 
+      <p class="text-sm font-medium ml-4"><strong>Dengan ini saya menyetujui persyaratan yang ditulis oleh pihak penyelenggara.</strong></p>
+    </ul>
       <!-- Form Box -->
       <div id="box" class="bg-white rounded-t-[24px] shadow-md w-full p-4 flex max-w-md mt-4 fixed bottom-0 left-0 right-0 mx-auto z-50">
         <div class="w-full p-4 flex items-center justify-between h-32 max-w-md mt-4 fixed bottom-0 left-0 right-0 mx-auto z-50">
@@ -293,21 +288,7 @@
 
   </div>
 </div>
-<script>
-  // Fetch the terms.md file and convert it using markdown.js
-  fetch('terms.md')
-    .then(response => response.text())
-    .then(markdown => {
-      // Convert markdown content to HTML using markdown.js
-      const htmlContent = markdown.parse(markdown);  // Correct method here
-      // Inject the converted HTML into the content div
-      document.getElementById('terms-content').innerHTML = htmlContent;
-    })
-    .catch(error => {
-      console.error("Error loading terms.md:", error);
-    });
-</script>
-  
+
     <script>
 
       function copyToClipboard() {
