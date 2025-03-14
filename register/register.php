@@ -68,7 +68,7 @@ try {
     $query = "SELECT id, price, couple_price, stock FROM items WHERE NOW() BETWEEN start_date AND expiry LIMIT 1"; // Ambil satu item
     $stmt = $conn->prepare($query);
     $stmt->execute();
-    $stmt->bind_result($itemId, $itemPrice, $couplePrice $itemStock);
+    $stmt->bind_result($itemId, $itemPrice, $couplePrice, $itemStock);
     $stmt->fetch();
     $stmt->close();
 
