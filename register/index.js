@@ -191,10 +191,6 @@ function copyToClipboard() {
         const coupleSize = document.querySelector('input[name="coupleSize"]:checked').value;
         formData.append('coupleUsername', coupleUsername);
         formData.append('coupleMantan', coupleMantan);
-        formData.append('username', username);
-        formData.append('mantan', mantan);
-        formData.append('phone', phone);
-        formData.append('email', email);
         formData.append('coupleSize', coupleSize);
     }
 
