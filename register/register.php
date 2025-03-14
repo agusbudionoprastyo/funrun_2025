@@ -43,7 +43,7 @@ $password = generateRandomPassword();
 // Proses penyimpanan data ke database
 $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("ssissss", $name, $mantan, $size, $phone, $email, $username, $password);
+$stmt->bind_param("sssssss", $name, $mantan, $size, $phone, $email, $username, $password);
 $stmt->execute();
 // $maleUserId = $stmt->insert_id;
 
@@ -56,7 +56,7 @@ if ($registrationType === 'couple') {
     // Simpan pasangan ke tabel 'users' dengan foto pasangan
     $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssissss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleusername, $password);
+    $stmt->bind_param("sssssss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleusername, $password);
     $stmt->execute();
     // $femaleUserId = $stmt->insert_id; // ID pasangan (female)
 }
