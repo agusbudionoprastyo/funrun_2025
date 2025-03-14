@@ -30,36 +30,39 @@ function generateCoupleUsername($coupleName) {
 
 // Mengambil data dari form
 $registrationType = $_POST['registrationType'];
+
 $name = $_POST['username'];
 $size = $_POST['size'];
 $mantan = $_POST['mantan'];
 $phone = $_POST['phone'];
 $email = $_POST['email'];
 
-// Generate username
+// Generate username dan password untuk pengguna utama
 $username = generateUsername($name);
 $password = generateRandomPassword();
-// Proses penyimpanan data ke database
+
+// Proses penyimpanan data pengguna utama ke database
 $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ssissss", $name, $mantan, $size, $phone, $email, $username, $password);
 $stmt->execute();
-$maleUserId = $stmt->insert_id;
 
+// Jika pendaftaran adalah pasangan, proses penyimpanan pasangan
 if ($registrationType === 'couple') {
+    // Ambil data pasangan
     $coupleName = $_POST['coupleUsername'];
     $coupleMantan = $_POST['coupleMantan'];
     $coupleSize = $_POST['coupleSize'];
-    $coupleUsername = generateCoupleUsername($coupleName);
-}
 
-if ($registrationType === 'couple') {
-    // Simpan pasangan ke tabel 'users' dengan foto pasangan
+    // Generate username dan password untuk pasangan
+    $coupleUsername = generateCoupleUsername($coupleName);
+    $couplePassword = generateRandomPassword();
+
+    // Simpan pasangan ke tabel 'users'
     $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssissss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleusername, $password);
+    $stmt->bind_param("ssissss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleUsername, $couplePassword);
     $stmt->execute();
-    $femaleUserId = $stmt->insert_id; // ID pasangan (female)
 }
 
 // Mengambil harga item yang aktif dan memiliki stok lebih dari 0
@@ -77,14 +80,14 @@ if (!$itemPrice) {
 }
 
 // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2
-$totalAmount = ($registrationType === 'couple') ? $itemPrice * 1 : $itemPrice;
+$totalAmount = ($registrationType === 'couple') ? 300000 : $itemPrice;
 
 // Mendapatkan transaction ID dari form
 $transactionId = $_POST['transactionid'];
 
-$query = "INSERT INTO transactions (transaction_id, user_id, total_amount, status) VALUES (?, ?, ?, 'pending')";
+$query = "INSERT INTO transactions (transaction_id, total_amount, status) VALUES (?, ?, 'pending')";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("sii", $transactionId, $maleUserId, $totalAmount);
+$stmt->bind_param("sii", $transactionId, $totalAmount);
 $stmt->execute();
 
 // Menutup koneksi
