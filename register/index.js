@@ -175,7 +175,7 @@ function copyToClipboard() {
     const mantan = document.getElementById('mantan').value;
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
-    const size = document.getElementById('size').value;
+    const size = document.querySelector('input[name="size"]:checked').value;
 
     formData.append('transactionid', generatedTransactionId);
     formData.append('registrationType', registrationType);
