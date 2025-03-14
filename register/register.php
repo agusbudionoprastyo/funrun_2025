@@ -65,8 +65,7 @@ try {
     }
 
     $query = "SELECT id, price, stock, start_date, expiry FROM items 
-              WHERE start_date <= CURDATE() AND expiry >= CURDATE() 
-              AND active = 1 LIMIT 1";
+              WHERE NOW() BETWEEN start_date AND expiry LIMIT 1";
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $stmt->bind_result($itemId, $itemPrice, $itemStock);
