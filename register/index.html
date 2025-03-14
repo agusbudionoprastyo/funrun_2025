@@ -57,19 +57,7 @@
               <p class="ml-2 helvetica text-gray-700">Official Fun Run</p>
             </div>
           </a>
-          <!-- <a href="https://wa.me/6281242554949?text=Halo,%20saya%20ada%20pertanyaan">
-            <div class="flex items-center">
-              <i class="fab fa-whatsapp text-gray-700"></i>
-              <p class="ml-2 helvetica text-gray-700">ROBBI</p>
-            </div>
-          </a>
-          <a href="https://wa.me/6289524580971?text=Halo,%20saya%20ada%20pertanyaan">
-            <div class="flex items-center">
-              <i class="fab fa-whatsapp text-gray-700"></i>
-              <p class="ml-2 helvetica text-gray-700">RSVP</p>
-            </div>
-          </a> -->
-          </div>
+        </div>
       </div>
 
       <div class="mt-4">
@@ -247,8 +235,8 @@
       const coupleContainer = document.getElementById('CoupleContainer');
       const coupleName = document.getElementById('coupleName');
 
-      const scouple = document.getElementById('coupleMale');
-      const coupleFemale = document.getElementById('coupleFemale');
+      const coupleSize = document.getElementById('coupleSize');
+      const Size = document.getElementById('Size');
 
       const registerBtn = document.getElementById("registerBtn");
       const closeBtn = document.getElementById("closeBtn");
@@ -258,7 +246,7 @@
       // Hide the Couple Section initially and remove required attributes
       if (coupleContainer.classList.contains('hidden')) {
         coupleName.removeAttribute('required');
-        coupleFemale.removeAttribute('required');
+        coupleSize.removeAttribute('required');
       }
 
       // Show Couple Section and add required attributes when "Couple" radio is checked
@@ -266,7 +254,7 @@
         if (this.checked) {
           coupleContainer.classList.remove('hidden');
           coupleName.setAttribute('required', 'true');
-          coupleFemale.setAttribute('required', 'true');
+          coupleSize.setAttribute('required', 'true');
         }
       });
 
@@ -275,7 +263,7 @@
         if (this.checked) {
           coupleContainer.classList.add('hidden');
           coupleName.removeAttribute('required');
-          coupleFemale.removeAttribute('required');
+          coupleSize.removeAttribute('required');
         }
       });
 
@@ -407,6 +395,8 @@
         const transactionIdInput = document.getElementById('transactionid');
         const generatedTransactionId = generateTransactionId();
         transactionIdInput.value = generatedTransactionId;
+
+
 
         //===========================================================
 
