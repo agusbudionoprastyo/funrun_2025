@@ -246,7 +246,6 @@
       const coupleRadio = document.getElementById('couple');
       const coupleContainer = document.getElementById('CoupleContainer');
       const coupleName = document.getElementById('coupleName');
-      const coupleAge = document.getElementById('coupleage');
 
       const coupleMale = document.getElementById('coupleMale');
       const coupleFemale = document.getElementById('coupleFemale');
@@ -259,7 +258,6 @@
       // Hide the Couple Section initially and remove required attributes
       if (coupleContainer.classList.contains('hidden')) {
         coupleName.removeAttribute('required');
-        coupleAge.removeAttribute('required');
         coupleMale.removeAttribute('required');
         coupleFemale.removeAttribute('required');
       }
@@ -269,7 +267,6 @@
         if (this.checked) {
           coupleContainer.classList.remove('hidden');
           coupleName.setAttribute('required', 'true');
-          coupleAge.setAttribute('required', 'true');
           coupleMale.setAttribute('required', 'true');
           coupleFemale.setAttribute('required', 'true');
         }
@@ -280,7 +277,6 @@
         if (this.checked) {
           coupleContainer.classList.add('hidden');
           coupleName.removeAttribute('required');
-          coupleAge.removeAttribute('required');
           coupleMale.removeAttribute('required');
           coupleFemale.removeAttribute('required');
         }
