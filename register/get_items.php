@@ -3,8 +3,8 @@ include '../helper/db.php';
 
 header('Content-Type: application/json');
 
-// Query untuk mendapatkan id, name, dan price dari tabel items
-$sql = "SELECT id, name, description, price FROM items WHERE NOW() BETWEEN start_date AND expiry LIMIT 1";
+// Query untuk mendapatkan id, name, description, price, dan couple_price dari tabel items
+$sql = "SELECT id, name, description, price, couple_price FROM items WHERE NOW() BETWEEN start_date AND expiry LIMIT 1";
 $result = $conn->query($sql);
 
 // Cek apakah ada data
@@ -17,6 +17,7 @@ if ($result->num_rows > 0) {
             'name' => $row['name'],
             'description' => $row['description'],
             'price' => $row['price'],
+            'couplePrice' => $row['couple_price'], // Include couple price
         ];
     }
     // Kembalikan data dalam format JSON

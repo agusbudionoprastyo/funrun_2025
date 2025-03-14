@@ -86,38 +86,87 @@ function copyToClipboard() {
       }, 200);
   });
 
-  function formatPrice(price) {
-      if (price >= 1000000) {
-          return (price / 1000000).toFixed(1) + 'M';
-      } else if (price >= 1000) {
-          return (price / 1000).toFixed(0) + 'K';
-      } else {
-          return price;
-      }
-  }
+//   function formatPrice(price) {
+//       if (price >= 1000000) {
+//           return (price / 1000000).toFixed(1) + 'M';
+//       } else if (price >= 1000) {
+//           return (price / 1000).toFixed(0) + 'K';
+//       } else {
+//           return price;
+//       }
+//   }
 
-  fetch('get_items.php')
+//   fetch('get_items.php')
+//     .then(response => response.json())
+//     .then(data => {
+//       const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
+//       data.forEach(item => {
+//         const itemElement = document.createElement('div');
+        
+//         const descriptionElement = document.createElement('p');
+//         descriptionElement.className = 'helvetica text-gray-400 text-sm';
+//         descriptionElement.textContent = `${item.description}`;
+        
+//         const priceElement = document.createElement('p');
+//         priceElement.className = 'helvetica text-[#ff005b] font-bold';
+//         priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
+        
+//         itemElement.appendChild(descriptionElement);
+//         itemElement.appendChild(priceElement);
+        
+//         container.appendChild(itemElement);
+//       });
+//     })
+//     .catch(error => console.error('Error:', error));
+
+// Function to format the price
+function formatPrice(price) {
+    if (price >= 1000000) {
+        return (price / 1000000).toFixed(1) + 'M';
+    } else if (price >= 1000) {
+        return (price / 1000).toFixed(0) + 'K';
+    } else {
+        return price;
+    }
+}
+
+// Function to calculate the correct price based on single/couple selection
+function getPriceForSelection(item) {
+    if (coupleRadio.checked) {
+        // Use couple price if 'Couple' is selected
+        return item.couplePrice ? item.couplePrice : item.price; // fallback to regular price if couplePrice isn't available
+    } else {
+        // Use single price if 'Single' is selected
+        return item.price;
+    }
+}
+
+// Fetch data and display items
+fetch('get_items.php')
     .then(response => response.json())
     .then(data => {
-      const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
-      data.forEach(item => {
-        const itemElement = document.createElement('div');
-        
-        const descriptionElement = document.createElement('p');
-        descriptionElement.className = 'helvetica text-gray-400 text-sm';
-        descriptionElement.textContent = `${item.description}`;
-        
-        const priceElement = document.createElement('p');
-        priceElement.className = 'helvetica text-[#ff005b] font-bold';
-        priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
-        
-        itemElement.appendChild(descriptionElement);
-        itemElement.appendChild(priceElement);
-        
-        container.appendChild(itemElement);
-      });
+        const container = document.getElementById('items-container');
+        data.forEach(item => {
+            const itemElement = document.createElement('div');
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.className = 'helvetica text-gray-400 text-sm';
+            descriptionElement.textContent = `${item.description}`;
+
+            // Get the correct price based on the radio button selection
+            const priceElement = document.createElement('p');
+            priceElement.className = 'helvetica text-[#ff005b] font-bold';
+            const priceToDisplay = getPriceForSelection(item);
+            priceElement.textContent = `IDR ${formatPrice(priceToDisplay)} / Person`;
+
+            itemElement.appendChild(descriptionElement);
+            itemElement.appendChild(priceElement);
+
+            container.appendChild(itemElement);
+        });
     })
     .catch(error => console.error('Error:', error));
+
 
     function formatFileName(fileName) {
         const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName; // Menghapus ekstensi
