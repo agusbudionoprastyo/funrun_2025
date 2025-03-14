@@ -1,128 +1,6 @@
-// function copyToClipboard() {
-//     const rekNumber = document.getElementById('rek-number').innerText;
-    
-//     navigator.clipboard.writeText(rekNumber)
-//       .then(() => {
-//         alert('Nomor rekening berhasil disalin!');
-//       })
-//       .catch(err => {
-//         console.error('Gagal menyalin: ', err);
-//       });
-//   }
-
-//   const singleRadio = document.getElementById('single');
-//   const coupleRadio = document.getElementById('couple');
-//   const coupleContainer = document.getElementById('CoupleContainer');
-//   const coupleName = document.getElementById('coupleName');
-//   const coupleMantan = document.getElementById('coupleMantan');
-
-//   const scouple = document.getElementById('scouple');
-//   const mcouple = document.getElementById('mcouple');
-//   const lcouple = document.getElementById('lcouple');
-//   const xlcouple = document.getElementById('xlcouple');
-//   const xxlcouple = document.getElementById('xxlcouple');
-//   const xxxlcouple = document.getElementById('xxxlcouple');
-
-//   const registerBtn = document.getElementById("registerBtn");
-//   const closeBtn = document.getElementById("closeBtn");
-//   const box = document.getElementById("box");
-//   const signupContainer = document.getElementById("signup-container");
-
-//   // Hide the Couple Section initially and remove required attributes
-//   if (coupleContainer.classList.contains('hidden')) {
-//     coupleName.removeAttribute('required');
-//     coupleMantan.removeAttribute('required');
-//     scouple.removeAttribute('required');
-//     mcouple.removeAttribute('required');
-//     lcouple.removeAttribute('required');
-//     xlcouple.removeAttribute('required');
-//     xxlcouple.removeAttribute('required');
-//     xxxlcouple.removeAttribute('required');
-//   }
-
-//   // Show Couple Section and add required attributes when "Couple" radio is checked
-//   coupleRadio.addEventListener('change', function () {
-//     if (this.checked) {
-//       coupleContainer.classList.remove('hidden');
-//       coupleName.setAttribute('required', 'true');
-//       coupleMantan.setAttribute('required', 'true');
-//       scouple.setAttribute('required', 'true');
-//       mcouple.setAttribute('required', 'true');
-//       lcouple.setAttribute('required', 'true');
-//       xlcouple.setAttribute('required', 'true');
-//       xxlcouple.setAttribute('required', 'true');
-//       xxxlcouple.setAttribute('required', 'true');
-//     }
-//   });
-
-//   // Hide Couple Section and remove required attributes when "Single" radio is checked
-//   singleRadio.addEventListener('change', function () {
-//     if (this.checked) {
-//       coupleContainer.classList.add('hidden');
-//       coupleName.removeAttribute('required');
-//       coupleMantan.removeAttribute('required');
-//       scouple.removeAttribute('required');
-//       mcouple.removeAttribute('required');
-//       lcouple.removeAttribute('required');
-//       xlcouple.removeAttribute('required');
-//       xxlcouple.removeAttribute('required');
-//       xxxlcouple.removeAttribute('required');
-//     }
-//   });
-
-//   registerBtn.addEventListener("click", function() {
-//       box.classList.add("expanded");
-//       registerBtn.classList.add("hidden");
-//       setTimeout(function() {
-//         signupContainer.classList.remove("hidden");
-//       }, 200);
-//   });
-
-//   closeBtn.addEventListener("click", function() {
-//       box.classList.remove("expanded");
-//       registerBtn.classList.remove("hidden");
-//       setTimeout(function() {
-//         signupContainer.classList.add("hidden");
-//       }, 200);
-//   });
-
-//   function formatPrice(price) {
-//       if (price >= 1000000) {
-//           return (price / 1000000).toFixed(1) + 'M';
-//       } else if (price >= 1000) {
-//           return (price / 1000).toFixed(0) + 'K';
-//       } else {
-//           return price;
-//       }
-//   }
-
-//   fetch('get_items.php')
-//     .then(response => response.json())
-//     .then(data => {
-//       const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
-//       data.forEach(item => {
-//         const itemElement = document.createElement('div');
-        
-//         const descriptionElement = document.createElement('p');
-//         descriptionElement.className = 'helvetica text-gray-400 text-sm';
-//         descriptionElement.textContent = `${item.description}`;
-        
-//         const priceElement = document.createElement('p');
-//         priceElement.className = 'helvetica text-[#ff005b] font-bold';
-//         priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
-        
-//         itemElement.appendChild(descriptionElement);
-//         itemElement.appendChild(priceElement);
-        
-//         container.appendChild(itemElement);
-//       });
-//     })
-//     .catch(error => console.error('Error:', error));
-
-// Function to copy text to clipboard
 function copyToClipboard() {
     const rekNumber = document.getElementById('rek-number').innerText;
-
+    
     navigator.clipboard.writeText(rekNumber)
       .then(() => {
         alert('Nomor rekening berhasil disalin!');
@@ -130,28 +8,28 @@ function copyToClipboard() {
       .catch(err => {
         console.error('Gagal menyalin: ', err);
       });
-}
+  }
 
-// Get DOM elements for registration form
-const singleRadio = document.getElementById('single');
-const coupleRadio = document.getElementById('couple');
-const coupleContainer = document.getElementById('CoupleContainer');
-const coupleName = document.getElementById('coupleName');
-const coupleMantan = document.getElementById('coupleMantan');
-const scouple = document.getElementById('scouple');
-const mcouple = document.getElementById('mcouple');
-const lcouple = document.getElementById('lcouple');
-const xlcouple = document.getElementById('xlcouple');
-const xxlcouple = document.getElementById('xxlcouple');
-const xxxlcouple = document.getElementById('xxxlcouple');
+  const singleRadio = document.getElementById('single');
+  const coupleRadio = document.getElementById('couple');
+  const coupleContainer = document.getElementById('CoupleContainer');
+  const coupleName = document.getElementById('coupleName');
+  const coupleMantan = document.getElementById('coupleMantan');
 
-const registerBtn = document.getElementById("registerBtn");
-const closeBtn = document.getElementById("closeBtn");
-const box = document.getElementById("box");
-const signupContainer = document.getElementById("signup-container");
+  const scouple = document.getElementById('scouple');
+  const mcouple = document.getElementById('mcouple');
+  const lcouple = document.getElementById('lcouple');
+  const xlcouple = document.getElementById('xlcouple');
+  const xxlcouple = document.getElementById('xxlcouple');
+  const xxxlcouple = document.getElementById('xxxlcouple');
 
-// Hide the Couple Section initially and remove required attributes
-if (coupleContainer.classList.contains('hidden')) {
+  const registerBtn = document.getElementById("registerBtn");
+  const closeBtn = document.getElementById("closeBtn");
+  const box = document.getElementById("box");
+  const signupContainer = document.getElementById("signup-container");
+
+  // Hide the Couple Section initially and remove required attributes
+  if (coupleContainer.classList.contains('hidden')) {
     coupleName.removeAttribute('required');
     coupleMantan.removeAttribute('required');
     scouple.removeAttribute('required');
@@ -160,113 +38,86 @@ if (coupleContainer.classList.contains('hidden')) {
     xlcouple.removeAttribute('required');
     xxlcouple.removeAttribute('required');
     xxxlcouple.removeAttribute('required');
-}
+  }
 
-// Show Couple Section and add required attributes when "Couple" radio is checked
-coupleRadio.addEventListener('change', function () {
+  // Show Couple Section and add required attributes when "Couple" radio is checked
+  coupleRadio.addEventListener('change', function () {
     if (this.checked) {
-        coupleContainer.classList.remove('hidden');
-        coupleName.setAttribute('required', 'true');
-        coupleMantan.setAttribute('required', 'true');
-        scouple.setAttribute('required', 'true');
-        mcouple.setAttribute('required', 'true');
-        lcouple.setAttribute('required', 'true');
-        xlcouple.setAttribute('required', 'true');
-        xxlcouple.setAttribute('required', 'true');
-        xxxlcouple.setAttribute('required', 'true');
-        
-        // Set price to 300000 when 'couple' is selected
-        updateItemPrices(300000); // Change price to 300000 for couple
+      coupleContainer.classList.remove('hidden');
+      coupleName.setAttribute('required', 'true');
+      coupleMantan.setAttribute('required', 'true');
+      scouple.setAttribute('required', 'true');
+      mcouple.setAttribute('required', 'true');
+      lcouple.setAttribute('required', 'true');
+      xlcouple.setAttribute('required', 'true');
+      xxlcouple.setAttribute('required', 'true');
+      xxxlcouple.setAttribute('required', 'true');
     }
-});
+  });
 
-// Hide Couple Section and remove required attributes when "Single" radio is checked
-singleRadio.addEventListener('change', function () {
+  // Hide Couple Section and remove required attributes when "Single" radio is checked
+  singleRadio.addEventListener('change', function () {
     if (this.checked) {
-        coupleContainer.classList.add('hidden');
-        coupleName.removeAttribute('required');
-        coupleMantan.removeAttribute('required');
-        scouple.removeAttribute('required');
-        mcouple.removeAttribute('required');
-        lcouple.removeAttribute('required');
-        xlcouple.removeAttribute('required');
-        xxlcouple.removeAttribute('required');
-        xxxlcouple.removeAttribute('required');
-        
-        // Fetch and update prices to normal (from server) when 'single' is selected
-        fetchItemPrices(); // Fetch original prices from the server
+      coupleContainer.classList.add('hidden');
+      coupleName.removeAttribute('required');
+      coupleMantan.removeAttribute('required');
+      scouple.removeAttribute('required');
+      mcouple.removeAttribute('required');
+      lcouple.removeAttribute('required');
+      xlcouple.removeAttribute('required');
+      xxlcouple.removeAttribute('required');
+      xxxlcouple.removeAttribute('required');
     }
-});
+  });
 
-// Register Button - Open registration form
-registerBtn.addEventListener("click", function() {
-    box.classList.add("expanded");
-    registerBtn.classList.add("hidden");
-    setTimeout(function() {
+  registerBtn.addEventListener("click", function() {
+      box.classList.add("expanded");
+      registerBtn.classList.add("hidden");
+      setTimeout(function() {
         signupContainer.classList.remove("hidden");
-    }, 200);
-});
+      }, 200);
+  });
 
-// Close Button - Close registration form
-closeBtn.addEventListener("click", function() {
-    box.classList.remove("expanded");
-    registerBtn.classList.remove("hidden");
-    setTimeout(function() {
+  closeBtn.addEventListener("click", function() {
+      box.classList.remove("expanded");
+      registerBtn.classList.remove("hidden");
+      setTimeout(function() {
         signupContainer.classList.add("hidden");
-    }, 200);
-});
+      }, 200);
+  });
 
-// Function to fetch and display item prices
-function fetchItemPrices() {
-    fetch('get_items.php')
-        .then(response => response.json())
-        .then(data => {
-            const container = document.getElementById('items-container'); // Assuming you have a container for items
-            container.innerHTML = ''; // Clear existing items before adding new ones
+  function formatPrice(price) {
+      if (price >= 1000000) {
+          return (price / 1000000).toFixed(1) + 'M';
+      } else if (price >= 1000) {
+          return (price / 1000).toFixed(0) + 'K';
+      } else {
+          return price;
+      }
+  }
 
-            data.forEach(item => {
-                const itemElement = document.createElement('div');
-                const descriptionElement = document.createElement('p');
-                descriptionElement.className = 'helvetica text-gray-400 text-sm';
-                descriptionElement.textContent = `${item.description}`;
-
-                const priceElement = document.createElement('p');
-                priceElement.className = 'helvetica text-[#ff005b] font-bold';
-                priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
-
-                itemElement.appendChild(descriptionElement);
-                itemElement.appendChild(priceElement);
-                container.appendChild(itemElement);
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-// Function to update item prices when 'couple' is selected
-function updateItemPrices(price) {
-    const container = document.getElementById('items-container');
-    const itemElements = container.querySelectorAll('.item'); // Assuming each item has class 'item'
-
-    itemElements.forEach(itemElement => {
-        const priceElement = itemElement.querySelector('.price');
-        priceElement.textContent = `IDR ${formatPrice(price)} / Person`;
-    });
-}
-
-// Format price function (with K for thousands and M for millions)
-function formatPrice(price) {
-    if (price >= 1000000) {
-        return (price / 1000000).toFixed(1) + 'M';  // Format price in millions
-    } else if (price >= 1000) {
-        return (price / 1000).toFixed(0) + 'K';  // Format price in thousands
-    } else {
-        return price;  // Return price as is if it's below 1000
-    }
-}
-
-// Initial fetch to load item prices when page loads
-fetchItemPrices();
-
+  fetch('get_items.php')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
+      data.forEach(item => {
+        const itemElement = document.createElement('div');
+        
+        const descriptionElement = document.createElement('p');
+        descriptionElement.className = 'helvetica text-gray-400 text-sm';
+        descriptionElement.textContent = `${item.description}`;
+        
+        const priceElement = document.createElement('p');
+        priceElement.className = 'helvetica text-[#ff005b] font-bold';
+        priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
+        
+        itemElement.appendChild(descriptionElement);
+        itemElement.appendChild(priceElement);
+        
+        container.appendChild(itemElement);
+      });
+    })
+    .catch(error => console.error('Error:', error));
 
     function formatFileName(fileName) {
         const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName; // Menghapus ekstensi
