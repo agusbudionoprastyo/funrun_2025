@@ -37,31 +37,24 @@ $mantan = $_POST['mantan'];
 $phone = $_POST['phone'];
 $email = $_POST['email'];
 
-// Generate username dan password untuk pengguna utama
+// Generate username
 $username = generateUsername($name);
 $password = generateRandomPassword();
-
-// Proses penyimpanan data pengguna utama ke database
+// Proses penyimpanan data ke database
 $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ssissss", $name, $mantan, $size, $phone, $email, $username, $password);
 $stmt->execute();
 
-// Jika pendaftaran adalah pasangan, proses penyimpanan pasangan
 if ($registrationType === 'couple') {
-    // Ambil data pasangan
+
     $coupleName = $_POST['coupleUsername'];
     $coupleMantan = $_POST['coupleMantan'];
     $coupleSize = $_POST['coupleSize'];
-
-    // Generate username dan password untuk pasangan
     $coupleUsername = generateCoupleUsername($coupleName);
-    $couplePassword = generateRandomPassword();
-
-    // Simpan pasangan ke tabel 'users'
     $query = "INSERT INTO users (name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssissss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleUsername, $couplePassword);
+    $stmt->bind_param("ssissss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleusername, $password);
     $stmt->execute();
 }
 
