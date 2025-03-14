@@ -45,7 +45,7 @@ $query = "INSERT INTO users (name, mantan, size, phone, email, username, passwor
 $stmt = $conn->prepare($query);
 $stmt->bind_param("ssissss", $name, $mantan, $size, $phone, $email, $username, $password);
 $stmt->execute();
-$maleUserId = $stmt->insert_id;
+// $maleUserId = $stmt->insert_id;
 
 if ($registrationType === 'couple') {
 
@@ -58,7 +58,7 @@ if ($registrationType === 'couple') {
     $stmt = $conn->prepare($query);
     $stmt->bind_param("ssissss", $coupleName, $coupleMantan, $coupleSize, $phone, $email, $coupleusername, $password);
     $stmt->execute();
-    $femaleUserId = $stmt->insert_id; // ID pasangan (female)
+    // $femaleUserId = $stmt->insert_id; // ID pasangan (female)
 }
 
 // Mengambil harga item yang aktif dan memiliki stok lebih dari 0
@@ -81,9 +81,9 @@ $totalAmount = ($registrationType === 'couple') ? 300000 : $itemPrice;
 // Mendapatkan transaction ID dari form
 $transactionId = $_POST['transactionid'];
 
-$query = "INSERT INTO transactions (transaction_id, user_id, total_amount, status) VALUES (?, ?, ?, 'pending')";
+$query = "INSERT INTO transactions (transaction_id, total_amount, status) VALUES (?, ?, 'pending')";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("sii", $transactionId, $maleUserId, $totalAmount);
+$stmt->bind_param("si", $transactionId, $totalAmount);
 $stmt->execute();
 
 // Menutup koneksi
