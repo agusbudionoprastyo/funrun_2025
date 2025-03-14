@@ -76,7 +76,7 @@ if (!$itemPrice) {
 }
 
 // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2
-$totalAmount = ($registrationType === 'couple') ? 300000 : $itemPrice;
+$totalAmount = ($registrationType === 'couple') ? $itemPrice : $itemPrice;
 
 // Mendapatkan transaction ID dari form
 $transactionId = $_POST['transactionid'];
