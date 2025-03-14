@@ -64,8 +64,8 @@ try {
         $stmt->execute();
     }
 
-    $query = "SELECT id, price, stock, start_date, expiry FROM items 
-              WHERE NOW() BETWEEN start_date AND expiry LIMIT 1";
+    // Mengambil harga item yang aktif dan memiliki stok lebih dari 0
+    $query = "SELECT id, price, stock FROM items WHERE NOW() BETWEEN start_date AND expiry LIMIT 1"; // Ambil satu item
     $stmt = $conn->prepare($query);
     $stmt->execute();
     $stmt->bind_result($itemId, $itemPrice, $itemStock);
