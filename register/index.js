@@ -96,11 +96,35 @@ function copyToClipboard() {
       }
   }
 
-  fetch('get_items.php')
+//   fetch('get_items.php')
+//     .then(response => response.json())
+//     .then(data => {
+//       const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
+//       data.forEach(item => {
+//         const itemElement = document.createElement('div');
+        
+//         const descriptionElement = document.createElement('p');
+//         descriptionElement.className = 'helvetica text-gray-400 text-sm';
+//         descriptionElement.textContent = `${item.description}`;
+        
+//         const priceElement = document.createElement('p');
+//         priceElement.className = 'helvetica text-[#ff005b] font-bold';
+//         priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
+        
+//         itemElement.appendChild(descriptionElement);
+//         itemElement.appendChild(priceElement);
+        
+//         container.appendChild(itemElement);
+//       });
+//     })
+//     .catch(error => console.error('Error:', error));
+
+    fetch('get_items.php')
     .then(response => response.json())
     .then(data => {
-      const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
-      data.forEach(item => {
+        const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
+        
+        data.forEach(item => {
         const itemElement = document.createElement('div');
         
         const descriptionElement = document.createElement('p');
@@ -109,13 +133,21 @@ function copyToClipboard() {
         
         const priceElement = document.createElement('p');
         priceElement.className = 'helvetica text-[#ff005b] font-bold';
-        priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
+        
+        // Ubah harga jika registrationType adalah 'couple'
+        let price = item.price;
+        if (registrationType === 'couple') {
+            price = 300000;  // Ubah harga menjadi 300000 untuk pasangan
+        }
+        
+        // Tampilkan harga yang sudah diformat
+        priceElement.textContent = `IDR ${formatPrice(price)} / Person`;
         
         itemElement.appendChild(descriptionElement);
         itemElement.appendChild(priceElement);
         
         container.appendChild(itemElement);
-      });
+        });
     })
     .catch(error => console.error('Error:', error));
 
@@ -179,7 +211,7 @@ function copyToClipboard() {
 
     formData.append('transactionid', generatedTransactionId);
     formData.append('registrationType', registrationType);
-    
+
     formData.append('username', username);
     formData.append('mantan', mantan);
     formData.append('phone', phone);
@@ -367,8 +399,8 @@ function copyToClipboard() {
 
                     Swal.fire({
                         icon: 'success',
-                        title: 'Thank you for being a part of the third-party effect.',
-                        text: 'Your payment proof has been received. Please wait for confirmation.',
+                        title: 'Thank you..',
+                        text: 'Bukti pembayaran telah kami terima, silakan menunggu konfirmasi',
                         timer: 60000,
                         timerProgressBar: true,
                         showConfirmButton: false,
