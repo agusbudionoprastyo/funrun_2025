@@ -119,34 +119,35 @@ function copyToClipboard() {
 //     })
 //     .catch(error => console.error('Error:', error));
 
+    // Fetch item data and display it
     fetch('get_items.php')
     .then(response => response.json())
     .then(data => {
-        const container = document.getElementById('items-container'); // Misalnya ada container untuk menampung data
-        
+        const container = document.getElementById('items-container'); // Assuming you have a container for items
+        const registrationType = document.querySelector('input[name="registrationType"]:checked').value; // Get selected registration type (single or couple)
+
         data.forEach(item => {
-        const itemElement = document.createElement('div');
-        
-        const descriptionElement = document.createElement('p');
-        descriptionElement.className = 'helvetica text-gray-400 text-sm';
-        descriptionElement.textContent = `${item.description}`;
-        
-        const priceElement = document.createElement('p');
-        priceElement.className = 'helvetica text-[#ff005b] font-bold';
-        
-        // Ubah harga jika registrationType adalah 'couple'
-        let price = item.price;
-        if (registrationType === 'couple') {
-            price = 300000;  // Ubah harga menjadi 300000 untuk pasangan
-        }
-        
-        // Tampilkan harga yang sudah diformat
-        priceElement.textContent = `IDR ${formatPrice(price)} / Person`;
-        
-        itemElement.appendChild(descriptionElement);
-        itemElement.appendChild(priceElement);
-        
-        container.appendChild(itemElement);
+            const itemElement = document.createElement('div');
+
+            const descriptionElement = document.createElement('p');
+            descriptionElement.className = 'helvetica text-gray-400 text-sm';
+            descriptionElement.textContent = `${item.description}`;
+
+            const priceElement = document.createElement('p');
+            priceElement.className = 'helvetica text-[#ff005b] font-bold';
+
+            // If registration type is 'couple', set price to 300000
+            let price = item.price;
+            if (registrationType === 'couple') {
+                price = 300000; // Set price to 300000 if couple registration
+            }
+
+            priceElement.textContent = `IDR ${formatPrice(price)} / Person`;
+
+            itemElement.appendChild(descriptionElement);
+            itemElement.appendChild(priceElement);
+
+            container.appendChild(itemElement);
         });
     })
     .catch(error => console.error('Error:', error));
