@@ -45,7 +45,7 @@
 
       <div class="flex items-center mt-2">
         <i class="fas fa-clock text-[#ff005b]"></i>
-        <p class="ml-2 helvetica text-gray-700">07:00 WIB</p>
+        <p class="ml-2 helvetica text-gray-700">05:00 WIB</p>
       </div>
 
       <div class="mt-4 w-3/4">
@@ -128,79 +128,43 @@
 
           <!-- Name field -->
           <div class="mt-4 flex space-x-4">
-            <div class="w-3/4">
+            <div class="w-full">
               <label for="name" class="block text-gray-700">Your Name</label>
               <input type="text" id="name" class="mt-2 p-2 w-full border border-gray-300 rounded-full" placeholder="Name" required>
-            </div>
-
-            <div class="w-1/4 mt-6">
-              <input type="number" id="age" class="mt-2 p-2 w-full border border-gray-300 rounded-full" placeholder="Age" required>
             </div>
           </div>
 
           <!-- Gender and Photo -->
           <div class="mt-2 flex space-x-4">
             <div class="w-1/2">
-              <label for="gender" class="block text-gray-700">Gender</label>
+              <label for="size" class="block text-gray-700">Size Jarsey</label>
               <label>
-                <input type="radio" name="gender" value="male" id="male" class="mr-2" required> Male
+                <input type="radio" name="size" value="s" id="s" class="mr-2" required> S
               </label>
               <label>
-                <input type="radio" name="gender" value="female" id="female" class="mr-2" required> Female
+                <input type="radio" name="size" value="m" id="m" class="mr-2" required> M
               </label>
-            </div>
-         
-            <div id="photo-info" class="w-1/4 mt-2 text-sm text-gray-500">
-              <p id="photo-name" class="font-medium"></p> <!-- For file name -->
-              <p id="photo-size" class="text-xs"></p>    <!-- For file size -->
-            </div>
-
-            <div class="w-1/4">
-              <div class="mt-2 flex items-center space-x-2">
-                <label for="photo" class="cursor-pointer items-center justify-center w-full p-2 bg-white shadow-md rounded-full flex items-center space-x-2">
-                  <i class="fas fa-camera text-[#ff005b]"></i>
-                  <span class="text-[#ff005b]">Photo</span>
-                </label>
-                <input type="file" id="photo" class="hidden" accept="image/*">
-              </div>
             </div>
           </div>
 
           <!-- Couple Section (hidden initially) -->
           <div id="CoupleContainer" class="mt-4 hidden">
             <div class="flex space-x-4">
-              <div class="w-3/4">
+              <div class="w-full">
                 <label for="coupleName" class="block text-gray-700">Couple Name</label>
                 <input type="text" id="coupleName" class="mt-2 p-2 w-full border border-gray-300 rounded-full" placeholder="Name" required>
               </div>
-              <div class="w-1/4 mt-8">
-                <input type="number" id="coupleage" class="p-2 w-full border border-gray-300 rounded-full" placeholder="Age" required>
-              </div>
             </div>
+
             <div class="mt-2 flex space-x-4">
               <div class="w-1/2">
-                <label for="coupleGender" class="block text-gray-700">Gender</label>
+                <label for="coupleSize" class="block text-gray-700">Size Jarsey</label>
                 <label>
-                  <input type="radio" name="coupleGender" value="male" id="coupleMale" class="mr-2" required> Male
+                  <input type="radio" name="coupleSize" value="s" id="scouple" class="mr-2" required> S
                 </label>
                 <label>
-                  <input type="radio" name="coupleGender" value="female" id="coupleFemale" class="mr-2" required> Female
+                  <input type="radio" name="coupleSize" value="m" id="mcouple" class="mr-2" required> M
                 </label>
-              </div>
-
-              <div id="couple-photo-info" class="w-1/4 mt-2 text-sm text-gray-500">
-                <p id="couple-photo-name" class="font-medium"></p> <!-- For file name -->
-                <p id="couple-photo-size" class="text-xs"></p>    <!-- For file size -->
-              </div>
-
-              <div class="w-1/4">
-                <div class="mt-2 flex items-center space-x-2">
-                  <label for="couplePhoto" class="cursor-pointer items-center justify-center w-full p-2 bg-white shadow-md rounded-full flex items-center space-x-2">
-                    <i class="fas fa-camera text-[#ff005b]"></i>
-                    <span class="text-[#ff005b]">Photo</span>
-                  </label>
-                  <input type="file" id="couplePhoto" class="hidden" accept="image/*">
-                </div>
               </div>
             </div>
           </div>
@@ -220,7 +184,7 @@
 
           <div class="w-full p-4 flex items-center justify-between h-32 max-w-md mt-4 fixed bottom-0 left-0 right-0 mx-auto z-50">
             <div></div>
-            <button id="signUpBtn" type="submit" class="button w-40 is-primary text-white font-semibold py-4 px-8 rounded-full">Sign up</button>
+            <button id="signUpBtn" type="submit" class="button w-40 is-primary text-white font-semibold py-4 px-8 rounded-full">Payment - 300K</button>
           </div>
         </form>
       </div>
