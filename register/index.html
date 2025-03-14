@@ -247,7 +247,7 @@
       const coupleContainer = document.getElementById('CoupleContainer');
       const coupleName = document.getElementById('coupleName');
 
-      const coupleMale = document.getElementById('coupleMale');
+      const scouple = document.getElementById('coupleMale');
       const coupleFemale = document.getElementById('coupleFemale');
 
       const registerBtn = document.getElementById("registerBtn");
@@ -258,7 +258,6 @@
       // Hide the Couple Section initially and remove required attributes
       if (coupleContainer.classList.contains('hidden')) {
         coupleName.removeAttribute('required');
-        coupleMale.removeAttribute('required');
         coupleFemale.removeAttribute('required');
       }
 
@@ -267,7 +266,6 @@
         if (this.checked) {
           coupleContainer.classList.remove('hidden');
           coupleName.setAttribute('required', 'true');
-          coupleMale.setAttribute('required', 'true');
           coupleFemale.setAttribute('required', 'true');
         }
       });
@@ -277,7 +275,6 @@
         if (this.checked) {
           coupleContainer.classList.add('hidden');
           coupleName.removeAttribute('required');
-          coupleMale.removeAttribute('required');
           coupleFemale.removeAttribute('required');
         }
       });
