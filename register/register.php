@@ -80,7 +80,7 @@ $transactionId = $_POST['transactionid'];
 
 $query = "INSERT INTO transactions (transaction_id, total_amount, status) VALUES (?, ?, 'pending')";
 $stmt = $conn->prepare($query);
-$stmt->bind_param("sii", $transactionId, $totalAmount);
+$stmt->bind_param("si", $transactionId, $totalAmount);
 $stmt->execute();
 
 // Menutup koneksi
