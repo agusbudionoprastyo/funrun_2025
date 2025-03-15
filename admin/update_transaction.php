@@ -17,7 +17,7 @@ if (isset($data['transaction_id']) && isset($data['status'])) {
     $stmt = $conn->prepare($sql);
     
     // Bind the parameters
-    $stmt->bind_param('si', $status, $user_id);
+    $stmt->bind_param('ss', $status, $transaction_id);
     
     // Execute the statement and check for success
     if ($stmt->execute()) {
