@@ -55,9 +55,9 @@ $(document).ready(function() {
                             <td><a href="users/paymentprooft/${row.payment_prooft}" target="_blank">View Proof</a></td>
                             <td>${row.transaction_date}</td>
                             <td><span class="badge ${statusClass}">${row.status}</span></td>
-                            <td>${row.name}</td>
-                            <td>${row.email}</td>
-                            <td>${row.phone}</td>
+                            <td>${row.name_1}${row.name_2 ? + row.name_2 : ''}</td>
+                            <td>${row.email_1}${row.email_2 ? + row.email_2 : ''}</td>
+                            <td>${row.phone_1}${row.phone_2 ? + row.phone_2 : ''}</td>
                         </tr>
                     `;
                 });
