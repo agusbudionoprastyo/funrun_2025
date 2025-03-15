@@ -65,12 +65,12 @@ if ($result->num_rows > 0) {
                 $row['status_text'] = 'Active';
                 break;
             case 'pending':
-                $row['badge_class'] = 'bg-warning';
+                $row['badge_class'] = 'waiting';
                 $row['status_text'] = 'Waiting for Resassignment';
                 break;
             case 'verified':
-                $row['badge_class'] = 'bg-success';
-                $row['status_text'] = 'Active';
+                $row['badge_class'] = 'active';
+                $row['status_text'] = 'Verified';
                 break;
             default:
                 $row['badge_class'] = 'bg-secondary';  // Fallback for any other status
