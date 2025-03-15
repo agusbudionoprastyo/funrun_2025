@@ -4,143 +4,72 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Data</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
-    <!-- Tailwind CSS CDN -->
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <link id="pagestyle" href="assets/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
 
-  <div class="main-content">
-    <div class="container mt-7">
-      <h2 class="mb-5">Transaction Details</h2>
-      <div class="row">
-        <div class="col">
-          <div class="card shadow">
-            <div class="card-header border-0">
-              <h3 class="mb-0">Transaction Table</h3>
-            </div>
-            <div class="table-responsive">
-              <table class="table align-items-center table-flush" id="transactionTable">
-                <thead class="thead-light">
-                  <tr>
-                    <th scope="col">Transaction ID</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Transaction Date</th>
-                    <th scope="col">Status</th>
-                    <th scope="col"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Data will be populated here via JavaScript -->
-                </tbody>
-              </table>
-            </div>
-            <!-- Pagination -->
-            <div class="card-footer py-4">
-              <nav aria-label="...">
-                <ul class="pagination justify-content-end mb-0">
-                  <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">
-                      <i class="fas fa-angle-left"></i>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  <li class="page-item active">
-                    <a class="page-link" href="#">1</a>
-                  </li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">
-                      <i class="fas fa-angle-right"></i>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<h1>Transaction Data</h1>
+<table id="transactionsTable" class="display">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Total Amount</th>
+            <th>Payment Method</th>
+            <th>Payment Proof</th>
+            <th>Transaction Date</th>
+            <th>Status</th>
+            <th>Name 1</th>
+            <th>Name 2</th>
+            <th>Mantan 1</th>
+            <th>Mantan 2</th>
+            <th>Email 1</th>
+            <th>Email 2</th>
+            <th>Phone 1</th>
+            <th>Phone 2</th>
+            <th>Username 1</th>
+            <th>Username 2</th>
+            <th>Password 1</th>
+            <th>Password 2</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data will be dynamically populated here -->
+    </tbody>
+</table>
 
-  <footer class="footer">
-    <div class="row align-items-center justify-content-xl-between">
-      <div class="col-xl-6 m-auto text-center">
-        <div class="copyright">
-          <p>Made with <a href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">Argon Dashboard</a> by Creative Tim</p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- jQuery CDN -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    $(document).ready(function() {
-      // Fetch data from the API endpoint
-      $.ajax({
-        url: 'get_transactions.php', // Update this URL if needed
-        method: 'GET',
-        success: function(data) {
-          if (data.length > 0) {
-            // Populate the table with data
-            let tableRows = '';
-            data.forEach(function(row) {
-              let statusClass = row.badge_class;
-              tableRows += `
-                <tr>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <a href="users/paymentprooft/${row.payment_prooft}" target="_blank"" class="avatar rounded-circle mr-3">
-                          <img alt="Image placeholder" src="users/paymentprooft/${row.payment_prooft}">
-                        </a>
-                        <div class="media-body">
-                          <span class="mb-0 text-sm">${row.transaction_id}</span>
-                        </div>
-                      </div>
-                    </th>
-                  <td>${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                  <td>${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                  <td>${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
-                  <td>${row.total_amount}</td>
-                  <td>${row.transaction_date}</td>
-                  <td>
-                    <span class="badge badge-dot mr-4">
-                    <i class="${statusClass}"></i>${row.status}
-                  </td>
-                  <td class="text-right">
-                    <div class="dropdown">
-                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                            <a class="dropdown-item" href="#">Confirm</a>
-                            <a class="dropdown-item" href="#">Cancel</a>
-                        </div>
-                    </div>
-                  </td>
-                </tr>
-              `;
-            });
-            $('#transactionTable tbody').html(tableRows); // Add the rows to the table body
-          }
+<script>
+$(document).ready(function() {
+    // Initialize DataTables
+    $('#transactionsTable').DataTable({
+        "ajax": {
+            "url": "get_transactions.php", // replace with the correct PHP script URL
+            "dataSrc": "" // Response is directly the JSON array, no need for 'data' field
         },
-        error: function() {
-          alert('Error fetching data');
-        }
-      });
+        "columns": [
+            { "data": "transaction_id" },
+            { "data": "total_amount" },
+            { "data": "payment_method" },
+            { "data": "payment_prooft" },
+            { "data": "transaction_date" },
+            { "data": "status" },
+            { "data": "name_1" },
+            { "data": "name_2" },
+            { "data": "mantan_1" },
+            { "data": "mantan_2" },
+            { "data": "email_1" },
+            { "data": "email_2" },
+            { "data": "phone_1" },
+            { "data": "phone_2" },
+            { "data": "username_1" },
+            { "data": "username_2" },
+            { "data": "password_1" },
+            { "data": "password_2" }
+        ]
     });
-  </script>
+});
+</script>
 
 </body>
 </html>
