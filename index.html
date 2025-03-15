@@ -4,35 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Data</title>
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100">
 
-<div class="container my-5">
-    <h2 class="mb-4">Transaction Details</h2>
+<div class="container mx-auto my-5 p-4">
+    <h2 class="text-3xl font-semibold mb-6">Transaction Details</h2>
     
-    <table class="table table-striped table-bordered" id="transactionTable">
-        <thead class="thead-dark">
-            <tr>
-                <th>Transaction ID</th>
-                <th>Amount</th>
-                <th>Payment Proof</th>
-                <th>Transaction Date</th>
-                <th>Status</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data will be populated here via JavaScript -->
-        </tbody>
-    </table>
+    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+        <table class="min-w-full table-auto border-collapse">
+            <thead class="bg-blue-600 text-white">
+                <tr>
+                    <th class="px-6 py-3 text-left">Transaction ID</th>
+                    <th class="px-6 py-3 text-left">Amount</th>
+                    <th class="px-6 py-3 text-left">Payment Proof</th>
+                    <th class="px-6 py-3 text-left">Transaction Date</th>
+                    <th class="px-6 py-3 text-left">Status</th>
+                    <th class="px-6 py-3 text-left">Name</th>
+                    <th class="px-6 py-3 text-left">Email</th>
+                    <th class="px-6 py-3 text-left">Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be populated here via JavaScript -->
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<!-- Bootstrap 5 JS Bundle (including Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Tailwind JS (For potential interactivity in the future) -->
+<script src="https://cdn.tailwindcss.com"></script>
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -49,15 +51,15 @@ $(document).ready(function() {
                 data.forEach(function(row) {
                     let statusClass = row.badge_class;
                     tableRows += `
-                        <tr>
-                            <td>${row.transaction_id}</td>
-                            <td>${row.total_amount}</td>
-                            <td><a href="users/paymentprooft/${row.payment_prooft}" target="_blank">View Proof</a></td>
-                            <td>${row.transaction_date}</td>
-                            <td><span class="badge ${statusClass}">${row.status}</span></td>
-                            <td>${row.name_1}${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                            <td>${row.email_1}${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                            <td>${row.phone_1}${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="px-6 py-3">${row.transaction_id}</td>
+                            <td class="px-6 py-3">${row.total_amount}</td>
+                            <td class="px-6 py-3"><a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a></td>
+                            <td class="px-6 py-3">${row.transaction_date}</td>
+                            <td class="px-6 py-3"><span class="badge ${statusClass}">${row.status}</span></td>
+                            <td class="px-6 py-3">${row.name_1}${row.name_2 ? ' / ' + row.name_2 : ''}</td>
+                            <td class="px-6 py-3">${row.email_1}${row.email_2 ? ' / ' + row.email_2 : ''}</td>
+                            <td class="px-6 py-3">${row.phone_1}${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                         </tr>
                     `;
                 });
