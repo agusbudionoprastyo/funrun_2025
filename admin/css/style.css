@@ -8211,10 +8211,10 @@ h1, h2, h3, h4, h5,
   .table tbody td.status span {
     position: relative;
     border-radius: 30px;
-    padding: 4px 10px 4px 25px; }
+    padding: 4px 10px 4px 10px; }
     .table tbody td.status span:after {
       position: absolute;
-      top: 9px;
+      top: 10px;
       left: 10px;
       width: 10px;
       height: 10px;
