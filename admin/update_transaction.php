@@ -8,12 +8,12 @@ header('Content-Type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Check if the necessary fields are provided
-if (isset($data['user_id']) && isset($data['status'])) {
-    $user_id = $data['user_id'];
+if (isset($data['transaction_id']) && isset($data['status'])) {
+    $transaction_id = $data['transaction_id'];
     $status = $data['status'];
 
     // Prepare the SQL update statement to change the status
-    $sql = "UPDATE transactions SET status = ? WHERE user_id = ?";
+    $sql = "UPDATE transactions SET status = ? WHERE transaction_id = ?";
     $stmt = $conn->prepare($sql);
     
     // Bind the parameters
