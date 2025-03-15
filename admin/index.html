@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Transaction Table</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <section class="ftco-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Transaction Table</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-wrap">
+              <table class="table table-responsive-xl">
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Status</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody id="user-table-body">
+                  <!-- Dynamic rows will be injected here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+
+    <script>
+      // Fetch the data from the PHP script and populate the table
+      $.ajax({
+        url: 'get_transactions.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          let tableBody = $('#user-table-body');
+          tableBody.empty(); // Clear any existing data in the table body
+
+          // Loop through the data and add rows to the table
+          data.forEach(function(user) {
+            let row = `
+              <tr class="alert" role="alert">
+                <td>
+                  <label class="checkbox-wrap checkbox-primary">
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td class="d-flex align-items-center">
+                  <div class="img" style="background-image: url(images/person_1.jpg);"></div>
+                  <div class="pl-3 email">
+                    <span>${user.email_1}</span>
+                    <span>Added: ${user.transaction_date}</span>
+                  </div>
+                </td>
+                <td>${user.username_1}</td>
+                <td class="status">
+                  <span class="${user.badge_class}">${user.status_text}</span>
+                </td>
+                <td>
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true"><i class="fa fa-close"></i></span>
+                  </button>
+                </td>
+              </tr>
+            `;
+            tableBody.append(row); // Append the row to the table
+          });
+        },
+        error: function() {
+          alert('Error fetching data');
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 <?php
-include 'helper/db.php';
+include '../helper/db.php';
 
 // SQL query to fetch users data
 $sql = "WITH RankedUsers AS (
@@ -62,15 +62,19 @@ if ($result->num_rows > 0) {
         switch ($row['status']) {
             case 'paid':
                 $row['badge_class'] = 'bg-info';
+                $row['status_text'] = 'Active';
                 break;
             case 'pending':
                 $row['badge_class'] = 'bg-warning';
+                $row['status_text'] = 'Waiting for Resassignment';
                 break;
             case 'verified':
                 $row['badge_class'] = 'bg-success';
+                $row['status_text'] = 'Active';
                 break;
             default:
                 $row['badge_class'] = 'bg-secondary';  // Fallback for any other status
+                $row['status_text'] = 'Inactive';
                 break;
         }
         
@@ -82,9 +86,6 @@ if ($result->num_rows > 0) {
 }
 
 $conn->close();
-
-// Debugging step: Check the content of $users
-// var_dump($users); // Uncomment to debug
 
 // Set the header to JSON and output the data
 header('Content-Type: application/json');
