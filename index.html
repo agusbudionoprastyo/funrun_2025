@@ -44,7 +44,7 @@
 $(document).ready(function() {
     $('#transactionsTable').DataTable({
         "ajax": {
-            "url": "your_php_script.php", // replace with the correct PHP script URL
+            "url": "get_transactions.php", // replace with the correct PHP script URL
             "dataSrc": "" // Response is directly the JSON array, no need for 'data' field
         },
         "columns": [
