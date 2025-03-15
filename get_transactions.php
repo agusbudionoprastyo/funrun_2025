@@ -2,25 +2,54 @@
 include 'helper/db.php';
 
 // SQL query to fetch users data
-$sql = "SELECT 
-    t.transaction_id, 
-    t.total_amount, 
-    t.payment_method, 
-    t.payment_prooft, 
-    t.transaction_date, 
-    t.status,
-    GROUP_CONCAT(u.name) AS name,
-    GROUP_CONCAT(u.mantan) AS mantan,
-    GROUP_CONCAT(u.email) AS email,
-    GROUP_CONCAT(u.phone) AS phone,
-    GROUP_CONCAT(u.username) AS username,
-    GROUP_CONCAT(u.password) AS password
+$sql = "WITH RankedUsers AS (
+    SELECT 
+        t.transaction_id, 
+        t.total_amount, 
+        t.payment_method, 
+        t.payment_prooft, 
+        t.transaction_date, 
+        t.status,
+        u.name,
+        u.mantan,
+        u.email,
+        u.phone,
+        u.username,
+        u.password,
+        ROW_NUMBER() OVER (PARTITION BY t.transaction_id ORDER BY u.name) AS user_rank
+    FROM 
+        transactions t
+    JOIN 
+        users u ON u.transaction_id = t.transaction_id
+)
+SELECT 
+    transaction_id,
+    total_amount,
+    payment_method,
+    payment_prooft,
+    transaction_date,
+    status,
+    MAX(CASE WHEN user_rank = 1 THEN name END) AS name_1,
+    MAX(CASE WHEN user_rank = 1 THEN mantan END) AS mantan_1,
+    MAX(CASE WHEN user_rank = 1 THEN email END) AS email_1,
+    MAX(CASE WHEN user_rank = 1 THEN phone END) AS phone_1,
+    MAX(CASE WHEN user_rank = 1 THEN username END) AS username_1,
+    MAX(CASE WHEN user_rank = 1 THEN password END) AS password_1,
+    MAX(CASE WHEN user_rank = 2 THEN name END) AS name_2,
+    MAX(CASE WHEN user_rank = 2 THEN mantan END) AS mantan_2,
+    MAX(CASE WHEN user_rank = 2 THEN email END) AS email_2,
+    MAX(CASE WHEN user_rank = 2 THEN phone END) AS phone_2,
+    MAX(CASE WHEN user_rank = 2 THEN username END) AS username_2,
+    MAX(CASE WHEN user_rank = 2 THEN password END) AS password_2
 FROM 
-    transactions t
-JOIN 
-    users u ON u.transaction_id = t.transaction_id
+    RankedUsers
 GROUP BY 
-    t.transaction_id, t.total_amount, t.payment_method, t.payment_prooft, t.transaction_date, t.status";
+    transaction_id, 
+    total_amount, 
+    payment_method, 
+    payment_prooft, 
+    transaction_date, 
+    status";
 
 $result = $conn->query($sql);
 
