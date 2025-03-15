@@ -28,6 +28,8 @@ function generateCoupleUsername($coupleName) {
     return $usernameBase . $randomNumbers;
 }
 
+// Mendapatkan transaction ID dari form
+$transactionId = $_POST['transactionid'];
 // Mengambil data dari form
 $registrationType = $_POST['registrationType'];
 
@@ -79,9 +81,6 @@ try {
 
     // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2 dan kurangi stok 2 kali
     $totalAmount = ($registrationType === 'couple') ? $couplePrice : $itemPrice;
-
-    // Mendapatkan transaction ID dari form
-    $transactionId = $_POST['transactionid'];
 
     // Proses penyimpanan transaksi
     $query = "INSERT INTO transactions (transaction_id, total_amount, status) VALUES (?, ?, 'pending')";
