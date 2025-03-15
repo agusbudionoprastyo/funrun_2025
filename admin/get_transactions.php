@@ -61,12 +61,12 @@ if ($result->num_rows > 0) {
         // Dynamically set the badge class based on the transaction status
         switch ($row['status']) {
             case 'paid':
-                $row['badge_class'] = 'bg-info';
-                $row['status_text'] = 'Active';
+                $row['badge_class'] = 'paid';
+                $row['status_text'] = 'Paid';
                 break;
             case 'pending':
                 $row['badge_class'] = 'waiting';
-                $row['status_text'] = 'Waiting for Resassignment';
+                $row['status_text'] = 'Waiting';
                 break;
             case 'verified':
                 $row['badge_class'] = 'active';
