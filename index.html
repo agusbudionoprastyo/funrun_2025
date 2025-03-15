@@ -104,9 +104,16 @@
                   <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
                   <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                   <td class="px-4 py-2">${row.total_amount}</td>
-                  <td class="px-4 py-2">
-                    <a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a>
-                  </td>
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        <a href="users/paymentprooft/${row.payment_prooft}" target="_blank"" class="avatar rounded-circle mr-3">
+                          <img alt="Image placeholder" src="users/paymentprooft/${row.payment_prooft}">
+                        </a>
+                        <div class="media-body">
+                          <span class="mb-0 text-sm">Argon Design System</span>
+                        </div>
+                      </div>
+                    </th>
                   <td class="px-4 py-2">${row.transaction_date}</td>
                   <td class="px-4 py-2"><span class="badge ${statusClass}">${row.status}</span></td>
                 </tr>
