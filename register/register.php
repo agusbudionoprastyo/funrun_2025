@@ -58,7 +58,7 @@ try {
         $coupleUsername = generateCoupleUsername($coupleName);
         
         // Proses penyimpanan data untuk pasangan
-        $query = "INSERT INTO users (transaction_id, name, mantan, size, username, password) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO users (transaction_id, name, mantan, size, username, password) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $coupleUsername, $password);
         $stmt->execute();
