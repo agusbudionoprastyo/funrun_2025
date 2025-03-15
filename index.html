@@ -104,13 +104,14 @@
                   <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
                   <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                   <td class="px-4 py-2">${row.total_amount}</td>
+
                     <th scope="row">
                       <div class="media align-items-center">
                         <a href="users/paymentprooft/${row.payment_prooft}" target="_blank"" class="avatar rounded-circle mr-3">
                           <img alt="Image placeholder" src="users/paymentprooft/${row.payment_prooft}">
                         </a>
                         <div class="media-body">
-                          <span class="mb-0 text-sm">Argon Design System</span>
+                          <span class="mb-0 text-sm">${row.transaction_id}</span>
                         </div>
                       </div>
                     </th>
