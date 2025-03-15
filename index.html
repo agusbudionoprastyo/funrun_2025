@@ -19,13 +19,13 @@
             <thead class="bg-blue-600 text-white">
                 <tr>
                     <th class="px-4 py-2 text-left">Transaction ID</th>
+                    <th class="px-4 py-2 text-left">Name</th>
+                    <th class="px-4 py-2 text-left">Email</th>
+                    <th class="px-4 py-2 text-left">Phone</th>
                     <th class="px-4 py-2 text-left">Amount</th>
                     <th class="px-4 py-2 text-left">Payment Proof</th>
                     <th class="px-4 py-2 text-left">Transaction Date</th>
                     <th class="px-4 py-2 text-left">Status</th>
-                    <th class="px-4 py-2 text-left">Name</th>
-                    <th class="px-4 py-2 text-left">Email</th>
-                    <th class="px-4 py-2 text-left">Phone</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,15 +55,15 @@ $(document).ready(function() {
                     tableRows += `
                         <tr class="border-b hover:bg-gray-100">
                             <td class="px-4 py-2">${row.transaction_id}</td>
+                            <td class="px-4 py-2">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
+                            <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
+                            <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                             <td class="px-4 py-2">${row.total_amount}</td>
                             <td class="px-4 py-2">
                                 <a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a>
                             </td>
                             <td class="px-4 py-2">${row.transaction_date}</td>
                             <td class="px-4 py-2"><span class="badge ${statusClass}">${row.status}</span></td>
-                            <td class="px-4 py-2">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                            <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                            <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                         </tr>
                     `;
                 });
