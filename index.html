@@ -4,47 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Data</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+    <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- DataTables JS -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 
-<h1>Transaction Data</h1>
-<table id="transactionsTable" class="display">
-    <thead>
-        <tr>
-            <th>Transaction ID</th>
-            <th>Total Amount</th>
-            <th>Payment Method</th>
-            <th>Payment Proof</th>
-            <th>Transaction Date</th>
-            <th>Status</th>
-            <th>Name 1</th>
-            <th>Name 2</th>
-            <th>Mantan 1</th>
-            <th>Mantan 2</th>
-            <th>Email 1</th>
-            <th>Email 2</th>
-            <th>Phone 1</th>
-            <th>Phone 2</th>
-            <th>Username 1</th>
-            <th>Username 2</th>
-            <th>Password 1</th>
-            <th>Password 2</th>
-        </tr>
-    </thead>
-    <tbody>
-        <!-- Data will be dynamically populated here -->
-    </tbody>
-</table>
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">Transaction Data</h1>
+
+    <table id="transactionsTable" class="table-auto w-full text-sm text-left text-gray-700 shadow-lg bg-white rounded-lg overflow-hidden">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="px-4 py-2">Transaction ID</th>
+                <th class="px-4 py-2">Total Amount</th>
+                <th class="px-4 py-2">Payment Method</th>
+                <th class="px-4 py-2">Payment Proof</th>
+                <th class="px-4 py-2">Transaction Date</th>
+                <th class="px-4 py-2">Status</th>
+                <th class="px-4 py-2">User Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be dynamically populated here -->
+        </tbody>
+    </table>
+</div>
 
 <script>
 $(document).ready(function() {
-    // Initialize DataTables
     $('#transactionsTable').DataTable({
         "ajax": {
-            "url": "get_transactions.php", // replace with the correct PHP script URL
+            "url": "your_php_script.php", // replace with the correct PHP script URL
             "dataSrc": "" // Response is directly the JSON array, no need for 'data' field
         },
         "columns": [
@@ -54,18 +54,18 @@ $(document).ready(function() {
             { "data": "payment_prooft" },
             { "data": "transaction_date" },
             { "data": "status" },
-            { "data": "name_1" },
-            { "data": "name_2" },
-            { "data": "mantan_1" },
-            { "data": "mantan_2" },
-            { "data": "email_1" },
-            { "data": "email_2" },
-            { "data": "phone_1" },
-            { "data": "phone_2" },
-            { "data": "username_1" },
-            { "data": "username_2" },
-            { "data": "password_1" },
-            { "data": "password_2" }
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    return `
+                        <div>
+                            <p class="font-semibold">${row.name_1}</p>
+                            <p>${row.phone_1} | ${row.email_1}</p>
+                            <p class="italic">${row.mantan_1}</p>
+                        </div>
+                    `;
+                }
+            }
         ]
     });
 });
