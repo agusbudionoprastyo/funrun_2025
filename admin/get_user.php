@@ -9,12 +9,12 @@ $sql = "SELECT
     t.payment_prooft, 
     t.transaction_date, 
     t.status,
-    GROUP_CONCAT(u.name) AS names,
+    GROUP_CONCAT(u.name) AS name,
     GROUP_CONCAT(u.mantan) AS mantan,
-    GROUP_CONCAT(u.email) AS emails,
-    GROUP_CONCAT(u.phone) AS phones,
-    GROUP_CONCAT(u.username) AS usernames,
-    GROUP_CONCAT(u.password) AS passwords
+    GROUP_CONCAT(u.email) AS email,
+    GROUP_CONCAT(u.phone) AS phone,
+    GROUP_CONCAT(u.username) AS username,
+    GROUP_CONCAT(u.password) AS password
 FROM 
     transactions t
 JOIN 
