@@ -7,7 +7,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <link id="pagestyle" href="assets/styles.css" rel="stylesheet" />
 </head>
 <body>
@@ -30,7 +30,6 @@
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
                     <th scope="col">Amount</th>
-                    <th scope="col">Payment Proof</th>
                     <th scope="col">Transaction Date</th>
                     <th scope="col">Status</th>
                   </tr>
@@ -98,13 +97,7 @@
             data.forEach(function(row) {
               let statusClass = row.badge_class;
               tableRows += `
-                <tr class="border-b hover:bg-gray-100">
-                  <td class="px-4 py-2">${row.transaction_id}</td>
-                  <td class="px-4 py-2">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                  <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                  <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
-                  <td class="px-4 py-2">${row.total_amount}</td>
-
+                <tr>
                     <th scope="row">
                       <div class="media align-items-center">
                         <a href="users/paymentprooft/${row.payment_prooft}" target="_blank"" class="avatar rounded-circle mr-3">
@@ -115,8 +108,15 @@
                         </div>
                       </div>
                     </th>
+                  <td class="px-4 py-2">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
+                  <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
+                  <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
+                  <td>${row.total_amount}</td>
                   <td class="px-4 py-2">${row.transaction_date}</td>
-                  <td class="px-4 py-2"><span class="badge ${statusClass}">${row.status}</span></td>
+                  <td class="px-4 py-2">
+                    <span class="badge badge-dot mr-4">
+                    <i class="${statusClass}"></i>${row.status}
+                  </td>
                 </tr>
               `;
             });
