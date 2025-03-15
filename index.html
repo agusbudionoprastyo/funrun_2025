@@ -13,7 +13,7 @@
     <h2 class="text-3xl font-semibold mb-6">Transaction Details</h2>
     
     <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table class="min-w-full table-auto border-collapse">
+        <table class="min-w-full table-auto border-collapse" id="transactionTable">
             <thead class="bg-blue-600 text-white">
                 <tr>
                     <th class="px-6 py-3 text-left">Transaction ID</th>
@@ -42,7 +42,7 @@
 $(document).ready(function() {
     // Fetch data from the API endpoint
     $.ajax({
-        url: 'get_transactions.php',
+        url: 'get_transactions.php', // Update this URL if needed
         method: 'GET',
         success: function(data) {
             if (data.length > 0) {
@@ -54,16 +54,18 @@ $(document).ready(function() {
                         <tr class="border-b hover:bg-gray-100">
                             <td class="px-6 py-3">${row.transaction_id}</td>
                             <td class="px-6 py-3">${row.total_amount}</td>
-                            <td class="px-6 py-3"><a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a></td>
+                            <td class="px-6 py-3">
+                                <a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a>
+                            </td>
                             <td class="px-6 py-3">${row.transaction_date}</td>
                             <td class="px-6 py-3"><span class="badge ${statusClass}">${row.status}</span></td>
-                            <td class="px-6 py-3">${row.name_1}${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                            <td class="px-6 py-3">${row.email_1}${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                            <td class="px-6 py-3">${row.phone_1}${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
+                            <td class="px-6 py-3">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
+                            <td class="px-6 py-3">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
+                            <td class="px-6 py-3">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                         </tr>
                     `;
                 });
-                $('#transactionTable tbody').html(tableRows);
+                $('#transactionTable tbody').html(tableRows); // Add the rows to the table body
             }
         },
         error: function() {
