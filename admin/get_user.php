@@ -2,9 +2,26 @@
 include '../helper/db.php';
 
 // SQL query to fetch users data
-$sql = "SELECT u.name, u.email, u.phone, u.photo, u.username, u.password, t.user_id, t.transaction_id, t.total_amount, t.payment_method, t.payment_prooft, t.transaction_date, t.status 
-        FROM users u
-        JOIN transactions t ON u.id = t.user_id";
+$sql = "SELECT 
+    t.transaction_id, 
+    t.total_amount, 
+    t.payment_method, 
+    t.payment_prooft, 
+    t.transaction_date, 
+    t.status,
+    GROUP_CONCAT(u.name) AS names,
+    GROUP_CONCAT(u.mantan) AS mantan,
+    GROUP_CONCAT(u.email) AS emails,
+    GROUP_CONCAT(u.phone) AS phones,
+    GROUP_CONCAT(u.username) AS usernames,
+    GROUP_CONCAT(u.password) AS passwords
+FROM 
+    transactions t
+JOIN 
+    users u ON u.transaction_id = t.transaction_id
+GROUP BY 
+    t.transaction_id, t.total_amount, t.payment_method, t.payment_prooft, t.transaction_date, t.status";
+
 $result = $conn->query($sql);
 
 $users = [];
