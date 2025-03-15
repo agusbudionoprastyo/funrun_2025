@@ -1,17 +1,3 @@
-<!--
-=========================================================
-* Soft UI Dashboard 3 - v1.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard
-* Copyright 2024 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -204,18 +190,23 @@
 
   <div class="modal fade" id="overlayModal" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content style="background-color: transparent;">
-          <div class="modal-body">
-          <img id="imageToShow" class="max-w-full mx-auto img-fluid" src="" alt="Image" />
-          </div>
+      <div class="modal-content" style="background-color: transparent;">
         
-          <div class="modal-footer">
-            <!-- <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button> -->
-            <button id="confirmButton" type="button" class="btn bg-gradient-danger w-full">Verified</button>
-          </div>
+        <!-- Button Fixed at the Top -->
+        <button id="confirmButton" type="button" class="btn bg-gradient-danger w-full" style="position: fixed; top: 10px; left: 10px; z-index: 1050;">Verified</button>
+  
+        <div class="modal-body">
+          <img id="imageToShow" class="max-w-full mx-auto img-fluid" src="" alt="Image" />
+        </div>
+        
+        <div class="modal-footer">
+          <!-- Optional Footer Content -->
+          <!-- <button type="button" class="btn bg-gradient-secondary" data-bs-dismiss="modal">Close</button> -->
+        </div>
       </div>
     </div>
-  </div>   
+  </div>
+   
 
   <div class="alert alert-success alert-dismissible fade show mx-4" role="alert" id="successAlert" style="display:none; position:fixed; top:20px; right:20px; z-index:9999;">
     <span class="alert-icon"><i class="ni ni-like-2"></i></span>
