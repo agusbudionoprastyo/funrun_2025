@@ -4,152 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Data</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,800" rel="stylesheet" />
-    <link id="pagestyle" href="soft-ui-dashboard.css?v=1.1.0" rel="stylesheet" />
+    <link id="pagestyle" href="assets/styles.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-100">
+<body>
 
-<div class="container mx-auto my-5 p-4">
-    <!-- <h2 class="text-3xl font-semibold mb-6">Transaction Details</h2> -->
-    
-    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
-        <table class="min-w-full table-auto border-collapse text-sm" id="transactionTable"> <!-- Added text-sm -->
-            <thead class="bg-gray-500 text-white">
-                <tr>
-                    <th class="px-4 py-2 text-left">Transaction ID</th>
-                    <th class="px-4 py-2 text-left">Name</th>
-                    <th class="px-4 py-2 text-left">Email</th>
-                    <th class="px-4 py-2 text-left">Phone</th>
-                    <th class="px-4 py-2 text-left">Amount</th>
-                    <th class="px-4 py-2 text-left">Payment Proof</th>
-                    <th class="px-4 py-2 text-left">Transaction Date</th>
-                    <th class="px-4 py-2 text-left">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be populated here via JavaScript -->
-            </tbody>
-        </table>
+  <div class="main-content">
+    <div class="container mt-7">
+      <h2 class="mb-5">Transaction Details</h2>
+      <div class="row">
+        <div class="col">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <h3 class="mb-0">Transaction Table</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush" id="transactionTable">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Transaction ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Payment Proof</th>
+                    <th scope="col">Transaction Date</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be populated here via JavaScript -->
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div class="card-footer py-4">
+              <nav aria-label="...">
+                <ul class="pagination justify-content-end mb-0">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fas fa-angle-left"></i>
+                      <span class="sr-only">Previous</span>
+                    </a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">
+                      <i class="fas fa-angle-right"></i>
+                      <span class="sr-only">Next</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Pagination Controls -->
-    <div id="pagination" class="mt-4 flex justify-center space-x-4">
-        <!-- Pagination buttons will be dynamically generated here -->
+  <footer class="footer">
+    <div class="row align-items-center justify-content-xl-between">
+      <div class="col-xl-6 m-auto text-center">
+        <div class="copyright">
+          <p>Made with <a href="https://www.creative-tim.com/product/argon-dashboard" target="_blank">Argon Dashboard</a> by Creative Tim</p>
+        </div>
+      </div>
     </div>
-</div>
+  </footer>
 
-<!-- Tailwind JS (For potential interactivity in the future) -->
-<script src="https://cdn.tailwindcss.com"></script>
-<!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-$(document).ready(function() {
-    const rowsPerPage = 10; // Number of rows per page
-    let currentPage = 1; // Current page number
-    let transactionsData = [];
-
-    // Fetch data from the API endpoint
-    $.ajax({
+  <script>
+    $(document).ready(function() {
+      // Fetch data from the API endpoint
+      $.ajax({
         url: 'get_transactions.php', // Update this URL if needed
         method: 'GET',
         success: function(data) {
-            if (data.length > 0) {
-                transactionsData = data; // Store all transactions data
-                renderTable(currentPage); // Render the table for the first page
-                renderPagination(transactionsData.length, currentPage); // Render pagination
-            }
+          if (data.length > 0) {
+            // Populate the table with data
+            let tableRows = '';
+            data.forEach(function(row) {
+              let statusClass = row.badge_class;
+              tableRows += `
+                <tr class="border-b hover:bg-gray-100">
+                  <td class="px-4 py-2">${row.transaction_id}</td>
+                  <td class="px-4 py-2">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
+                  <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
+                  <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
+                  <td class="px-4 py-2">${row.total_amount}</td>
+                  <td class="px-4 py-2">
+                    <a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a>
+                  </td>
+                  <td class="px-4 py-2">${row.transaction_date}</td>
+                  <td class="px-4 py-2"><span class="badge ${statusClass}">${row.status}</span></td>
+                </tr>
+              `;
+            });
+            $('#transactionTable tbody').html(tableRows); // Add the rows to the table body
+          }
         },
         error: function() {
-            alert('Error fetching data');
+          alert('Error fetching data');
         }
+      });
     });
-
-    // Render the table for the given page
-    function renderTable(page) {
-        const startIndex = (page - 1) * rowsPerPage;
-        const endIndex = Math.min(startIndex + rowsPerPage, transactionsData.length);
-        let tableRows = '';
-
-        // Slice data for the current page
-        const pageData = transactionsData.slice(startIndex, endIndex);
-
-        // Populate the table with data
-        pageData.forEach(function(row) {
-            let statusClass = row.badge_class;
-            tableRows += `
-                <tr class="border-b hover:bg-gray-100">
-                    <td class="px-4 py-2">${row.transaction_id}</td>
-                    <td class="px-4 py-2">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                    <td class="px-4 py-2">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                    <td class="px-4 py-2">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
-                    <td class="px-4 py-2">${row.total_amount}</td>
-                    <td class="px-4 py-2">
-                        <a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-500 hover:underline">View Proof</a>
-                    </td>
-                    <td class="px-4 py-2">${row.transaction_date}</td>
-                    <td class="px-4 py-2"><span class="badge ${statusClass}">${row.status}</span></td>
-                </tr>
-            `;
-        });
-        $('#transactionTable tbody').html(tableRows); // Add the rows to the table body
-    }
-
-    // Render pagination controls
-    function renderPagination(totalRows, currentPage) {
-        const totalPages = Math.ceil(totalRows / rowsPerPage);
-        let paginationHtml = '';
-
-        // Previous button
-        paginationHtml += `
-            <button class="px-4 py-2 bg-blue-500 text-white rounded" ${currentPage === 1 ? 'disabled' : ''} id="prevBtn">&laquo;</button>
-        `;
-
-        // Page buttons
-        for (let i = 1; i <= totalPages; i++) {
-            paginationHtml += `
-                <button class="px-4 py-2 ${i === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200'} rounded" data-page="${i}">${i}</button>
-            `;
-        }
-
-        // Next button
-        paginationHtml += `
-            <button class="px-4 py-2 bg-blue-500 text-white rounded" ${currentPage === totalPages ? 'disabled' : ''} id="nextBtn">&raquo;</button>
-        `;
-
-        $('#pagination').html(paginationHtml);
-
-        // Add click event listeners for pagination buttons
-        $('#pagination button').on('click', function() {
-            const page = $(this).data('page');
-            if (page) {
-                currentPage = page;
-                renderTable(currentPage);
-                renderPagination(transactionsData.length, currentPage);
-            }
-        });
-
-        // Add click event listeners for previous/next buttons
-        $('#prevBtn').on('click', function() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable(currentPage);
-                renderPagination(transactionsData.length, currentPage);
-            }
-        });
-
-        $('#nextBtn').on('click', function() {
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderTable(currentPage);
-                renderPagination(transactionsData.length, currentPage);
-            }
-        });
-    }
-});
-</script>
+  </script>
 
 </body>
 </html>
