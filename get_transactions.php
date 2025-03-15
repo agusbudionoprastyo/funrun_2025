@@ -51,6 +51,7 @@ GROUP BY
     transaction_date, 
     status";
 
+// Execute query
 $result = $conn->query($sql);
 
 $users = [];
@@ -73,6 +74,7 @@ if ($result->num_rows > 0) {
                 break;
         }
         
+        // Add row data to the users array
         $users[] = $row;
     }
 } else {
@@ -80,6 +82,9 @@ if ($result->num_rows > 0) {
 }
 
 $conn->close();
+
+// Debugging step: Check the content of $users
+// var_dump($users); // Uncomment to debug
 
 // Set the header to JSON and output the data
 header('Content-Type: application/json');
