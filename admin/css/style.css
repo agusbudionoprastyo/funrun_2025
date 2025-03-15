@@ -8227,7 +8227,7 @@ h1, h2, h3, h4, h5,
     .table tbody td.status .active:after {
       background: #23bd5a; }
   .table tbody td.status .paid {
-    background: #98c8fa;
+    background: #c3ddfa;
     color: #017bff; }
     .table tbody td.status .paid:after {
       background: #017bff; }
