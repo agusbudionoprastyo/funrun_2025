@@ -8204,18 +8204,19 @@ h1, h2, h3, h4, h5,
       border-bottom: 0; }
   .table tbody th, .table tbody td {
     border: none;
-    padding: 30px;
+    padding: 5px;
     font-size: 14px;
     background: #fff;
     vertical-align: middle; }
   .table tbody td.status span {
     position: relative;
-    border-radius: 30px;
-    padding: 4px 10px 4px 10px; }
+    border-radius: 50px;
+    padding: 5px 10px 5px 20px;
+  }
     .table tbody td.status span:after {
       position: absolute;
-      top: 10px;
-      left: 10px;
+      top: 8px;
+      left: 6px;
       width: 10px;
       height: 10px;
       content: '';
@@ -8225,6 +8226,11 @@ h1, h2, h3, h4, h5,
     color: #1fa750; }
     .table tbody td.status .active:after {
       background: #23bd5a; }
+  .table tbody td.status .paid {
+    background: #5bc1de;
+    color: #5b6cde; }
+    .table tbody td.status .paid:after {
+      background: #5b6cde; }
   .table tbody td.status .waiting {
     background: #fdf5dd;
     color: #cfa00c; }
