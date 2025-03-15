@@ -27,7 +27,7 @@
     <h1 class="text-3xl font-bold mb-4">Transaction Data</h1>
 
     <table id="transactionsTable" class="display" style="width:100%">
-        <thead class="bg-gray-200">
+        <thead>
             <tr>
                 <th class="px-4 py-2">Transaction ID</th>
                 <th class="px-4 py-2">Total Amount</th>
@@ -71,10 +71,7 @@ $(document).ready(function() {
                     `;
                 }
             }
-        ],
-        "dom": 't<"bottom"lip>',
-        "stripeClasses": ['odd:bg-gray-50', 'even:bg-white'],
-        "theme": "tailwind"
+        ]
     });
 });
 </script>
