@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Data</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container my-5">
+    <h2 class="mb-4">Transaction Details</h2>
+    
+    <table class="table table-striped table-bordered" id="transactionTable">
+        <thead class="thead-dark">
+            <tr>
+                <th>Transaction ID</th>
+                <th>Total Amount</th>
+                <th>Payment Method</th>
+                <th>Payment Proof</th>
+                <th>Transaction Date</th>
+                <th>Status</th>
+                <th>Name(s)</th>
+                <th>Email(s)</th>
+                <th>Phone(s)</th>
+                <th>Username(s)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be populated here via JavaScript -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap 5 JS Bundle (including Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    // Fetch data from the API endpoint
+    $.ajax({
+        url: 'get_transactions.php',
+        method: 'GET',
+        success: function(data) {
+            if (data.length > 0) {
+                // Populate the table with data
+                let tableRows = '';
+                data.forEach(function(row) {
+                    let statusClass = row.badge_class;
+                    tableRows += `
+                        <tr>
+                            <td>${row.transaction_id}</td>
+                            <td>${row.total_amount}</td>
+                            <td>${row.payment_method}</td>
+                            <td><a href="${row.payment_prooft}" target="_blank">View Proof</a></td>
+                            <td>${row.transaction_date}</td>
+                            <td><span class="badge ${statusClass}">${row.status}</span></td>
+                            <td>${row.name}</td>
+                            <td>${row.email}</td>
+                            <td>${row.phone}</td>
+                            <td>${row.username}</td>
+                        </tr>
+                    `;
+                });
+                $('#transactionTable tbody').html(tableRows);
+            }
+        },
+        error: function() {
+            alert('Error fetching data');
+        }
+    });
+});
+</script>
+
+</body>
+</html>
