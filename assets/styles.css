@@ -1163,11 +1163,14 @@ a.text-light:focus {
     background-color: #adb5bd;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* Menyembunyikan bagian gambar yang keluar dari bentuk bulat */
 }
 
 .avatar img {
-    width: 100%;
-    border-radius: 50%;
+    width: 100%;        /* Memastikan gambar mengisi seluruh area */
+    height: 100%;       /* Memastikan gambar mengisi seluruh area */
+    object-fit: cover;  /* Memotong gambar agar memenuhi area dengan proporsi yang tepat */
+    object-position: center; /* Memastikan gambar tetap terpusat dalam lingkaran */
 }
 
 .avatar-sm {
