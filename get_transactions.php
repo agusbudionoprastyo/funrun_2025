@@ -1,5 +1,5 @@
 <?php
-include '../helper/db.php';
+include 'helper/db.php';
 
 // SQL query to fetch users data
 $sql = "WITH RankedUsers AS (
