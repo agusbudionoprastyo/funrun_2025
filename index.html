@@ -53,7 +53,7 @@
                 const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
                 const data = await response.json(); // Assuming the response is in JSON format
 
-                const tableBody = document.querySelector("#search-table tbody");
+                const tableBody = document.querySelector("#pagination-table tbody");
 
                 // Clear any existing rows in the table body
                 tableBody.innerHTML = '';
