@@ -8,69 +8,25 @@
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
-    <!-- flowbite js CDN -->
+    <!-- Flowbite JS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
-
 </head>
 <body>
     <table id="search-table">
         <thead>
             <tr>
-                <th>
-                    <span class="flex items-center">
-                        Transaction ID
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        Total Amount
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        Payment Proof
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        Transaction Date
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        Status
-                    </span>
-                </th>
-                <th>
-                    <span class="flex items-center">
-                        User Details
-                    </span>
-                </th>
+                <th>Transaction ID</th>
+                <th>Total Amount</th>
+                <th>Payment Proof</th>
+                <th>Transaction Date</th>
+                <th>Status</th>
+                <th>User Details</th>
             </tr>
         </thead>
         <tbody>
+            <!-- Rows will be inserted here dynamically -->
         </tbody>
     </table>
-
-    <!-- Main container -->
-    <div class="flex mx-auto">
-        <table id="transactionsTable" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Total Amount</th>
-                    <th>Payment Method</th>
-                    <th>Payment Proof</th>
-                    <th>Transaction Date</th>
-                    <th>Status</th>
-                    <th>User Details</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data will be dynamically populated here -->
-            </tbody>
-        </table>
-    </div>
 
     <!-- Initialize DataTables -->
     <script>
@@ -78,35 +34,53 @@
             if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
                 const dataTable = new simpleDatatables.DataTable("#search-table", {
                     searchable: true,
-                    sortable: false,
-                    ajax: {
-                        url: "get_transactions.php", // Replace with the correct PHP script URL
-                        dataSrc: "" // Response is directly the JSON array, no need for 'data' field
-                    },
-                    columns: [
-                        { "data": "transaction_id" },
-                        { "data": "total_amount" },
-                        { "data": "payment_method" },
-                        { "data": "payment_proof" },
-                        { "data": "transaction_date" },
-                        { "data": "status" },
-                        {
-                            "data": null,
-                            "render": function(data, type, row) {
-                                return `
-                                    <div>
-                                        <p class="font-semibold">${row.name_1}</p>
-                                        <p>${row.phone_1} | ${row.email_1}</p>
-                                        <p class="italic">${row.mantan_1}</p>
-                                    </div>
+                    sortable: false
+                });
+
+                // Fetch data via AJAX
+                $.ajax({
+                    url: 'get_transactions.php', // Update this URL if needed
+                    method: 'GET',
+                    success: function(data) {
+                        if (data.length > 0) {
+                            // Populate the table with data
+                            let tableRows = '';
+                            data.forEach(function(row) {
+                                let statusClass = row.badge_class;
+                                tableRows += `
+                                    <tr>
+                                        <td>${row.transaction_id}</td>
+                                        <td>${row.total_amount}</td>
+                                        <td>
+                                            <a href="users/paymentprooft/${row.payment_prooft}" target="_blank">
+                                                <img alt="Image placeholder" src="users/paymentprooft/${row.payment_prooft}" class="avatar rounded-circle" />
+                                            </a>
+                                        </td>
+                                        <td>${row.transaction_date}</td>
+                                        <td>
+                                            <span class="badge badge-dot mr-4">
+                                                <i class="${statusClass}"></i>${row.status}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            ${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}<br>
+                                            ${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}<br>
+                                            ${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}
+                                        </td>
+                                    </tr>
                                 `;
-                            }
+                            });
+
+                            // Append the generated rows to the table body
+                            $('#search-table tbody').html(tableRows); 
                         }
-                    ]
+                    },
+                    error: function() {
+                        alert('Error fetching data');
+                    }
                 });
             }
         });
     </script>
-
 </body>
 </html>
