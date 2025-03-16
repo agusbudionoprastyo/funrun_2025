@@ -23,7 +23,7 @@
 
     <!-- Container for the Table -->
     <div class="container mx-auto p-6">
-        <table id="search-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
+        <table id="pagination-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
             <thead class="bg-blue-100">
                 <tr>
                     <th class="px-6 py-3 font-medium text-gray-900">
@@ -72,8 +72,8 @@
                 });
 
                 // Initialize the DataTable after the data is populated
-                if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                    new simpleDatatables.DataTable("#search-table", {
+                if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+                    new simpleDatatables.DataTable("#pagination-table", {
                         searchable: true,
                         paging: true,
                         perPage: 5,
