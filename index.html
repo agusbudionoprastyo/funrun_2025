@@ -8,25 +8,33 @@
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
-    <!-- Flowbite JS CDN -->
+    <!-- Flowbite JS CDN (for DataTables) -->
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <table id="search-table">
-        <thead>
-            <tr>
-                <th>Transaction ID</th>
-                <th>Total Amount</th>
-                <th>Payment Proof</th>
-                <th>Transaction Date</th>
-                <th>Status</th>
-                <th>User Details</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Rows will be inserted here dynamically -->
-        </tbody>
-    </table>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto py-8">
+        <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+            <table id="search-table" class="min-w-full table-auto text-sm text-left text-gray-500">
+                <thead class="bg-gray-200 text-gray-700">
+                    <tr>
+                        <th class="px-4 py-2 font-medium text-sm">Transaction ID</th>
+                        <th class="px-4 py-2 font-medium text-sm">Total Amount</th>
+                        <th class="px-4 py-2 font-medium text-sm">Payment Proof</th>
+                        <th class="px-4 py-2 font-medium text-sm">Transaction Date</th>
+                        <th class="px-4 py-2 font-medium text-sm">Status</th>
+                        <th class="px-4 py-2 font-medium text-sm">User Details</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    <!-- Data rows will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- Initialize DataTables -->
     <script>
@@ -43,26 +51,23 @@
                     method: 'GET',
                     success: function(data) {
                         if (data.length > 0) {
-                            // Populate the table with data
                             let tableRows = '';
                             data.forEach(function(row) {
                                 let statusClass = row.badge_class;
                                 tableRows += `
-                                    <tr>
-                                        <td>${row.transaction_id}</td>
-                                        <td>${row.total_amount}</td>
-                                        <td>
-                                            <a href="users/paymentprooft/${row.payment_prooft}" target="_blank">
-                                                <img alt="Image placeholder" src="users/paymentprooft/${row.payment_prooft}" class="avatar rounded-circle" />
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap">${row.transaction_id}</td>
+                                        <td class="px-4 py-2">${row.total_amount}</td>
+                                        <td class="px-4 py-2">
+                                            <a href="users/paymentprooft/${row.payment_prooft}" target="_blank" class="text-blue-600 hover:underline">
+                                                <img alt="Payment Proof" src="users/paymentprooft/${row.payment_prooft}" class="h-8 w-8 rounded-full"/>
                                             </a>
                                         </td>
-                                        <td>${row.transaction_date}</td>
-                                        <td>
-                                            <span class="badge badge-dot mr-4">
-                                                <i class="${statusClass}"></i>${row.status}
-                                            </span>
+                                        <td class="px-4 py-2">${row.transaction_date}</td>
+                                        <td class="px-4 py-2">
+                                            <span class="badge ${statusClass}">${row.status}</span>
                                         </td>
-                                        <td>
+                                        <td class="px-4 py-2">
                                             ${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}<br>
                                             ${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}<br>
                                             ${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}
@@ -82,5 +87,6 @@
             }
         });
     </script>
+
 </body>
 </html>
