@@ -8,69 +8,105 @@
     <!-- jQuery Library -->
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- flowbite js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@9.0.3"></script>
 
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.2.2/css/dataTables.tailwindcss.css">
-
-    <!-- DataTables JS -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-    
-    <!-- DataTables Tailwind CSS Integration -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.2.2/js/dataTables.tailwindcss.js"></script>
 </head>
 <body>
-
-<!-- Main container -->
-    <table id="transactionsTable" style="width:100%">
+    <table id="search-table">
         <thead>
             <tr>
-                <th>Transaction ID</th>
-                <th>Total Amount</th>
-                <th>Payment Method</th>
-                <th>Payment Proof</th>
-                <th>Transaction Date</th>
-                <th>Status</th>
-                <th>User Details</th>
+                <th>
+                    <span class="flex items-center">
+                        Transaction ID
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center">
+                        Total Amount
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center">
+                        Payment Proof
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center">
+                        Transaction Date
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center">
+                        Status
+                    </span>
+                </th>
+                <th>
+                    <span class="flex items-center">
+                        User Details
+                    </span>
+                </th>
             </tr>
         </thead>
         <tbody>
-            <!-- Data will be dynamically populated here -->
         </tbody>
     </table>
 
-<!-- Initialize DataTables -->
-<script>
-$(document).ready(function() {
-    $('#transactionsTable').DataTable({
-        "ajax": {
-            "url": "get_transactions.php", // Replace with the correct PHP script URL
-            "dataSrc": "" // Response is directly the JSON array, no need for 'data' field
-        },
-        "columns": [
-            { "data": "transaction_id" },
-            { "data": "total_amount" },
-            { "data": "payment_method" },
-            { "data": "payment_prooft" },
-            { "data": "transaction_date" },
-            { "data": "status" },
-            {
-                "data": null,
-                "render": function(data, type, row) {
-                    return `
-                        <div>
-                            <p class="font-semibold">${row.name_1}</p>
-                            <p>${row.phone_1} | ${row.email_1}</p>
-                            <p class="italic">${row.mantan_1}</p>
-                        </div>
-                    `;
-                }
+    <!-- Main container -->
+    <div class="flex mx-auto">
+        <table id="transactionsTable" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Total Amount</th>
+                    <th>Payment Method</th>
+                    <th>Payment Proof</th>
+                    <th>Transaction Date</th>
+                    <th>Status</th>
+                    <th>User Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be dynamically populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Initialize DataTables -->
+    <script>
+        $(document).ready(function() {
+            if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+                const dataTable = new simpleDatatables.DataTable("#search-table", {
+                    searchable: true,
+                    sortable: false,
+                    ajax: {
+                        url: "get_transactions.php", // Replace with the correct PHP script URL
+                        dataSrc: "" // Response is directly the JSON array, no need for 'data' field
+                    },
+                    columns: [
+                        { "data": "transaction_id" },
+                        { "data": "total_amount" },
+                        { "data": "payment_method" },
+                        { "data": "payment_proof" },
+                        { "data": "transaction_date" },
+                        { "data": "status" },
+                        {
+                            "data": null,
+                            "render": function(data, type, row) {
+                                return `
+                                    <div>
+                                        <p class="font-semibold">${row.name_1}</p>
+                                        <p>${row.phone_1} | ${row.email_1}</p>
+                                        <p class="italic">${row.mantan_1}</p>
+                                    </div>
+                                `;
+                            }
+                        }
+                    ]
+                });
             }
-        ]
-    });
-});
-</script>
+        });
+    </script>
 
 </body>
 </html>
