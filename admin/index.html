@@ -103,7 +103,7 @@
     
                     const row = document.createElement("tr");
                     row.classList.add('border-b');
-                    
+
                     let badge_class = item.badge_class;
     
                     row.innerHTML = `
@@ -115,7 +115,7 @@
                         <td class="px-6 py-4">${item.transaction_date}</td>
                         <td class="px-6 py-4">
                             <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
-                            ${item.payment_prooft}
+                            ${item.status}
                             </span>
                         </td>
                     `;
