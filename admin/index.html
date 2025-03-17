@@ -207,10 +207,6 @@ async function fetchData() {
 
                         // Update the status text to 'verified' on the button
                         statusButton.textContent = 'verified';
-
-                        // Optionally, update the button's appearance to indicate the 'verified' state
-                        statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove the disabled state
-                        statusButton.classList.add('bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full');
                         
                         // Close the modal by triggering the close action
                         const closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
