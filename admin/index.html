@@ -61,33 +61,35 @@
             try {
                 const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
                 const data = await response.json(); // Assuming the response is in JSON format
-
+    
                 const tableBody = document.querySelector("#pagination-table tbody");
-
+    
                 // Clear any existing rows in the table body
                 tableBody.innerHTML = '';
-
+    
                 // Loop through the data and create table rows dynamically
                 data.forEach(item => {
-                    let badge_class = row.badge_class;
                     const row = document.createElement("tr");
                     row.classList.add('border-b'); // Adding a bottom border for each row
-
+                    
+                    let badge_class = item.badge_class;  // Accessing the correct data from the item object
+    
                     row.innerHTML = `
-                        <td class="px-6 py-4">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                        <td class="px-6 py-4">${item.mantan_1} ${row.mantan_2 ? ' / ' + row.mantan_2 : ''}</td>
-                        <td class="px-6 py-4">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                        <td class="px-6 py-4">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
-                        <td class="px-6 py-4">${row.total_amount}</td>
-                        <td class="px-6 py-4">${row.transaction_date}</td>
+                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                        <td class="px-6 py-4">${item.total_amount}</td>
+                        <td class="px-6 py-4">${item.transaction_date}</td>
                         <td>
                             <span class="badge badge-dot mr-4">
-                            <i class="${badge_class}"></i>${row.status}
+                                <i class="${badge_class}"></i>${item.status}
+                            </span>
                         </td>
                     `;
                     tableBody.appendChild(row);
                 });
-
+    
                 // Initialize the DataTable after the data is populated
                 if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
                     new simpleDatatables.DataTable("#pagination-table", {
@@ -102,7 +104,7 @@
                 console.error('Error fetching data:', error);
             }
         }
-
+    
         // Call fetchData to populate the table
         fetchData();
     </script>
