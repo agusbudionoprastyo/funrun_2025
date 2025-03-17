@@ -6,7 +6,7 @@ header('Content-Type: application/json');
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Cek apakah data yang diperlukan ada
-if (isset($data['id']) && isset($data['status'])) {
+if (isset($data['transaction_id']) && isset($data['status'])) {
     $transaction_id = $data['transaction_id']; // ID transaksi
     $status = $data['status']; // Status yang baru
 
