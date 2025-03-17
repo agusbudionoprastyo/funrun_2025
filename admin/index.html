@@ -77,13 +77,13 @@
                     row.classList.add('border-b'); // Adding a bottom border for each row
 
                     row.innerHTML = `
-                        <td class="px-6 py-4">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
-                        <td class="px-6 py-4">${item.mantan_1} ${row.mantan_2 ? ' / ' + row.mantan_2 : ''}</td>
-                        <td class="px-6 py-4">${row.email_1} ${row.email_2 ? ' / ' + row.email_2 : ''}</td>
-                        <td class="px-6 py-4">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
-                        <td class="px-6 py-4">${row.total_amount}</td>
-                        <td class="px-6 py-4">${row.transaction_date}</td>
-                        <td class="px-6 py-4">${row.status}</td>
+                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                        <td class="px-6 py-4">${item.total_amount}</td>
+                        <td class="px-6 py-4">${item.transaction_date}</td>
+                        <td class="px-6 py-4">${item.status}</td>
                     `;
                     tableBody.appendChild(row);
                 });
