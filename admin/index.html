@@ -163,7 +163,7 @@
     </div> -->
 
 <!-- Modal Structure -->
-<div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <div class="relative bg-white shadow-sm">
             <!-- Payment Proof Image -->
@@ -217,6 +217,16 @@ async function fetchData() {
 
             let badge_class = item.badge_class;
 
+            let buttonStatus = item.status;
+            let buttonClass = badge_class;
+            let isDisabled = '';
+
+            // Disable button if status is not 'Paid' or 'Verified'
+            if (buttonStatus !== 'Paid' && buttonStatus !== 'Verified') {
+                isDisabled = 'disabled';
+                buttonClass += ' opacity-50 cursor-not-allowed'; // Add classes to make it visually disabled
+            }
+
             row.innerHTML = `
                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
                 <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
@@ -225,7 +235,7 @@ async function fetchData() {
                 <td class="px-6 py-4">${formattedAmount}</td>
                 <td class="px-6 py-4">${item.transaction_date}</td>
                 <td class="px-6 py-4">
-                    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class} hover:cursor" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
+                    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${buttonClass} hover:cursor ${isDisabled}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}" ${isDisabled}>
                         ${item.status}
                     </button>
                 </td>
