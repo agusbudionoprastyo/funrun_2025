@@ -161,6 +161,10 @@ async function fetchData() {
                     verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
                 }
 
+                // Show the modal
+                const modal = document.getElementById('popup-modal');
+                modal.classList.remove('hidden'); // Remove the 'hidden' class to show the modal
+
                 // Add event listener to the Verified button inside the modal
                 verifiedButton.addEventListener('click', async () => {
                     try {
@@ -184,6 +188,9 @@ async function fetchData() {
                             const statusButton = e.target;
                             statusButton.textContent = 'verified';
                             statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove disabled state
+
+                            // Close the modal after successful update
+                            modal.classList.add('hidden'); // Hide the modal
                         } else {
                             alert('Failed to update status');
                         }
