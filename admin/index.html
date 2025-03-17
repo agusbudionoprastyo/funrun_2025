@@ -242,9 +242,9 @@
                     const modal = document.getElementById('popup-modal');
                     modal.classList.remove('hidden');
 
-                    // Initialize the Flowbite Modal using JS
-                    const modalInstance = new Flowbite.Modal(modal);
-                    modalInstance.show();
+                    // Using Flowbite's modal API to show it
+                    const modalElement = new window.Flowbite.Modal(modal); // Initialize modal with the element
+                    modalElement.show();
                 });
             });
 
@@ -253,15 +253,15 @@
             const modal = document.getElementById('popup-modal');
 
             closeModalButton.addEventListener('click', () => {
-                const modalInstance = new Flowbite.Modal(modal);
-                modalInstance.hide(); // Close the modal using Flowbite's API
+                const modalElement = new window.Flowbite.Modal(modal); // Initialize modal with the element
+                modalElement.hide(); // Close the modal using Flowbite's API
             });
 
             // Optionally, you can also close the modal when clicking outside of it
             modal.addEventListener('click', (event) => {
                 if (event.target === modal) {
-                    const modalInstance = new Flowbite.Modal(modal);
-                    modalInstance.hide();  // Hide the modal when clicking outside
+                    const modalElement = new window.Flowbite.Modal(modal); // Initialize modal with the element
+                    modalElement.hide(); // Hide the modal when clicking outside
                 }
             });
 
