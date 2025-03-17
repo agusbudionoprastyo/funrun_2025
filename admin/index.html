@@ -53,7 +53,7 @@
 </div>
 
 
-    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="hidden text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
     Toggle modal
     </button>
     
@@ -89,146 +89,129 @@
 
 <script>
 // Fetch data from your server-side API or database
-async function fetchData() {
-    try {
-        const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
-        const data = await response.json(); // Assuming the response is in JSON format
+// async function fetchData() {
+//     try {
+//         const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+//         const data = await response.json(); // Assuming the response is in JSON format
 
-        const tableBody = document.querySelector("#pagination-table tbody");
+//         const tableBody = document.querySelector("#pagination-table tbody");
 
-        // Clear any existing rows in the table body
-        tableBody.innerHTML = '';
+//         // Clear any existing rows in the table body
+//         tableBody.innerHTML = '';
 
-        // Loop through the data and create table rows dynamically
-        data.forEach(item => {
-            // Format the total_amount as IDR (Indonesian Rupiah)
-            const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+//         // Loop through the data and create table rows dynamically
+//         data.forEach(item => {
+//             // Format the total_amount as IDR (Indonesian Rupiah)
+//             const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
 
-            const row = document.createElement("tr");
-            row.classList.add('border-b');
+//             const row = document.createElement("tr");
+//             row.classList.add('border-b');
 
-            let badge_class = item.badge_class;
+//             let badge_class = item.badge_class;
 
-            row.innerHTML = `
-                <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                <td class="px-6 py-4">${formattedAmount}</td>
-                <td class="px-6 py-4">${item.transaction_date}</td>
-                <td class="px-6 py-4">
-                    <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}" data-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
-                        ${item.status}
-                    </a>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
+//             row.innerHTML = `
+//                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+//                 <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+//                 <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+//                 <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+//                 <td class="px-6 py-4">${formattedAmount}</td>
+//                 <td class="px-6 py-4">${item.transaction_date}</td>
+//                 <td class="px-6 py-4">
+//                     <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}" data-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
+//                         ${item.status}
+//                     </a>
+//                 </td>
+//             `;
+//             tableBody.appendChild(row);
+//         });
 
-        // Initialize the DataTable after the data is populated
-        if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-            new simpleDatatables.DataTable("#pagination-table", {
-                searchable: true,
-                paging: true,
-                perPage: 5,
-                perPageSelect: [5, 10, 15, 20, 25],
-                sortable: false
-            });
-        }
+//         // Initialize the DataTable after the data is populated
+//         if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+//             new simpleDatatables.DataTable("#pagination-table", {
+//                 searchable: true,
+//                 paging: true,
+//                 perPage: 5,
+//                 perPageSelect: [5, 10, 15, 20, 25],
+//                 sortable: false
+//             });
+//         }
 
-        // Event listener for opening modal and displaying transaction details
-        const statusButtons = document.querySelectorAll('[data-modal-target="popup-modal"]');
-        statusButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                // Fetch the data from the clicked button
-                const name = e.target.getAttribute('data-name');
-                const paymentProof = e.target.getAttribute('data-payment-proof');
-                const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
-                const transactionId = e.target.getAttribute('data-id'); // Transaction ID
-                const status = e.target.getAttribute('data-status'); // Status of the transaction
+//         // Event listener for opening modal and displaying transaction details
+//         const statusButtons = document.querySelectorAll('[data-modal-target="popup-modal"]');
+//         statusButtons.forEach(button => {
+//             button.addEventListener('click', (e) => {
+//                 // Fetch the data from the clicked button
+//                 const name = e.target.getAttribute('data-name');
+//                 const paymentProof = e.target.getAttribute('data-payment-proof');
+//                 const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
+//                 const transactionId = e.target.getAttribute('data-id'); // Transaction ID
+//                 const status = e.target.getAttribute('data-status'); // Status of the transaction
 
-                // Update modal content dynamically
-                document.getElementById('modal-name').textContent = name; // Set name
-                document.getElementById('modal-amount').textContent = amount; // Set amount
-                document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
+//                 // Update modal content dynamically
+//                 document.getElementById('modal-name').textContent = name; // Set name
+//                 document.getElementById('modal-amount').textContent = amount; // Set amount
+//                 document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
 
-                // Show the modal
-                const modal = document.getElementById('popup-modal');
-                modal.classList.remove('hidden'); // Show the modal by removing the 'hidden' class
+//                 // Show the modal
+//                 const modal = document.getElementById('popup-modal');
+//                 modal.classList.remove('hidden'); // Show the modal by removing the 'hidden' class
 
-                // Get the verified button inside the modal
-                const verifiedButton = modal.querySelector('#verified-btn');
+//                 // Get the verified button inside the modal
+//                 const verifiedButton = modal.querySelector('#verified-btn');
 
-                // Disable the button if the status is not 'paid'
-                if (status !== 'paid') {
-                    verifiedButton.setAttribute('disabled', 'true');
-                    verifiedButton.classList.add('opacity-50', 'cursor-not-allowed');
-                } else {
-                    verifiedButton.removeAttribute('disabled');
-                    verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
-                }
+//                 // Disable the button if the status is not 'paid'
+//                 if (status !== 'paid') {
+//                     verifiedButton.setAttribute('disabled', 'true');
+//                     verifiedButton.classList.add('opacity-50', 'cursor-not-allowed');
+//                 } else {
+//                     verifiedButton.removeAttribute('disabled');
+//                     verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
+//                 }
 
-                // Add event listener to the Verified button inside the modal
-                verifiedButton.addEventListener('click', async () => {
-                    try {
-                        // Send POST request to update the status of the transaction to "verified"
-                        const response = await fetch('update_transactions.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                transaction_id: transactionId,
-                                status: 'verified', // Update the status to 'verified'
-                            }),
-                        });
+//                 // Add event listener to the Verified button inside the modal
+//                 verifiedButton.addEventListener('click', async () => {
+//                     try {
+//                         // Send POST request to update the status of the transaction to "verified"
+//                         const response = await fetch('update_transactions.php', {
+//                             method: 'POST',
+//                             headers: {
+//                                 'Content-Type': 'application/json',
+//                             },
+//                             body: JSON.stringify({
+//                                 transaction_id: transactionId,
+//                                 status: 'verified', // Update the status to 'verified'
+//                             }),
+//                         });
 
-                        const result = await response.json();
-                        if (result.success) {
-                            alert('Status successfully updated to Verified!');
+//                         const result = await response.json();
+//                         if (result.success) {
+//                             alert('Status successfully updated to Verified!');
 
-                            // Close the modal
-                            modal.classList.add('hidden'); // Hide the modal
+//                             // Close the modal
+//                             modal.classList.add('hidden'); // Hide the modal
 
-                            // Optionally, update the table row status here
-                            const statusButton = e.target;
-                            statusButton.textContent = 'verified';
-                            statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove disabled state
-                        } else {
-                            alert('Failed to update status');
-                        }
-                    } catch (error) {
-                        console.error('Error updating status:', error);
-                        alert('Error updating status');
-                    }
-                });
-            });
-        });
+//                             // Optionally, update the table row status here
+//                             const statusButton = e.target;
+//                             statusButton.textContent = 'verified';
+//                             statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove disabled state
+//                         } else {
+//                             alert('Failed to update status');
+//                         }
+//                     } catch (error) {
+//                         console.error('Error updating status:', error);
+//                         alert('Error updating status');
+//                     }
+//                 });
+//             });
+//         });
 
-        // // Event listener to close modal when clicking the close button
-        // const closeModalButton = document.querySelector('[data-modal-hide="popup-modal"]');
-        // closeModalButton.addEventListener('click', (e) => {
-        //     e.stopPropagation(); // Prevent event from propagating and triggering other actions
-        //     const modal = document.getElementById('popup-modal');
-        //     modal.classList.add('hidden'); // Hide the modal
-        // });
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//     }
+// }
 
-        // // Close modal when clicking outside of it
-        // const modal = document.getElementById('popup-modal');
-        // modal.addEventListener('click', (e) => {
-        //     // Check if the click is outside the modal content, then close
-        //     if (e.target === modal) {
-        //         modal.classList.add('hidden'); // Hide the modal if the background is clicked
-        //     }
-        // });
-
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    }
-}
-
-// Call fetchData to populate the table
-fetchData();
+// // Call fetchData to populate the table
+// fetchData();
 </script>
 
 </body>
