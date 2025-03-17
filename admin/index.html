@@ -173,18 +173,18 @@
             try {
                 const response = await fetch('get_transactions.php'); // Ganti dengan API yang sesuai
                 const data = await response.json(); // Menganggap format response JSON
-        
+    
                 const tableBody = document.querySelector("#pagination-table tbody");
-        
+    
                 // Clear any existing rows in the table body
                 tableBody.innerHTML = '';
-        
+    
                 // Loop through the data and create table rows dynamically
                 data.forEach(item => {
-                    
+    
                     // Format the total_amount as IDR (Indonesian Rupiah)
                     const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
-        
+    
                     const row = document.createElement("tr");
                     row.classList.add('border-b');
                     let badge_class = item.badge_class;
@@ -197,7 +197,7 @@
                     } else {
                         paymentProofLink = `${item.status}`;
                     }
-        
+    
                     row.innerHTML = `
                         <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
                         <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
@@ -213,7 +213,7 @@
                     `;
                     tableBody.appendChild(row);
                 });
-        
+    
                 // Initialize the DataTable after the data is populated
                 if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
                     new simpleDatatables.DataTable("#pagination-table", {
@@ -228,7 +228,7 @@
                 console.error('Error fetching data:', error);
             }
         }
-        
+    
         // Call fetchData to populate the table
         fetchData();
     
