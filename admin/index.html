@@ -193,26 +193,33 @@ async function fetchData() {
                     const result = await response.json();
                     console.log('Response:', result);  // Debugging line
 
+                    // After successful status update
                     if (result.success) {
-                        // Use IziToast for success notification
+                        // Show success message
                         iziToast.success({
                             title: 'Success',
                             message: 'Status successfully updated to Verified!',
                             position: 'topRight', // Adjust the position as needed
                         });
 
-                        // Optionally, update the table row status here
+                        // Find the label button that was clicked
                         const statusButton = e.target;
-                        statusButton.textContent = 'verified';
-                        statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove disabled state
 
+                        // Update the status text to 'verified' on the button
+                        statusButton.textContent = 'verified';
+
+                        // Optionally, update the button's appearance to indicate the 'verified' state
+                        statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove the disabled state
+                        statusButton.classList.add('bg-green-500'); // Example: Adding a green background class for verified status
+                        
                         // Close the modal by triggering the close action
                         const closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
                         closeButton.click(); // Programmatically trigger the modal close
+
+                        // Optionally, refresh the data table or trigger fetchData again if needed
+                        // fetchData(); // Uncomment this line to reload data after status update
                     } else {
-                        // Log error response
-                        console.log('Failed to update:', result); // Debugging line
-                        // Use IziToast for error notification
+                        // Error handling
                         iziToast.error({
                             title: 'Error',
                             message: 'Failed to update status.',
