@@ -7,7 +7,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 
 // Cek apakah data yang diperlukan ada
 if (isset($data['id']) && isset($data['status'])) {
-    $transaction_id = $data['id']; // ID transaksi
+    $transaction_id = $data['transaction_id']; // ID transaksi
     $status = $data['status']; // Status yang baru
 
     // Update status transaksi di database

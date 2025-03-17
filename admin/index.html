@@ -263,7 +263,7 @@ async function fetchData() {
                 <td class="px-6 py-4">${formattedAmount}</td>
                 <td class="px-6 py-4">${item.transaction_date}</td>
                 <td class="px-6 py-4">
-                    <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${buttonClass} hover:cursor ${isDisabled}" data-id="${item.id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}" ${isDisabled}>
+                    <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${buttonClass} hover:cursor ${isDisabled}" data-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}" ${isDisabled}>
                         ${item.status}
                     </a>
                 </td>
