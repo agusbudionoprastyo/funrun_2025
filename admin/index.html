@@ -42,6 +42,9 @@
                         Amount
                     </th>
                     <th class="px-6 py-3 font-medium text-gray-900">
+                        Transaction Date
+                    </th>
+                    <th class="px-6 py-3 font-medium text-gray-900">
                         Status
                     </th>
                 </tr>
@@ -73,8 +76,6 @@
                     const row = document.createElement("tr");
                     row.classList.add('border-b'); // Adding a bottom border for each row
 
-                    let badge_class = row.badge_class;
-
                     row.innerHTML = `
                         <td class="px-6 py-4">${row.name_1} ${row.name_2 ? ' / ' + row.name_2 : ''}</td>
                         <td class="px-6 py-4">${item.mantan_1} ${row.mantan_2 ? ' / ' + row.mantan_2 : ''}</td>
@@ -82,10 +83,7 @@
                         <td class="px-6 py-4">${row.phone_1} ${row.phone_2 ? ' / ' + row.phone_2 : ''}</td>
                         <td class="px-6 py-4">${row.total_amount}</td>
                         <td class="px-6 py-4">${row.transaction_date}</td>
-                        <td>
-                            <span class="badge badge-dot mr-4">
-                            <i class="${badge_class}"></i>${row.status}
-                        </td>
+                        <td class="px-6 py-4">${row.status}</td>
                     `;
                     tableBody.appendChild(row);
                 });
