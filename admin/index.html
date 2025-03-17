@@ -197,60 +197,98 @@
 
 <script>
    // Fetch data from your server-side API or database
-   async function fetchData() {
-            try {
-                const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
-                const data = await response.json(); // Assuming the response is in JSON format
-    
-                const tableBody = document.querySelector("#pagination-table tbody");
-    
-                // Clear any existing rows in the table body
-                tableBody.innerHTML = '';
-    
-                // Loop through the data and create table rows dynamically
-                data.forEach(item => {
-                    
-                    // Format the total_amount as IDR (Indonesian Rupiah)
-                    const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
-    
-                    const row = document.createElement("tr");
-                    row.classList.add('border-b');
+async function fetchData() {
+    try {
+        const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+        const data = await response.json(); // Assuming the response is in JSON format
 
-                    let badge_class = item.badge_class;
-    
-                    row.innerHTML = `
-                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                        <td class="px-6 py-4">${formattedAmount}</td>
-                        <td class="px-6 py-4">${item.transaction_date}</td>
-                        <td class="px-6 py-4">
-                            <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class} hover:cursor" data-name="John Doe" data-status="Pending" data-payment-proof="../users/paymentprooft/payment1.jpg">
-                                ${item.status}
-                            </button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-    
-                // Initialize the DataTable after the data is populated
-                if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                    new simpleDatatables.DataTable("#pagination-table", {
-                        searchable: true,
-                        paging: true,
-                        perPage: 5,
-                        perPageSelect: [5, 10, 15, 20, 25],
-                        sortable: false
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+        const tableBody = document.querySelector("#pagination-table tbody");
+
+        // Clear any existing rows in the table body
+        tableBody.innerHTML = '';
+
+        // Loop through the data and create table rows dynamically
+        data.forEach(item => {
+            // Format the total_amount as IDR (Indonesian Rupiah)
+            const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+
+            const row = document.createElement("tr");
+            row.classList.add('border-b');
+
+            let badge_class = item.badge_class;
+
+            row.innerHTML = `
+                <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                <td class="px-6 py-4">${formattedAmount}</td>
+                <td class="px-6 py-4">${item.transaction_date}</td>
+                <td class="px-6 py-4">
+                    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class} hover:cursor" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/payment1.jpg">
+                        ${item.status}
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Initialize the DataTable after the data is populated
+        if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+            new simpleDatatables.DataTable("#pagination-table", {
+                searchable: true,
+                paging: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15, 20, 25],
+                sortable: false
+            });
         }
-    
-        // Call fetchData to populate the table
-        fetchData();
+
+        // Event listener for opening modal when status button is clicked
+        const statusButtons = document.querySelectorAll('[data-modal-target="popup-modal"]');
+        statusButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Get the data from the clicked button
+                const name = e.target.getAttribute('data-name');
+                const status = e.target.getAttribute('data-status');
+                const paymentProof = e.target.getAttribute('data-payment-proof');
+                const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
+
+                // Update the modal content dynamically
+                document.getElementById('modal-name').textContent = name; // Set name
+                document.getElementById('modal-amount').textContent = amount; // Set amount
+                document.getElementById('modal-status-link').textContent = status; // Set status text
+                document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
+
+                // Show the modal
+                const modal = document.getElementById('popup-modal');
+                modal.classList.remove('hidden'); // Remove 'hidden' class to show modal
+            });
+        });
+
+        // Event listener to close modal when clicking the close button
+        const closeModalButton = document.querySelector('[data-modal-hide="popup-modal"]');
+        closeModalButton.addEventListener('click', () => {
+            const modal = document.getElementById('popup-modal');
+            modal.classList.add('hidden'); // Hide the modal
+        });
+
+        // Close modal when clicking outside of it
+        const modal = document.getElementById('popup-modal');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden'); // Hide the modal if the background is clicked
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+// Call fetchData to populate the table
+fetchData();
+
 </script>
 
 
