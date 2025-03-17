@@ -81,7 +81,7 @@
     </div>
     
     <!-- Flowbite JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script> -->
 
     <script>
         // // Fetch data from your server-side API or database
@@ -140,6 +140,8 @@
         // // Call fetchData to populate the table
         // fetchData();
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 <script>
     // Function to fetch and populate data
@@ -201,10 +203,15 @@
         const $modalEl = document.getElementById(modalId);
 
         if ($modalEl) {
+            // Initialize the Flowbite modal
+            const modal = new Modal($modalEl); // Initialize the modal from Flowbite
+
+            // Function to hide the modal
             const hideModal = () => {
-                // Hide the modal by removing the 'hidden' class
-                $modalEl.classList.add('hidden');
+                modal.hide(); // Use Flowbite's modal hide method
             };
+
+            // Add the event listener for the hide button
             $triggerEl.addEventListener('click', hideModal);
         } else {
             console.error(
@@ -216,6 +223,7 @@
     // Call fetchData to populate the table
     fetchData();
 </script>
+
 
     
 </body>
