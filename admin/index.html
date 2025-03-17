@@ -85,7 +85,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 
-<script>
+<!-- <script>
    // Fetch data from your server-side API or database
 async function fetchData() {
     try {
@@ -189,6 +189,145 @@ async function fetchData() {
 // Call fetchData to populate the table
 fetchData();
 
+</script> -->
+
+<script>
+    // Fetch data from your server-side API or database
+async function fetchData() {
+    try {
+        const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+        const data = await response.json(); // Assuming the response is in JSON format
+
+        const tableBody = document.querySelector("#pagination-table tbody");
+
+        // Clear any existing rows in the table body
+        tableBody.innerHTML = '';
+
+        // Loop through the data and create table rows dynamically
+        data.forEach(item => {
+            // Format the total_amount as IDR (Indonesian Rupiah)
+            const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+
+            const row = document.createElement("tr");
+            row.classList.add('border-b');
+
+            let badge_class = item.badge_class;
+
+            let buttonStatus = item.status;
+            let buttonClass = badge_class;
+            let isDisabled = '';
+
+            // Disable button if status is not 'Paid' or 'Verified'
+            if (buttonStatus !== 'paid' && buttonStatus !== 'verified') {
+                isDisabled = 'disabled';
+                buttonClass += ' opacity-50 cursor-not-allowed'; // Add classes to make it visually disabled
+            }
+
+            row.innerHTML = `
+                <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                <td class="px-6 py-4">${formattedAmount}</td>
+                <td class="px-6 py-4">${item.transaction_date}</td>
+                <td class="px-6 py-4">
+                    <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${buttonClass} hover:cursor ${isDisabled}" data-id="${item.id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}" ${isDisabled}>
+                        ${item.status}
+                    </a>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Initialize the DataTable after the data is populated
+        if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+            new simpleDatatables.DataTable("#pagination-table", {
+                searchable: true,
+                paging: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15, 20, 25],
+                sortable: false
+            });
+        }
+
+        // Event listener for opening modal when status button is clicked
+        const statusButtons = document.querySelectorAll('[data-modal-target="popup-modal"]');
+        statusButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Get the data from the clicked button
+                const name = e.target.getAttribute('data-name');
+                const paymentProof = e.target.getAttribute('data-payment-proof');
+                const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
+                const transactionId = e.target.getAttribute('data-id'); // ID transaksi
+
+                // Update the modal content dynamically
+                document.getElementById('modal-name').textContent = name; // Set name
+                document.getElementById('modal-amount').textContent = amount; // Set amount
+                document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
+
+                // Show the modal
+                const modal = document.getElementById('popup-modal');
+                modal.classList.remove('hidden'); // Remove 'hidden' class to show modal
+
+                // Add event listener to "Verified" button inside modal
+                const verifiedButton = document.querySelector('[data-modal-target="popup-modal"]');
+                verifiedButton.addEventListener('click', async () => {
+                    try {
+                        const response = await fetch('update_payment.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                id: transactionId,
+                                status: 'verified', // Update status to 'verified'
+                            }),
+                        });
+
+                        const result = await response.json();
+                        if (result.success) {
+                            alert('Status updated successfully!');
+
+                            // Close the modal
+                            modal.classList.add('hidden');
+
+                            // Update the status in the table
+                            const statusButton = e.target;
+                            statusButton.textContent = 'Verified';
+                            statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove the disabled state
+                        } else {
+                            alert('Failed to update status');
+                        }
+                    } catch (error) {
+                        console.error('Error updating status:', error);
+                        alert('Error updating status');
+                    }
+                });
+            });
+        });
+
+        // Event listener to close modal when clicking the close button
+        const closeModalButton = document.querySelector('[data-modal-hide="popup-modal"]');
+        closeModalButton.addEventListener('click', () => {
+            const modal = document.getElementById('popup-modal');
+            modal.classList.add('hidden'); // Hide the modal
+        });
+
+        // Close modal when clicking outside of it
+        const modal = document.getElementById('popup-modal');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.add('hidden'); // Hide the modal if the background is clicked
+            }
+        });
+
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+// Call fetchData to populate the table
+fetchData();
 </script>
 
 </body>
