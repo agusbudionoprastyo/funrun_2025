@@ -195,6 +195,24 @@
         }
     }
 
+    // Hide modal functionality on clicking the button with data-modal-hide
+    document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
+        const modalId = $triggerEl.getAttribute('data-modal-hide');
+        const $modalEl = document.getElementById(modalId);
+
+        if ($modalEl) {
+            const hideModal = () => {
+                // Hide the modal by removing the 'hidden' class
+                $modalEl.classList.add('hidden');
+            };
+            $triggerEl.addEventListener('click', hideModal);
+        } else {
+            console.error(
+                `Modal with id ${modalId} does not exist. Are you sure that the data-modal-hide attribute points to the correct modal id?`
+            );
+        }
+    });
+
     // Call fetchData to populate the table
     fetchData();
 </script>
