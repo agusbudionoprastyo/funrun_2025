@@ -59,7 +59,7 @@
         Toggle modal
     </button> -->
     
-    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <!-- <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <div class="relative bg-white shadow-sm">
                 <img src="/users/paymentprooft/bt.jpg" alt="" />
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     
     <!-- Flowbite JS -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script> -->
@@ -140,109 +140,150 @@
         // // Call fetchData to populate the table
         // fetchData();
     </script>
-
-<script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-
-<script>
-    // Fungsi untuk menampilkan dan menyembunyikan modal
-    document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
-        // Ambil ID modal dari atribut data-modal-target
-        const modalId = $triggerEl.getAttribute('data-modal-target');
-        const $modalEl = document.getElementById(modalId);
-
-        if ($modalEl) {
-            // Inisialisasi modal dengan Flowbite
-            const modal = new Modal($modalEl);
-
-            // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
-            $triggerEl.addEventListener('click', () => {
-                modal.show(); // Tampilkan modal
-            });
-        } else {
-            console.error(
-                `Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`
-            );
-        }
-    });
-
-    // Fungsi untuk menyembunyikan modal saat tombol close diklik
-    document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
-        const modalId = $triggerEl.getAttribute('data-modal-hide');
-        const $modalEl = document.getElementById(modalId);
-
-        if ($modalEl) {
-            // Inisialisasi modal dengan Flowbite
-            const modal = new Modal($modalEl);
-
-            // Sembunyikan modal saat tombol close diklik
-            $triggerEl.addEventListener('click', () => {
-                modal.hide(); // Sembunyikan modal
-            });
-        } else {
-            console.error(
-                `Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-hide menunjuk ke ID modal yang benar.`
-            );
-        }
-    });
-    // Function to fetch and populate data
-    async function fetchData() {
-        try {
-            const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
-            const data = await response.json(); // Assuming the response is in JSON format
-
-            const tableBody = document.querySelector("#pagination-table tbody");
-
-            // Clear any existing rows in the table body
-            tableBody.innerHTML = '';
-
-            // Loop through the data and create table rows dynamically
-            data.forEach(item => {
-
-                // Format the total_amount as IDR (Indonesian Rupiah)
-                const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
-
-                const row = document.createElement("tr");
-                row.classList.add('border-b');
-
-                let badge_class = item.badge_class;
-
-                row.innerHTML = `
-                    <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                    <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                    <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                    <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                    <td class="px-6 py-4">${formattedAmount}</td>
-                    <td class="px-6 py-4">${item.transaction_date}</td>
-                    <td class="px-6 py-4">
-                        <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
-                        ${item.status}
-                        </span>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            // Initialize the DataTable after the data is populated
-            if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                new simpleDatatables.DataTable("#pagination-table", {
-                    searchable: true,
-                    paging: true,
-                    perPage: 5,
-                    perPageSelect: [5, 10, 15, 20, 25],
-                    sortable: false
-                });
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    // Call fetchData to populate the table
-    fetchData();
-</script>
-
-
+    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white shadow-sm">
+                <!-- Gambar yang akan berubah -->
+                <img id="modal-image" src="" alt="" />
+                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-4 md:p-5 text-left">
+                    <h5 class="text-md font-semibold tracking-tight text-gray-900" id="modal-title">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900" id="modal-price">Rp168.000</span>
+                        <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" id="modal-status">Verified</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+
+    <script>
+        // Fungsi untuk menampilkan dan menyembunyikan modal
+        document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
+            // Ambil ID modal dari atribut data-modal-target
+            const modalId = $triggerEl.getAttribute('data-modal-target');
+            const $modalEl = document.getElementById(modalId);
+    
+            if ($modalEl) {
+                // Inisialisasi modal dengan Flowbite
+                const modal = new Modal($modalEl);
+    
+                // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
+                $triggerEl.addEventListener('click', () => {
+                    // Ambil data terkait untuk ditampilkan di modal
+                    const transactionId = $triggerEl.getAttribute('data-transaction-id');
+                    const transactionImage = $triggerEl.getAttribute('data-transaction-image');  // Ambil URL gambar transaksi
+                    const transactionTitle = $triggerEl.getAttribute('data-transaction-title');
+                    const transactionPrice = $triggerEl.getAttribute('data-transaction-price');
+                    const transactionStatus = $triggerEl.getAttribute('data-transaction-status');
+                    
+                    // Update gambar dan informasi modal
+                    document.getElementById('modal-image').src = transactionImage;
+                    document.getElementById('modal-title').innerText = transactionTitle;
+                    document.getElementById('modal-price').innerText = transactionPrice;
+                    document.getElementById('modal-status').innerText = transactionStatus;
+    
+                    // Tampilkan modal
+                    modal.show();
+                });
+            } else {
+                console.error(
+                    `Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`
+                );
+            }
+        });
+    
+        // Fungsi untuk menyembunyikan modal saat tombol close diklik
+        document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
+            const modalId = $triggerEl.getAttribute('data-modal-hide');
+            const $modalEl = document.getElementById(modalId);
+    
+            if ($modalEl) {
+                // Inisialisasi modal dengan Flowbite
+                const modal = new Modal($modalEl);
+    
+                // Sembunyikan modal saat tombol close diklik
+                $triggerEl.addEventListener('click', () => {
+                    modal.hide(); // Sembunyikan modal
+                });
+            } else {
+                console.error(
+                    `Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-hide menunjuk ke ID modal yang benar.`
+                );
+            }
+        });
+    
+        // Function to fetch and populate data
+        async function fetchData() {
+            try {
+                const response = await fetch('get_transactions.php'); // Ganti dengan endpoint API Anda
+                const data = await response.json(); // Asumsikan data dalam format JSON
+    
+                const tableBody = document.querySelector("#pagination-table tbody");
+    
+                // Clear any existing rows in the table body
+                tableBody.innerHTML = '';
+    
+                // Loop melalui data dan buat baris tabel secara dinamis
+                data.forEach(item => {
+                    // Format jumlah uang dalam IDR (Rupiah Indonesia)
+                    const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+    
+                    const row = document.createElement("tr");
+                    row.classList.add('border-b');
+    
+                    let badge_class = item.badge_class;
+    
+                    row.innerHTML = `
+                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                        <td class="px-6 py-4">${formattedAmount}</td>
+                        <td class="px-6 py-4">${item.transaction_date}</td>
+                        <td class="px-6 py-4">
+                            <span 
+                                data-modal-target="popup-modal" 
+                                data-modal-toggle="popup-modal"
+                                data-transaction-id="${item.id}"
+                                data-transaction-image="${item.paymentproof_image}"
+                                data-transaction-title="${item.product_name}"
+                                data-transaction-price="${formattedAmount}"
+                                data-transaction-status="${item.status}"
+                                class="${badge_class}">
+                                ${item.status}
+                            </span>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+    
+                // Initialize the DataTable after the data is populated
+                if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+                    new simpleDatatables.DataTable("#pagination-table", {
+                        searchable: true,
+                        paging: true,
+                        perPage: 5,
+                        perPageSelect: [5, 10, 15, 20, 25],
+                        sortable: false
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+    
+        // Call fetchData to populate the table
+        fetchData();
+    </script>
+
 </body>
 
 </html>
