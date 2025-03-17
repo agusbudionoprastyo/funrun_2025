@@ -152,16 +152,16 @@
                     <span class="sr-only">Close modal</span>
                 </button>
                 <div class="p-4 md:p-5 text-left">
-                    <h5 class="text-md font-semibold tracking-tight text-gray-900" id="modal-title">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
+                    <h5 class="text-md font-semibold tracking-tight text-gray-900" id="modal-title"></h5>
                     <div class="flex items-center justify-between">
-                        <span class="text-lg font-bold text-gray-900" id="modal-price">Rp168.000</span>
+                        <span class="text-lg font-bold text-gray-900" id="modal-price"></span>
                         <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" id="modal-status">Verified</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
     <script>
@@ -178,17 +178,14 @@
                 // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
                 $triggerEl.addEventListener('click', () => {
                     // Ambil data terkait untuk ditampilkan di modal
-                    const transactionId = $triggerEl.getAttribute('data-transaction-id');
                     const transactionImage = $triggerEl.getAttribute('data-transaction-image');  // Ambil URL gambar transaksi
                     const transactionTitle = $triggerEl.getAttribute('data-transaction-title');
                     const transactionPrice = $triggerEl.getAttribute('data-transaction-price');
-                    const transactionStatus = $triggerEl.getAttribute('data-transaction-status');
                     
                     // Update gambar dan informasi modal
                     document.getElementById('modal-image').src = transactionImage;
                     document.getElementById('modal-title').innerText = transactionTitle;
                     document.getElementById('modal-price').innerText = transactionPrice;
-                    document.getElementById('modal-status').innerText = transactionStatus;
     
                     // Tampilkan modal
                     modal.show();
@@ -252,11 +249,9 @@
                             <span 
                                 data-modal-target="popup-modal" 
                                 data-modal-toggle="popup-modal"
-                                data-transaction-id="${item.id}"
-                                data-transaction-image="${item.paymentproof_image}"
-                                data-transaction-title="${item.product_name}"
+                                data-transaction-image="${item.payment_prooft}"
+                                data-transaction-title="${item.name_1}"
                                 data-transaction-price="${formattedAmount}"
-                                data-transaction-status="${item.status}"
                                 class="${badge_class}">
                                 ${item.status}
                             </span>
