@@ -141,71 +141,71 @@
         fetchData();
     </script> -->
 
-    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full max-w-md max-h-full">
-            <div class="relative bg-white shadow-sm">
-                <img src="/users/paymentprooft/bt.jpg" alt="" />
-                <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-                <div class="p-4 md:p-5 text-left">
-                    <h5 class="text-md font-semibold tracking-tight text-gray-900">Transaction Details</h5>
-                    <div class="mt-2">
-                        <p><strong>Name:</strong> <span id="modal-name"></span></p>
-                        <p><strong>Email:</strong> <span id="modal-email"></span></p>
-                        <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
-                        <p><strong>Status:</strong> <span id="modal-status"></span></p>
-                        <p><strong>Amount:</strong> <span id="modal-amount"></span></p>
-                        <p><strong>Transaction Date:</strong> <span id="modal-date"></span></p>
-                    </div>
+    <!-- Modal HTML -->
+<div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white shadow-sm">
+            <img src="/users/paymentprooft/bt.jpg" alt="" />
+            <button type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-left">
+                <h5 class="text-md font-semibold tracking-tight text-gray-900">Transaction Details</h5>
+                <div class="mt-2">
+                    <p><strong>Name:</strong> <span id="modal-name"></span></p>
+                    <p><strong>Email:</strong> <span id="modal-email"></span></p>
+                    <p><strong>Phone:</strong> <span id="modal-phone"></span></p>
+                    <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                    <p><strong>Amount:</strong> <span id="modal-amount"></span></p>
+                    <p><strong>Transaction Date:</strong> <span id="modal-date"></span></p>
                 </div>
             </div>
         </div>
     </div>
-    
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 <script>
-// Fungsi untuk menampilkan modal dengan data yang relevan
-document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
-    const modalId = $triggerEl.getAttribute('data-modal-target');
-    const $modalEl = document.getElementById(modalId);
+    // Fungsi untuk menampilkan modal dengan data yang relevan
+    document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
+        const modalId = $triggerEl.getAttribute('data-modal-target');
+        const $modalEl = document.getElementById(modalId);
 
-    if ($modalEl) {
-        const modal = new Modal($modalEl); // Inisialisasi modal dengan Flowbite
+        if ($modalEl) {
+            const modal = new Modal($modalEl); // Inisialisasi modal dengan Flowbite
 
-        // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
-        $triggerEl.addEventListener('click', (event) => {
-            // Ambil data dari tombol yang diklik
-            const name = event.currentTarget.getAttribute('data-name');
-            const email = event.currentTarget.getAttribute('data-email');
-            const phone = event.currentTarget.getAttribute('data-phone');
-            const status = event.currentTarget.getAttribute('data-status');
-            const amount = event.currentTarget.getAttribute('data-amount');
-            const date = event.currentTarget.getAttribute('data-date');
+            // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
+            $triggerEl.addEventListener('click', (event) => {
+                // Ambil data dari tombol yang diklik
+                const name = event.currentTarget.getAttribute('data-name');
+                const email = event.currentTarget.getAttribute('data-email');
+                const phone = event.currentTarget.getAttribute('data-phone');
+                const status = event.currentTarget.getAttribute('data-status');
+                const amount = event.currentTarget.getAttribute('data-amount');
+                const date = event.currentTarget.getAttribute('data-date');
 
-            // Debug: Log data untuk memastikan data sudah diambil dengan benar
-            console.log("Data yang diambil:", { name, email, phone, status, amount, date });
+                // Debug: Log data untuk memastikan data sudah diambil dengan benar
+                console.log("Data yang diambil:", { name, email, phone, status, amount, date });
 
-            // Tampilkan data tersebut di modal
-            document.getElementById('modal-name').textContent = name;
-            document.getElementById('modal-email').textContent = email;
-            document.getElementById('modal-phone').textContent = phone;
-            document.getElementById('modal-status').textContent = status;
-            document.getElementById('modal-amount').textContent = amount;
-            document.getElementById('modal-date').textContent = date;
+                // Tampilkan data tersebut di modal
+                document.getElementById('modal-name').textContent = name;
+                document.getElementById('modal-email').textContent = email;
+                document.getElementById('modal-phone').textContent = phone;
+                document.getElementById('modal-status').textContent = status;
+                document.getElementById('modal-amount').textContent = amount;
+                document.getElementById('modal-date').textContent = date;
 
-            // Tampilkan modal
-            modal.show();
-        });
-    } else {
-        console.error(`Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`);
-    }
-});
+                // Tampilkan modal
+                modal.show(); // Ini akan menampilkan modal
+            });
+        } else {
+            console.error(`Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`);
+        }
+    });
 
     // Fungsi untuk menyembunyikan modal saat tombol close diklik
     document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
@@ -240,8 +240,6 @@ document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
 
             // Loop through the data and create table rows dynamically
             data.forEach(item => {
-
-                // Format the total_amount as IDR (Indonesian Rupiah)
                 const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
 
                 const row = document.createElement("tr");
@@ -250,41 +248,30 @@ document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
                 let badge_class = item.badge_class;
 
                 row.innerHTML = `
-                <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                <td class="px-6 py-4">${formattedAmount}</td>
-                <td class="px-6 py-4">${item.transaction_date}</td>
-                <td class="px-6 py-4">
-                    <button 
-                        data-modal-target="popup-modal" 
-                        data-modal-toggle="popup-modal" 
-                        class="${badge_class}"
-                        data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}"
-                        data-email="${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}"
-                        data-phone="${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}"
-                        data-status="${item.status}"
-                        data-amount="${formattedAmount}"
-                        data-date="${item.transaction_date}">
-                        ${item.status}
-                    </button>
-                </td>
-            `;
+                    <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                    <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                    <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                    <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                    <td class="px-6 py-4">${formattedAmount}</td>
+                    <td class="px-6 py-4">${item.transaction_date}</td>
+                    <td class="px-6 py-4">
+                        <button 
+                            data-modal-target="popup-modal" 
+                            data-modal-toggle="popup-modal" 
+                            class="${badge_class}"
+                            data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}"
+                            data-email="${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}"
+                            data-phone="${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}"
+                            data-status="${item.status}"
+                            data-amount="${formattedAmount}"
+                            data-date="${item.transaction_date}">
+                            ${item.status}
+                        </button>
+                    </td>
+                `;
 
                 tableBody.appendChild(row);
             });
-
-            // Initialize the DataTable after the data is populated
-            if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                new simpleDatatables.DataTable("#pagination-table", {
-                    searchable: true,
-                    paging: true,
-                    perPage: 5,
-                    perPageSelect: [5, 10, 15, 20, 25],
-                    sortable: false
-                });
-            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -293,8 +280,6 @@ document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
     // Call fetchData to populate the table
     fetchData();
 </script>
-
-
     
 </body>
 
