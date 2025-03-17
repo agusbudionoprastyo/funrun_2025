@@ -232,6 +232,12 @@
         // Call fetchData to populate the table
         fetchData();
     
+        // Flowbite modal initialization manually if necessary
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalElement = document.getElementById('popup-modal');
+            const modal = new Flowbite.Modal(modalElement); // Initialize the Flowbite modal
+        });
+    
         // Flowbite handles modal opening and closing automatically via data-modal-toggle
         // You can retrieve the image for the modal dynamically using an event listener
         document.addEventListener('click', function(e) {
@@ -243,8 +249,6 @@
         });
     </script>
     
-    
-
 </body>
 
 </html>
