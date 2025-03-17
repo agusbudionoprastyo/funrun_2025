@@ -140,7 +140,7 @@
         // Call fetchData to populate the table
         fetchData();
     </script> -->
-    
+
 <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <div class="relative bg-white shadow-sm">
@@ -177,6 +177,14 @@
 
             // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
             $triggerEl.addEventListener('click', () => {
+                const transactionImage = $triggerEl.getAttribute('data-transaction-image');  // Ambil URL gambar transaksi
+                const transactionTitle = $triggerEl.getAttribute('data-transaction-title');
+                const transactionPrice = $triggerEl.getAttribute('data-transaction-price');
+                
+                // Update gambar dan informasi modal
+                document.getElementById('modal-image').src = transactionImage;
+                document.getElementById('modal-title').innerText = transactionTitle;
+                document.getElementById('modal-price').innerText = transactionPrice;
                 modal.show(); // Tampilkan modal
             });
         } else {
