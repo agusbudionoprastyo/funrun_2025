@@ -305,7 +305,7 @@ async function fetchData() {
                 const verifiedButton = document.querySelector('[data-modal-target="popup-modal"]');
                 verifiedButton.addEventListener('click', async () => {
                     try {
-                        const response = await fetch('update_payment.php', {
+                        const response = await fetch('update_transactions.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
