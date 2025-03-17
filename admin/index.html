@@ -115,7 +115,7 @@
                     if (item.status === 'paid' || item.status === 'verified') {
                         paymentProofLink = `<a href="../users/paymentprooft/${item.payment_prooft}" target="_blank">${item.status}</a>`;
                     } else {
-                        `${item.status}`
+                        paymentProofLink = `${item.status}`;
                     }
     
                     row.innerHTML = `
