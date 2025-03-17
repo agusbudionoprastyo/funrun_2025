@@ -65,16 +65,16 @@ if ($result->num_rows > 0) {
                 $row['status_text'] = 'Paid';
                 break;
             case 'pending':
-                $row['badge_class'] = 'waiting';
-                $row['status_text'] = 'Waiting';
+                $row['badge_class'] = 'pending';
+                $row['status_text'] = 'Pending';
                 break;
             case 'verified':
-                $row['badge_class'] = 'active';
+                $row['badge_class'] = 'verified';
                 $row['status_text'] = 'Verified';
                 break;
             default:
-                $row['badge_class'] = 'bg-secondary';  // Fallback for any other status
-                $row['status_text'] = 'Inactive';
+                $row['badge_class'] = 'cancel';  // Fallback for any other status
+                $row['status_text'] = 'Cancel';
                 break;
         }
         
