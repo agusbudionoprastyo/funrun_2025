@@ -306,7 +306,7 @@ async function fetchData() {
                 verifiedButton.addEventListener('click', async () => {
                     try {
                         // Send POST request to update the status of the transaction to "verified"
-                        const response = await fetch('update_payment.php', {
+                        const response = await fetch('update_transactions.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
