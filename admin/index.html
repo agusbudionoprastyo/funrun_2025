@@ -273,8 +273,9 @@ async function fetchData() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const modalElement = document.getElementById('popup-modal');
-    const modalInstance = new Flowbite.Modal(modalElement);
+    // No need to manually initialize Flowbite modal, remove this part
+    // const modalElement = document.getElementById('popup-modal');
+    // const modalInstance = new Flowbite.Modal(modalElement);
 
     // Event listener for opening modal
     document.querySelectorAll('[data-modal-target="popup-modal"]').forEach(button => {
@@ -291,11 +292,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modal-amount').textContent = amount;
             document.getElementById('payment-proof-image').src = paymentProof;
 
-            // Show the modal
-            modalInstance.show();
+            // Show the modal using Flowbite's modal behavior
+            const modal = document.getElementById('popup-modal');
+            modal.classList.remove('hidden');
 
             // Get the verified button inside the modal
-            const verifiedButton = modalElement.querySelector('#verified-btn');
+            const verifiedButton = modal.querySelector('#verified-btn');
 
             // Disable the button if the status is not 'paid'
             if (status !== 'paid') {
@@ -325,8 +327,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (result.success) {
                         alert('Status successfully updated to Verified!');
 
-                        // Close the modal
-                        modalInstance.hide();
+                        // Hide the modal after success
+                        modal.classList.add('hidden');
 
                         // Optionally, update the table row status here
                         const statusButton = e.target;
@@ -346,19 +348,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for closing the modal when clicking the close button
     const closeModalButton = document.querySelector('[data-modal-hide="popup-modal"]');
     closeModalButton.addEventListener('click', () => {
-        modalInstance.hide();
+        const modal = document.getElementById('popup-modal');
+        modal.classList.add('hidden');
     });
 
     // Close modal when clicking outside the modal
-    modalElement.addEventListener('click', (e) => {
-        if (e.target === modalElement) {
-            modalInstance.hide();
+    const modal = document.getElementById('popup-modal');
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
         }
     });
 
     // Fetch Data to populate the table
     fetchData();
 });
+
 </script>
 
 
