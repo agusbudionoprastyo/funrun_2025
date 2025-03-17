@@ -177,14 +177,6 @@
 
             // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
             $triggerEl.addEventListener('click', () => {
-                const transactionImage = $triggerEl.getAttribute('data-transaction-image');  // Ambil URL gambar transaksi
-                const transactionTitle = $triggerEl.getAttribute('data-transaction-title');
-                const transactionPrice = $triggerEl.getAttribute('data-transaction-price');
-                
-                // Update gambar dan informasi modal
-                document.getElementById('modal-image').src = transactionImage;
-                document.getElementById('modal-title').innerText = transactionTitle;
-                document.getElementById('modal-price').innerText = transactionPrice;
                 modal.show(); // Tampilkan modal
             });
         } else {
@@ -213,6 +205,7 @@
             );
         }
     });
+
     // Function to fetch and populate data
     async function fetchData() {
         try {
