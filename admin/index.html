@@ -188,7 +188,11 @@
 <!-- Flowbite JS -->
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
+<!-- Flowbite CSS -->
+<link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+
 <script>
+    // Your custom JS code comes after Flowbite JS
     async function fetchData() {
         try {
             const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
@@ -265,6 +269,7 @@
     // Call fetchData to populate the table
     fetchData();
 </script>
+
 
 
 
