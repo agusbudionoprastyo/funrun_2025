@@ -322,6 +322,7 @@ async function fetchData() {
                             alert('Status successfully updated to Verified!');
 
                             // Close the modal
+                            const modal = document.getElementById('popup-modal');
                             modal.classList.add('hidden');
 
                             // Optionally, update the table row status here
@@ -349,6 +350,7 @@ async function fetchData() {
         // Close modal when clicking outside of it
         const modal = document.getElementById('popup-modal');
         modal.addEventListener('click', (e) => {
+            // Check if the click is outside the modal content, then close
             if (e.target === modal) {
                 modal.classList.add('hidden'); // Hide the modal if the background is clicked
             }
