@@ -174,16 +174,10 @@
                         <span class="sr-only">Close modal</span>
                     </button>
                     <div class="p-4 md:p-5 text-left">
-                        <h5 class="text-md font-semibold tracking-tight text-gray-900">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
+                        <h5 id="modal-name" class="text-md font-semibold tracking-tight text-gray-900"></h5>
                         <div class="flex items-center justify-between">
                             <span class="text-lg font-bold text-gray-900">Rp168.000</span>
                             <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Verified</a>
-                        </div>
-        
-                        <!-- Add status placeholder here -->
-                        <div class="mt-4">
-                            <h6 class="text-gray-700">Status:</h6>
-                            <p id="modal-status" class="text-lg font-semibold text-gray-900"></p>
                         </div>
                     </div>
                 </div>
@@ -223,7 +217,7 @@
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">
-                        <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
+                        <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
                         ${item.status}
                         </span>
                     </td>
@@ -235,9 +229,9 @@
             const statusBadges = document.querySelectorAll('[data-modal-toggle="popup-modal"]');
             statusBadges.forEach(badge => {
                 badge.addEventListener('click', (event) => {
-                    const status = event.target.getAttribute('data-status');
+                    const name = event.target.getAttribute('data-name');
                     const paymentProof = event.target.getAttribute('data-payment-proof');
-                    const modalStatusElement = document.getElementById('modal-status');
+                    const modalNameElement = document.getElementById('modal-name');
                     const paymentProofImage = document.getElementById('payment-proof-image');
 
                     modalStatusElement.textContent = status; // Set the status in the modal
