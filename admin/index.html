@@ -175,7 +175,6 @@ async function fetchData() {
             const modal = document.getElementById('popup-modal');
             modal.classList.remove('hidden'); // Remove the 'hidden' class to show the modal
 
-            // Add event listener to the Verified button inside the modal
             verifiedButton.addEventListener('click', async () => {
                 try {
                     // Send POST request to update the status of the transaction to "verified"
@@ -190,7 +189,10 @@ async function fetchData() {
                         }),
                     });
 
+                    // Log the response to check the result
                     const result = await response.json();
+                    console.log('Response:', result);  // Debugging line
+
                     if (result.success) {
                         // Use IziToast for success notification
                         iziToast.success({
@@ -208,6 +210,8 @@ async function fetchData() {
                         const closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
                         closeButton.click(); // Programmatically trigger the modal close
                     } else {
+                        // Log error response
+                        console.log('Failed to update:', result); // Debugging line
                         // Use IziToast for error notification
                         iziToast.error({
                             title: 'Error',
