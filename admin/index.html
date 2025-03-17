@@ -44,7 +44,7 @@
                     <th class="px-6 py-3 font-medium text-gray-900">
                         Transaction Date
                     </th>
-                    <th class="px-6 py-3 text-center font-medium text-gray-900">
+                    <th class="px-6 py-3 font-medium text-gray-900">
                         Status
                     </th>
                 </tr>
@@ -78,6 +78,7 @@
     
                     const row = document.createElement("tr");
                     row.classList.add('border-b'); // Adding a bottom border for each row
+                    let badge_class = item.badge_class;
     
                     row.innerHTML = `
                         <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
@@ -87,7 +88,7 @@
                         <td class="px-6 py-4">${formattedAmount}</td>
                         <td class="px-6 py-4">${item.transaction_date}</td>
                         <td class="px-6 py-4 text-center">
-                            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                            <span class="${badge_class}">
                             ${item.status}
                             </span>
                         </td>
