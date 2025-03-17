@@ -54,8 +54,12 @@
             </tbody>
         </table>
     </div>
+
+    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+        Toggle modal
+    </button>
     
-    <!-- <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <div class="relative bg-white shadow-sm">
                 <img src="/users/paymentprooft/bt.jpg" alt="" />
@@ -74,12 +78,12 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     
     <!-- Flowbite JS -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
-    <!-- <script>
+    <script>
         // Fetch data from your server-side API or database
         async function fetchData() {
             try {
@@ -141,112 +145,6 @@
     
         // Call fetchData to populate the table
         fetchData();
-    </script> -->
-
-    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-full max-w-md max-h-full">
-            <div class="relative bg-white shadow-sm">
-                <img id="payment-proof-img" src="" alt="Payment Proof" class="w-full h-auto" />
-                <button type="button" class="absolute top-3 right-3 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center" data-modal-hide="popup-modal">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                </button>
-                <div class="p-4 md:p-5 text-left">
-                    <h5 class="text-md font-semibold tracking-tight text-gray-900">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
-                    <div class="flex items-center justify-between">
-                        <span class="text-lg font-bold text-gray-900">Rp168.000</span>
-                        <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Verified</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Flowbite JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
-    
-    <script>
-        // Fetch data from your server-side API or database
-        async function fetchData() {
-            try {
-                const response = await fetch('get_transactions.php'); // Ganti dengan API yang sesuai
-                const data = await response.json(); // Menganggap format response JSON
-    
-                const tableBody = document.querySelector("#pagination-table tbody");
-    
-                // Clear any existing rows in the table body
-                tableBody.innerHTML = '';
-    
-                // Loop through the data and create table rows dynamically
-                data.forEach(item => {
-    
-                    // Format the total_amount as IDR (Indonesian Rupiah)
-                    const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
-    
-                    const row = document.createElement("tr");
-                    row.classList.add('border-b');
-                    let badge_class = item.badge_class;
-    
-                    let paymentProofLink = '';
-                    if (item.status === 'paid' || item.status === 'verified') {
-                        paymentProofLink = `<a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" data-payment-proof="${item.payment_prooft}">
-                            <img src="/users/paymentprooft/${item.payment_prooft}" alt="Payment Proof" class="w-12 h-12"/>
-                            ${item.status}</a>`;
-                    } else {
-                        paymentProofLink = `${item.status}`;
-                    }
-    
-                    row.innerHTML = `
-                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                        <td class="px-6 py-4">${formattedAmount}</td>
-                        <td class="px-6 py-4">${item.transaction_date}</td>
-                        <td class="px-6 py-4">
-                            <span class="${badge_class}">
-                            ${paymentProofLink}
-                            </span>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-    
-                // Initialize the DataTable after the data is populated
-                if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                    new simpleDatatables.DataTable("#pagination-table", {
-                        searchable: true,
-                        paging: true,
-                        perPage: 5,
-                        perPageSelect: [5, 10, 15, 20, 25],
-                        sortable: false
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-    
-        // Call fetchData to populate the table
-        fetchData();
-    
-        // Flowbite modal initialization manually if necessary
-        document.addEventListener('DOMContentLoaded', function() {
-            const modalElement = document.getElementById('popup-modal');
-            const modal = new Flowbite.Modal(modalElement); // Initialize the Flowbite modal
-        });
-    
-        // Flowbite handles modal opening and closing automatically via data-modal-toggle
-        // You can retrieve the image for the modal dynamically using an event listener
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.matches('[data-modal-toggle="popup-modal"]')) {
-                const paymentProof = e.target.getAttribute('data-payment-proof');
-                const modalImg = document.getElementById('payment-proof-img');
-                modalImg.src = `/users/paymentprooft/${paymentProof}`;
-            }
-        });
     </script>
     
 </body>
