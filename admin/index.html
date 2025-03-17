@@ -342,7 +342,8 @@ async function fetchData() {
 
         // Event listener to close modal when clicking the close button
         const closeModalButton = document.querySelector('[data-modal-hide="popup-modal"]');
-        closeModalButton.addEventListener('click', () => {
+        closeModalButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event from propagating and triggering other actions
             const modal = document.getElementById('popup-modal');
             modal.classList.add('hidden'); // Hide the modal
         });
@@ -364,6 +365,7 @@ async function fetchData() {
 // Call fetchData to populate the table
 fetchData();
 </script>
+
 
 
 </body>
