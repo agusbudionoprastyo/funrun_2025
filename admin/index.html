@@ -77,8 +77,13 @@
                     const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
     
                     const row = document.createElement("tr");
-                    row.classList.add('border-b'); // Adding a bottom border for each row
+                    row.classList.add('border-b');
                     let badge_class = item.badge_class;
+
+                    let paymentProofLink = '';
+                    if (item.status === 'paid' || item.status === 'verified') {
+                        paymentProofLink = `<a href="${item.payment_proof_url}" target="_blank" class="text-blue-500 hover:underline">${item.status}</a>`;
+                    }
     
                     row.innerHTML = `
                         <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
@@ -89,7 +94,7 @@
                         <td class="px-6 py-4">${item.transaction_date}</td>
                         <td class="px-6 py-4">
                             <span class="${badge_class}">
-                            ${item.status}
+                            ${paymentProofLink}
                             </span>
                         </td>
                     `;
