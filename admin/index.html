@@ -211,7 +211,7 @@ fetchData();
                 <h5 id="modal-name" class="text-md font-semibold tracking-tight text-gray-900">Name Here</h5>
                 <div class="flex items-center justify-between">
                     <span id="modal-amount" class="text-lg font-bold text-gray-900">Rp0</span>
-                    <button type="button" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    <button type="button" id="verified-btn" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                         verified
                     </button>
                 </div>
@@ -302,7 +302,7 @@ async function fetchData() {
                 modal.classList.remove('hidden'); // Show the modal by removing the 'hidden' class
 
                 // Add event listener to the Verified button inside the modal
-                const verifiedButton = modal.querySelector('button');
+                const verifiedButton = modal.querySelector('#verified-btn');
                 verifiedButton.addEventListener('click', async () => {
                     try {
                         // Send POST request to update the status of the transaction to "verified"
@@ -323,7 +323,7 @@ async function fetchData() {
 
                             // Close the modal
                             const modal = document.getElementById('popup-modal');
-                            modal.classList.add('hidden');
+                            modal.classList.add('hidden'); // Hide the modal
 
                             // Optionally, update the table row status here
                             const statusButton = e.target;
@@ -364,6 +364,7 @@ async function fetchData() {
 // Call fetchData to populate the table
 fetchData();
 </script>
+
 
 </body>
 
