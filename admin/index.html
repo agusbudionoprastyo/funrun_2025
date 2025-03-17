@@ -81,65 +81,142 @@
     </div>
     
     <!-- Flowbite JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script> -->
 
     <script>
-        // Fetch data from your server-side API or database
-        async function fetchData() {
-            try {
-                const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
-                const data = await response.json(); // Assuming the response is in JSON format
+        // // Fetch data from your server-side API or database
+        // async function fetchData() {
+        //     try {
+        //         const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+        //         const data = await response.json(); // Assuming the response is in JSON format
     
-                const tableBody = document.querySelector("#pagination-table tbody");
+        //         const tableBody = document.querySelector("#pagination-table tbody");
     
-                // Clear any existing rows in the table body
-                tableBody.innerHTML = '';
+        //         // Clear any existing rows in the table body
+        //         tableBody.innerHTML = '';
     
-                // Loop through the data and create table rows dynamically
-                data.forEach(item => {
+        //         // Loop through the data and create table rows dynamically
+        //         data.forEach(item => {
                     
-                    // Format the total_amount as IDR (Indonesian Rupiah)
-                    const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+        //             // Format the total_amount as IDR (Indonesian Rupiah)
+        //             const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
     
-                    const row = document.createElement("tr");
-                    row.classList.add('border-b');
+        //             const row = document.createElement("tr");
+        //             row.classList.add('border-b');
 
-                    let badge_class = item.badge_class;
+        //             let badge_class = item.badge_class;
     
-                    row.innerHTML = `
-                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                        <td class="px-6 py-4">${formattedAmount}</td>
-                        <td class="px-6 py-4">${item.transaction_date}</td>
-                        <td class="px-6 py-4">
-                            <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
-                            ${item.status}
-                            </span>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
+        //             row.innerHTML = `
+        //                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+        //                 <td class="px-6 py-4">${formattedAmount}</td>
+        //                 <td class="px-6 py-4">${item.transaction_date}</td>
+        //                 <td class="px-6 py-4">
+        //                     <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
+        //                     ${item.status}
+        //                     </span>
+        //                 </td>
+        //             `;
+        //             tableBody.appendChild(row);
+        //         });
     
-                // Initialize the DataTable after the data is populated
-                if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                    new simpleDatatables.DataTable("#pagination-table", {
-                        searchable: true,
-                        paging: true,
-                        perPage: 5,
-                        perPageSelect: [5, 10, 15, 20, 25],
-                        sortable: false
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
+        //         // Initialize the DataTable after the data is populated
+        //         if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+        //             new simpleDatatables.DataTable("#pagination-table", {
+        //                 searchable: true,
+        //                 paging: true,
+        //                 perPage: 5,
+        //                 perPageSelect: [5, 10, 15, 20, 25],
+        //                 sortable: false
+        //             });
+        //         }
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // }
     
-        // Call fetchData to populate the table
-        fetchData();
+        // // Call fetchData to populate the table
+        // fetchData();
     </script>
+
+<script>
+    // Function to fetch and populate data
+    async function fetchData() {
+        try {
+            const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+            const data = await response.json(); // Assuming the response is in JSON format
+
+            const tableBody = document.querySelector("#pagination-table tbody");
+
+            // Clear any existing rows in the table body
+            tableBody.innerHTML = '';
+
+            // Loop through the data and create table rows dynamically
+            data.forEach(item => {
+
+                // Format the total_amount as IDR (Indonesian Rupiah)
+                const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+
+                const row = document.createElement("tr");
+                row.classList.add('border-b');
+
+                let badge_class = item.badge_class;
+
+                row.innerHTML = `
+                    <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                    <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                    <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                    <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                    <td class="px-6 py-4">${formattedAmount}</td>
+                    <td class="px-6 py-4">${item.transaction_date}</td>
+                    <td class="px-6 py-4">
+                        <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
+                        ${item.status}
+                        </span>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Initialize the DataTable after the data is populated
+            if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+                new simpleDatatables.DataTable("#pagination-table", {
+                    searchable: true,
+                    paging: true,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 15, 20, 25],
+                    sortable: false
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Hide modal functionality on clicking the button with data-modal-hide
+    document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
+        const modalId = $triggerEl.getAttribute('data-modal-hide');
+        const $modalEl = document.getElementById(modalId);
+
+        if ($modalEl) {
+            const hideModal = () => {
+                // Hide the modal by removing the 'hidden' class
+                $modalEl.classList.add('hidden');
+            };
+            $triggerEl.addEventListener('click', hideModal);
+        } else {
+            console.error(
+                `Modal with id ${modalId} does not exist. Are you sure that the data-modal-hide attribute points to the correct modal id?`
+            );
+        }
+    });
+
+    // Call fetchData to populate the table
+    fetchData();
+</script>
+
     
 </body>
 
