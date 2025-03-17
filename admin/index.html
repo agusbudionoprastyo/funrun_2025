@@ -312,7 +312,7 @@ async function fetchData() {
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                                id: transactionId,
+                                transaction_id: transactionId,
                                 status: 'verified', // Update the status to 'verified'
                             }),
                         });
