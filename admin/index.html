@@ -170,40 +170,42 @@
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 <script>
-    // Fungsi untuk menampilkan modal dengan data yang relevan
-    document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
-        const modalId = $triggerEl.getAttribute('data-modal-target');
-        const $modalEl = document.getElementById(modalId);
+// Fungsi untuk menampilkan modal dengan data yang relevan
+document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
+    const modalId = $triggerEl.getAttribute('data-modal-target');
+    const $modalEl = document.getElementById(modalId);
 
-        if ($modalEl) {
-            const modal = new Modal($modalEl); // Inisialisasi modal dengan Flowbite
+    if ($modalEl) {
+        const modal = new Modal($modalEl); // Inisialisasi modal dengan Flowbite
 
-            // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
-            $triggerEl.addEventListener('click', (event) => {
-                // Ambil data dari tombol yang diklik
-                const name = event.currentTarget.getAttribute('data-name');
-                const email = event.currentTarget.getAttribute('data-email');
-                const phone = event.currentTarget.getAttribute('data-phone');
-                const status = event.currentTarget.getAttribute('data-status');
-                const amount = event.currentTarget.getAttribute('data-amount');
-                const date = event.currentTarget.getAttribute('data-date');
+        // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
+        $triggerEl.addEventListener('click', (event) => {
+            // Ambil data dari tombol yang diklik
+            const name = event.currentTarget.getAttribute('data-name');
+            const email = event.currentTarget.getAttribute('data-email');
+            const phone = event.currentTarget.getAttribute('data-phone');
+            const status = event.currentTarget.getAttribute('data-status');
+            const amount = event.currentTarget.getAttribute('data-amount');
+            const date = event.currentTarget.getAttribute('data-date');
 
-                // Tampilkan data tersebut di modal
-                document.getElementById('modal-name').textContent = name;
-                document.getElementById('modal-email').textContent = email;
-                document.getElementById('modal-phone').textContent = phone;
-                document.getElementById('modal-status').textContent = status;
-                document.getElementById('modal-amount').textContent = amount;
-                document.getElementById('modal-date').textContent = date;
+            // Debug: Log data untuk memastikan data sudah diambil dengan benar
+            console.log("Data yang diambil:", { name, email, phone, status, amount, date });
 
-                // Tampilkan modal
-                modal.show();
-            });
-        } else {
-            console.error(`Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`);
-        }
-    });
+            // Tampilkan data tersebut di modal
+            document.getElementById('modal-name').textContent = name;
+            document.getElementById('modal-email').textContent = email;
+            document.getElementById('modal-phone').textContent = phone;
+            document.getElementById('modal-status').textContent = status;
+            document.getElementById('modal-amount').textContent = amount;
+            document.getElementById('modal-date').textContent = date;
 
+            // Tampilkan modal
+            modal.show();
+        });
+    } else {
+        console.error(`Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`);
+    }
+});
 
     // Fungsi untuk menyembunyikan modal saat tombol close diklik
     document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
