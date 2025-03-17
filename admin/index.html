@@ -236,9 +236,9 @@
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">
-                        <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
+                        <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
                         ${item.status}
-                        </span>
+                        </button>
                     </td>
                 `;
                 tableBody.appendChild(row);
