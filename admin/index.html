@@ -222,7 +222,7 @@ async function fetchData() {
             let isDisabled = '';
 
             // Disable button if status is not 'Paid' or 'Verified'
-            if (buttonStatus !== 'Paid' && buttonStatus !== 'Verified') {
+            if (buttonStatus !== 'paid' && buttonStatus !== 'verified') {
                 isDisabled = 'disabled';
                 buttonClass += ' opacity-50 cursor-not-allowed'; // Add classes to make it visually disabled
             }
