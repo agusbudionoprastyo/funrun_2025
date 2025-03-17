@@ -55,69 +55,150 @@
         </table>
     </div>
 
-
-<button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" type="button">
-    Toggle modal
-    </button>
-    
+    <!-- Modal -->
     <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
-            <div class="relative bg-white rounded-lg shadow-sm">
-                <img class="rounded-t-lg" src="/users/paymentprooft/bt.jpg" alt="" />
-                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
+            <div class="relative bg-white shadow-sm">
+                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal" onclick="closeModal()">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                     </svg>
                     <span class="sr-only">Close modal</span>
                 </button>
-                <div class="p-4 md:p-5 text-center">
-                    <h3 class="mb-5 text-sm font-normal text-gray-500 dark:text-gray-400">Are you sure you want to verified this transaction?</h3>
-                    <button data-modal-hide="popup-modal" type="button" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
-                        Yes, I'm sure
-                    </button>
-                    <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">No, cancel</button>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-3xl font-bold text-gray-900">$599</span>
-                    <a href="#" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Add to cart</a>
+                <div class="p-4 md:p-5 text-left">
+                    <h5 id="modal-name" class="text-md font-semibold tracking-tight text-gray-900"></h5>
+                    <div class="flex items-center justify-between">
+                        <span id="modal-amount" class="text-lg font-bold text-gray-900"></span>
+                        <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center" id="modal-status">Verified</a>
+                    </div>
+                    <div id="modal-payment-proof" class="mt-4">
+                        <!-- Gambar bukti pembayaran akan ditampilkan di sini -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    
 
     <!-- Flowbite JS -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
     <script>
+        // // Fetch data from your server-side API or database
+        // async function fetchData() {
+        //     try {
+        //         const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+        //         const data = await response.json(); // Assuming the response is in JSON format
+    
+        //         const tableBody = document.querySelector("#pagination-table tbody");
+    
+        //         // Clear any existing rows in the table body
+        //         tableBody.innerHTML = '';
+    
+        //         // Loop through the data and create table rows dynamically
+        //         data.forEach(item => {
+                    
+        //             // Format the total_amount as IDR (Indonesian Rupiah)
+        //             const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+    
+        //             const row = document.createElement("tr");
+        //             row.classList.add('border-b');
+        //             let badge_class = item.badge_class;
+
+        //             let paymentProofLink = '';
+        //             if (item.status === 'paid' || item.status === 'verified') {
+        //                 paymentProofLink = `<a href="../users/paymentprooft/${item.payment_prooft}" target="_blank">${item.status}</a>`;
+        //             } else {
+        //                 paymentProofLink = `${item.status}`;
+        //             }
+    
+        //             row.innerHTML = `
+        //                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+        //                 <td class="px-6 py-4">${formattedAmount}</td>
+        //                 <td class="px-6 py-4">${item.transaction_date}</td>
+        //                 <td class="px-6 py-4">
+        //                     <span class="${badge_class}">
+        //                     ${paymentProofLink}
+        //                     </span>
+        //                 </td>
+        //             `;
+        //             tableBody.appendChild(row);
+        //         });
+    
+        //         // Initialize the DataTable after the data is populated
+        //         if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+        //             new simpleDatatables.DataTable("#pagination-table", {
+        //                 searchable: true,
+        //                 paging: true,
+        //                 perPage: 5,
+        //                 perPageSelect: [5, 10, 15, 20, 25],
+        //                 sortable: false
+        //             });
+        //         }
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // }
+    
+        // // Call fetchData to populate the table
+        // fetchData();
+
+        // Function to open modal and populate with data
+        function openModal(item) {
+            const modal = document.getElementById("popup-modal");
+            const modalName = document.getElementById("modal-name");
+            const modalAmount = document.getElementById("modal-amount");
+            const modalStatus = document.getElementById("modal-status");
+            const modalPaymentProof = document.getElementById("modal-payment-proof");  // Container for payment proof image
+
+            // Set modal content
+            modalName.innerText = item.name_1;
+            modalAmount.innerText = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+            modalStatus.innerText = item.status;
+
+            // Menampilkan bukti pembayaran dalam modal
+            if (item.status === 'paid' || item.status === 'verified') {
+                // Jika statusnya "paid" atau "verified", tampilkan gambar bukti pembayaran
+                modalPaymentProof.innerHTML = `<img src="../users/paymentprooft/${item.payment_prooft}" alt="Payment Proof" class="w-full h-auto" />`;
+            } else {
+                // Jika status tidak "paid" atau "verified", tampilkan teks "No proof available"
+                modalPaymentProof.innerHTML = "<p>No proof available</p>";
+            }
+
+            // Show modal
+            modal.classList.remove("hidden");
+        }
+
+        // Function to close modal
+        function closeModal() {
+            const modal = document.getElementById("popup-modal");
+            modal.classList.add("hidden");
+        }
+
         // Fetch data from your server-side API or database
         async function fetchData() {
             try {
                 const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
                 const data = await response.json(); // Assuming the response is in JSON format
-    
+
                 const tableBody = document.querySelector("#pagination-table tbody");
-    
+
                 // Clear any existing rows in the table body
                 tableBody.innerHTML = '';
-    
+
                 // Loop through the data and create table rows dynamically
                 data.forEach(item => {
-                    
                     // Format the total_amount as IDR (Indonesian Rupiah)
                     const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
-    
+
                     const row = document.createElement("tr");
                     row.classList.add('border-b');
                     let badge_class = item.badge_class;
 
-                    let paymentProofLink = '';
-                    if (item.status === 'paid' || item.status === 'verified') {
-                        paymentProofLink = `<a href="../users/paymentprooft/${item.payment_prooft}" target="_blank">${item.status}</a>`;
-                    } else {
-                        paymentProofLink = `${item.status}`;
-                    }
-    
+                    let paymentProofLink = ''; // Not needed anymore, since we're handling image directly in the modal
+
                     row.innerHTML = `
                         <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
                         <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
@@ -127,13 +208,19 @@
                         <td class="px-6 py-4">${item.transaction_date}</td>
                         <td class="px-6 py-4">
                             <span class="${badge_class}">
-                            ${paymentProofLink}
+                                ${item.status}
                             </span>
                         </td>
                     `;
+
+                    // Add click event to open the modal
+                    row.addEventListener("click", function() {
+                        openModal(item);  // Panggil fungsi openModal dengan item yang sesuai
+                    });
+
                     tableBody.appendChild(row);
                 });
-    
+
                 // Initialize the DataTable after the data is populated
                 if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
                     new simpleDatatables.DataTable("#pagination-table", {
@@ -148,9 +235,10 @@
                 console.error('Error fetching data:', error);
             }
         }
-    
+
         // Call fetchData to populate the table
         fetchData();
+
     </script>
 
 </body>
