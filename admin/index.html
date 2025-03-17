@@ -144,6 +144,46 @@
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 <script>
+    // Fungsi untuk menampilkan dan menyembunyikan modal
+    document.querySelectorAll('[data-modal-toggle]').forEach(($triggerEl) => {
+        // Ambil ID modal dari atribut data-modal-target
+        const modalId = $triggerEl.getAttribute('data-modal-target');
+        const $modalEl = document.getElementById(modalId);
+
+        if ($modalEl) {
+            // Inisialisasi modal dengan Flowbite
+            const modal = new Modal($modalEl);
+
+            // Tampilkan modal saat elemen yang memiliki data-modal-toggle diklik
+            $triggerEl.addEventListener('click', () => {
+                modal.show(); // Tampilkan modal
+            });
+        } else {
+            console.error(
+                `Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-target menunjuk ke ID modal yang benar.`
+            );
+        }
+    });
+
+    // Fungsi untuk menyembunyikan modal saat tombol close diklik
+    document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
+        const modalId = $triggerEl.getAttribute('data-modal-hide');
+        const $modalEl = document.getElementById(modalId);
+
+        if ($modalEl) {
+            // Inisialisasi modal dengan Flowbite
+            const modal = new Modal($modalEl);
+
+            // Sembunyikan modal saat tombol close diklik
+            $triggerEl.addEventListener('click', () => {
+                modal.hide(); // Sembunyikan modal
+            });
+        } else {
+            console.error(
+                `Modal dengan ID ${modalId} tidak ditemukan. Pastikan data-modal-hide menunjuk ke ID modal yang benar.`
+            );
+        }
+    });
     // Function to fetch and populate data
     async function fetchData() {
         try {
@@ -196,29 +236,6 @@
             console.error('Error fetching data:', error);
         }
     }
-
-    // Hide modal functionality on clicking the button with data-modal-hide
-    document.querySelectorAll('[data-modal-hide]').forEach(($triggerEl) => {
-        const modalId = $triggerEl.getAttribute('data-modal-hide');
-        const $modalEl = document.getElementById(modalId);
-
-        if ($modalEl) {
-            // Initialize the Flowbite modal
-            const modal = new Modal($modalEl); // Initialize the modal from Flowbite
-
-            // Function to hide the modal
-            const hideModal = () => {
-                modal.hide(); // Use Flowbite's modal hide method
-            };
-
-            // Add the event listener for the hide button
-            $triggerEl.addEventListener('click', hideModal);
-        } else {
-            console.error(
-                `Modal with id ${modalId} does not exist. Are you sure that the data-modal-hide attribute points to the correct modal id?`
-            );
-        }
-    });
 
     // Call fetchData to populate the table
     fetchData();
