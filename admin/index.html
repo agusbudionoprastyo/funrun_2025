@@ -182,7 +182,7 @@
                 <h5 id="modal-name" class="text-md font-semibold tracking-tight text-gray-900">Name Here</h5>
                 <div class="flex items-center justify-between">
                     <span id="modal-amount" class="text-lg font-bold text-gray-900">Rp0</span>
-                    <a href="#" id="modal-status-link" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                         Verified
                     </a>
                 </div>
@@ -250,14 +250,14 @@ async function fetchData() {
             button.addEventListener('click', (e) => {
                 // Get the data from the clicked button
                 const name = e.target.getAttribute('data-name');
-                const status = e.target.getAttribute('data-status');
+                // const status = e.target.getAttribute('data-status');
                 const paymentProof = e.target.getAttribute('data-payment-proof');
                 const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
 
                 // Update the modal content dynamically
                 document.getElementById('modal-name').textContent = name; // Set name
                 document.getElementById('modal-amount').textContent = amount; // Set amount
-                document.getElementById('modal-status-link').textContent = status; // Set status text
+                // document.getElementById('modal-status-link').textContent = status; // Set status text
                 document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
 
                 // Show the modal
