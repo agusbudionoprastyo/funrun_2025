@@ -61,16 +61,16 @@ if ($result->num_rows > 0) {
         // Dynamically set the badge class based on the transaction status
         switch ($row['status']) {
             case 'paid':
-                $row['badge_class'] = 'bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300';
+                $row['badge_class'] = 'bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
                 break;
             case 'pending':
-                $row['badge_class'] = 'bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300';
+                $row['badge_class'] = 'bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
                 break;
             case 'verified':
-                $row['badge_class'] = 'bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-pink-900 dark:text-pink-300';
+                $row['badge_class'] = 'bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
                 break;
             default:
-                $row['badge_class'] = 'bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full dark:bg-gray-700 dark:text-gray-300';
+                $row['badge_class'] = 'bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
                 break;
         }
         
