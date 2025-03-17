@@ -82,7 +82,7 @@
 
                     let paymentProofLink = '';
                     if (item.status === 'paid' || item.status === 'verified') {
-                        paymentProofLink = `<a href="users/paymentprooft/${item.payment_prooft}" target="_blank">${item.status}</a>`;
+                        paymentProofLink = `<a href="../users/paymentprooft/${item.payment_prooft}" target="_blank">${item.status}</a>`;
                     }
     
                     row.innerHTML = `
