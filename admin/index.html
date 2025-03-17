@@ -192,6 +192,7 @@ fetchData();
 </script> -->
 
 <!-- Modal Structure -->
+<!-- Modal Structure -->
 <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <div class="relative bg-white shadow-sm">
@@ -228,26 +229,16 @@ fetchData();
 async function fetchData() {
     try {
         const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
-        if (!response.ok) {
-            throw new Error('Failed to fetch transactions');
-        }
-
         const data = await response.json(); // Assuming the response is in JSON format
 
         const tableBody = document.querySelector("#pagination-table tbody");
+        tableBody.innerHTML = ''; // Clear existing rows
 
-        // Clear any existing rows in the table body
-        tableBody.innerHTML = '';
-
-        // Loop through the data and create table rows dynamically
         data.forEach(item => {
-            // Format the total_amount as IDR (Indonesian Rupiah)
             const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
 
             const row = document.createElement("tr");
             row.classList.add('border-b');
-
-            let badge_class = item.badge_class;
 
             row.innerHTML = `
                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
@@ -257,7 +248,7 @@ async function fetchData() {
                 <td class="px-6 py-4">${formattedAmount}</td>
                 <td class="px-6 py-4">${item.transaction_date}</td>
                 <td class="px-6 py-4">
-                    <a href="#" data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}" data-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
+                    <a href="#" data-modal-target="popup-modal" data-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
                         ${item.status}
                     </a>
                 </td>
@@ -265,111 +256,44 @@ async function fetchData() {
             tableBody.appendChild(row);
         });
 
-        // Initialize the DataTable after the data is populated
-        if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-            new simpleDatatables.DataTable("#pagination-table", {
-                searchable: true,
-                paging: true,
-                perPage: 5,
-                perPageSelect: [5, 10, 15, 20, 25],
-                sortable: false
-            });
-        }
     } catch (error) {
         console.error('Error fetching data:', error);
         alert('Error fetching data');
     }
 }
 
-// Open Modal and Update Content
-function openModal(e) {
-    const name = e.target.getAttribute('data-name');
-    const paymentProof = e.target.getAttribute('data-payment-proof');
-    const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
-    const transactionId = e.target.getAttribute('data-id');
-    const status = e.target.getAttribute('data-status');
-
-    // Update modal content dynamically
-    document.getElementById('modal-name').textContent = name;
-    document.getElementById('modal-amount').textContent = amount;
-    document.getElementById('payment-proof-image').src = paymentProof;
-
-    // Show the modal
-    const modal = document.getElementById('popup-modal');
-    modal.classList.remove('hidden');
-
-    // Get the verified button inside the modal
-    const verifiedButton = modal.querySelector('#verified-btn');
-
-    // Disable the button if the status is not 'paid'
-    if (status !== 'paid') {
-        verifiedButton.setAttribute('disabled', 'true');
-        verifiedButton.classList.add('opacity-50', 'cursor-not-allowed');
-    } else {
-        verifiedButton.removeAttribute('disabled');
-        verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
-    }
-
-    // Event listener for Verified button inside modal
-    verifiedButton.onclick = async function() {
-        try {
-            const response = await fetch('update_transactions.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    transaction_id: transactionId,
-                    status: 'verified', // Update the status to 'verified'
-                }),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                alert('Status successfully updated to Verified!');
-                modal.classList.add('hidden'); // Close the modal
-            } else {
-                alert('Failed to update status');
-            }
-        } catch (error) {
-            console.error('Error updating status:', error);
-            alert('Error updating status');
-        }
-    };
-}
-
-// Close Modal
-function closeModal() {
-    const modal = document.getElementById('popup-modal');
-    modal.classList.add('hidden');
-}
-
-// Close Modal on Background Click
-function closeModalOnBackgroundClick(e) {
-    const modal = document.getElementById('popup-modal');
-    if (e.target === modal) {
-        closeModal();
-    }
-}
-
-// Add Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Open Modal on Row Click
-    document.querySelectorAll('[data-modal-target="popup-modal"]').forEach(button => {
-        button.addEventListener('click', openModal);
-    });
+    const modalElement = document.getElementById('popup-modal');
+    
+    if (modalElement) {
+        const modalInstance = new Flowbite.Modal(modalElement);
+        
+        // Event listener for opening modal
+        document.querySelectorAll('[data-modal-target="popup-modal"]').forEach(button => {
+            button.addEventListener('click', () => {
+                modalInstance.show(); // Show modal when clicked
+            });
+        });
 
-    // Close Modal on Close Button Click
-    document.querySelector('[data-modal-hide="popup-modal"]').addEventListener('click', closeModal);
-
-    // Close Modal on Background Click
-    const modal = document.getElementById('popup-modal');
-    modal.addEventListener('click', closeModalOnBackgroundClick);
+        // Event listener for closing modal
+        const closeModalButton = document.querySelector('[data-modal-hide="popup-modal"]');
+        closeModalButton.addEventListener('click', () => {
+            modalInstance.hide(); // Hide modal when close button is clicked
+        });
+        
+        // Close modal when clicking outside
+        modalElement.addEventListener('click', (e) => {
+            if (e.target === modalElement) {
+                modalInstance.hide();
+            }
+        });
+    }
 
     // Fetch Data
     fetchData();
 });
 </script>
+
 
 </body>
 
