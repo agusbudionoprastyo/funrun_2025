@@ -55,11 +55,11 @@
         </table>
     </div>
 
-    <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
+    <!-- <button data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button">
         Toggle modal
-    </button>
+    </button> -->
     
-    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <!-- <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
             <div class="relative bg-white shadow-sm">
                 <img src="/users/paymentprooft/bt.jpg" alt="" />
@@ -78,68 +78,163 @@
                 </div>
             </div>
         </div>
+    </div> -->
+    <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-full max-w-md max-h-full">
+            <div class="relative bg-white shadow-sm">
+                <img src="/users/paymentprooft/bt.jpg" alt="" />
+                <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="popup-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+                <div class="p-4 md:p-5 text-left">
+                    <h5 class="text-md font-semibold tracking-tight text-gray-900">Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport</h5>
+                    <div class="flex items-center justify-between">
+                        <span class="text-lg font-bold text-gray-900">Rp168.000</span>
+                        <a href="#" class="bg-pink-100 text-pink-800 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Verified</a>
+                    </div>
+                    
+                    <!-- Add status placeholder here -->
+                    <div class="mt-4">
+                        <h6 class="text-gray-700">Status:</h6>
+                        <p id="modal-status" class="text-lg font-semibold text-gray-900"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
     <!-- Flowbite JS -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
     <script>
-        // Fetch data from your server-side API or database
-        async function fetchData() {
-            try {
-                const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
-                const data = await response.json(); // Assuming the response is in JSON format
+        // // Fetch data from your server-side API or database
+        // async function fetchData() {
+        //     try {
+        //         const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+        //         const data = await response.json(); // Assuming the response is in JSON format
     
-                const tableBody = document.querySelector("#pagination-table tbody");
+        //         const tableBody = document.querySelector("#pagination-table tbody");
     
-                // Clear any existing rows in the table body
-                tableBody.innerHTML = '';
+        //         // Clear any existing rows in the table body
+        //         tableBody.innerHTML = '';
     
-                // Loop through the data and create table rows dynamically
-                data.forEach(item => {
+        //         // Loop through the data and create table rows dynamically
+        //         data.forEach(item => {
                     
-                    // Format the total_amount as IDR (Indonesian Rupiah)
-                    const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+        //             // Format the total_amount as IDR (Indonesian Rupiah)
+        //             const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
     
-                    const row = document.createElement("tr");
-                    row.classList.add('border-b');
+        //             const row = document.createElement("tr");
+        //             row.classList.add('border-b');
 
-                    let badge_class = item.badge_class;
+        //             let badge_class = item.badge_class;
     
-                    row.innerHTML = `
-                        <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                        <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                        <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                        <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                        <td class="px-6 py-4">${formattedAmount}</td>
-                        <td class="px-6 py-4">${item.transaction_date}</td>
-                        <td class="px-6 py-4">
-                            <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
-                            ${item.status}
-                            </span>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
+        //             row.innerHTML = `
+        //                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+        //                 <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+        //                 <td class="px-6 py-4">${formattedAmount}</td>
+        //                 <td class="px-6 py-4">${item.transaction_date}</td>
+        //                 <td class="px-6 py-4">
+        //                     <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}">
+        //                     ${item.status}
+        //                     </span>
+        //                 </td>
+        //             `;
+        //             tableBody.appendChild(row);
+        //         });
     
-                // Initialize the DataTable after the data is populated
-                if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                    new simpleDatatables.DataTable("#pagination-table", {
-                        searchable: true,
-                        paging: true,
-                        perPage: 5,
-                        perPageSelect: [5, 10, 15, 20, 25],
-                        sortable: false
-                    });
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
+        //         // Initialize the DataTable after the data is populated
+        //         if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+        //             new simpleDatatables.DataTable("#pagination-table", {
+        //                 searchable: true,
+        //                 paging: true,
+        //                 perPage: 5,
+        //                 perPageSelect: [5, 10, 15, 20, 25],
+        //                 sortable: false
+        //             });
+        //         }
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // }
+    
+        // // Call fetchData to populate the table
+        // fetchData();
+
+        // Fetch data from your server-side API or database
+async function fetchData() {
+    try {
+        const response = await fetch('get_transactions.php'); // Replace with your actual API endpoint
+        const data = await response.json(); // Assuming the response is in JSON format
+
+        const tableBody = document.querySelector("#pagination-table tbody");
+
+        // Clear any existing rows in the table body
+        tableBody.innerHTML = '';
+
+        // Loop through the data and create table rows dynamically
+        data.forEach(item => {
+            // Format the total_amount as IDR (Indonesian Rupiah)
+            const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+
+            const row = document.createElement("tr");
+            row.classList.add('border-b');
+
+            let badge_class = item.badge_class;
+
+            row.innerHTML = `
+                <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                <td class="px-6 py-4">${formattedAmount}</td>
+                <td class="px-6 py-4">${item.transaction_date}</td>
+                <td class="px-6 py-4">
+                    <span data-modal-target="popup-modal" data-modal-toggle="popup-modal" class="${badge_class}" data-status="${item.status}">
+                    ${item.status}
+                    </span>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+
+        // Add event listeners for opening modal with status
+        const statusBadges = document.querySelectorAll('[data-modal-toggle="popup-modal"]');
+        statusBadges.forEach(badge => {
+            badge.addEventListener('click', (event) => {
+                const status = event.target.getAttribute('data-status');
+                const modalStatusElement = document.getElementById('modal-status');
+                modalStatusElement.textContent = status; // Set the status in the modal
+                document.getElementById('popup-modal').classList.remove('hidden'); // Show the modal
+            });
+        });
+
+        // Initialize the DataTable after the data is populated
+        if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+            new simpleDatatables.DataTable("#pagination-table", {
+                searchable: true,
+                paging: true,
+                perPage: 5,
+                perPageSelect: [5, 10, 15, 20, 25],
+                sortable: false
+            });
         }
-    
-        // Call fetchData to populate the table
-        fetchData();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+// Call fetchData to populate the table
+fetchData();
+
     </script>
+
+    
     
 </body>
 
