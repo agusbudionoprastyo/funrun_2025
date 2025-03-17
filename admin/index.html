@@ -282,51 +282,52 @@ async function fetchData() {
             });
         }
 
-        // Event listener for opening modal when status button is clicked
+        // Event listener for opening modal and displaying transaction details
         const statusButtons = document.querySelectorAll('[data-modal-target="popup-modal"]');
         statusButtons.forEach(button => {
             button.addEventListener('click', (e) => {
-                // Get the data from the clicked button
+                // Fetch the data from the clicked button
                 const name = e.target.getAttribute('data-name');
                 const paymentProof = e.target.getAttribute('data-payment-proof');
                 const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
-                const transactionId = e.target.getAttribute('data-id'); // ID transaksi
+                const transactionId = e.target.getAttribute('data-id'); // Transaction ID
 
-                // Update the modal content dynamically
+                // Update modal content dynamically
                 document.getElementById('modal-name').textContent = name; // Set name
                 document.getElementById('modal-amount').textContent = amount; // Set amount
                 document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
 
                 // Show the modal
                 const modal = document.getElementById('popup-modal');
-                modal.classList.remove('hidden'); // Remove 'hidden' class to show modal
+                modal.classList.remove('hidden'); // Show the modal by removing the 'hidden' class
 
-                // Add event listener to "Verified" button inside modal
-                const verifiedButton = document.querySelector('[data-modal-target="popup-modal"]');
+                // Add event listener to the Verified button inside the modal
+                const verifiedButton = modal.querySelector('button');
                 verifiedButton.addEventListener('click', async () => {
                     try {
-                        const response = await fetch('update_transactions.php', {
+                        // Send POST request to update the status of the transaction to "verified"
+                        const response = await fetch('update_payment.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
                                 id: transactionId,
-                                status: 'verified', // Update status to 'verified'
+                                status: 'verified', // Update the status to 'verified'
                             }),
                         });
 
                         const result = await response.json();
                         if (result.success) {
-                            alert('Status updated successfully!');
+                            alert('Status successfully updated to Verified!');
 
                             // Close the modal
                             modal.classList.add('hidden');
 
-                            // Update the status in the table
+                            // Optionally, update the table row status here
                             const statusButton = e.target;
                             statusButton.textContent = 'Verified';
-                            statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove the disabled state
+                            statusButton.classList.remove('opacity-50', 'cursor-not-allowed'); // Remove disabled state
                         } else {
                             alert('Failed to update status');
                         }
