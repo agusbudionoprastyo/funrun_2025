@@ -124,12 +124,8 @@
                     </ht>
 
                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {{#if item.size_1}}
-                            <div class="font-normal text-gray-500">{{item.size_1}}</div>
-                        {{/if}}
-                        {{#if item.size_2}}
-                            <div class="font-normal text-gray-500">{{item.size_2}}</div>
-                        {{/if}}
+                        ${item.size_1 ? `<div class="font-normal text-gray-500">${item.size_1}</div>` : ''}
+                        ${item.size_2 ? `<div class="font-normal text-gray-500">${item.size_2}</div>` : ''}
                     </th>
 
                     <td class="px-6 py-4">${formattedAmount}</td>
