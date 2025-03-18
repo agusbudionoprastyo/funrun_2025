@@ -29,11 +29,14 @@
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Runners
                 </th>
-                <th class="px-6 py-3 font-medium text-gray-900">
-                    Details
-                </th>
                 <th class="px-6 py-3 font-medium text-center text-gray-900">
                     Size Jarsey
+                </th>
+                <th class="px-6 py-3 font-medium text-gray-900">
+                    Phone
+                </th>
+                <th class="px-6 py-3 font-medium text-gray-900">
+                    Email
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Amount
@@ -118,15 +121,13 @@
                     </div>
                     </th>
 
-                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        <div class="font-normal text-gray-500">${item.email_1}</div>
-                        <div class="font-normal text-gray-500">${item.phone_1}</div>
-                    </ht>
-
                     <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
                         ${item.size_1 ? `<div class="font-normal text-gray-500 uppercase">${item.size_1}</div>` : ''}
                         ${item.size_2 ? `<div class="font-normal text-gray-500 uppercase">${item.size_2}</div>` : ''}
                     </th>
+
+                    <td class="px-6 py-4">${item.email_1}</td>
+                    <td class="px-6 py-4">${item.phone_1}</td>
 
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
@@ -172,7 +173,7 @@
             if (currentStatus === 'pending') {
                 // Notify the user that the transaction is still pending
                 iziToast.error({
-                    title: 'Error',
+                    title: 'Info',
                     message: 'This transaction is still Pending. You cannot confirm it yet.',
                     position: 'topRight',
                 });
