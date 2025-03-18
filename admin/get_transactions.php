@@ -36,7 +36,7 @@ SELECT
     MAX(CASE WHEN user_rank = 1 THEN phone END) AS phone_1,
     MAX(CASE WHEN user_rank = 1 THEN username END) AS username_1,
     MAX(CASE WHEN user_rank = 1 THEN password END) AS password_1,
-    MAX(CASE WHEN user_rank = 2 THEN size END) AS size_1,
+    MAX(CASE WHEN user_rank = 1 THEN size END) AS size_1,
     MAX(CASE WHEN user_rank = 2 THEN name END) AS name_2,
     MAX(CASE WHEN user_rank = 2 THEN mantan END) AS mantan_2,
     MAX(CASE WHEN user_rank = 2 THEN email END) AS email_2,
