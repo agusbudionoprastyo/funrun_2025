@@ -207,6 +207,59 @@
 </script> -->
 
 <script>
+    async function fetchData() {
+        try {
+            const response = await fetch('get_transactions.php');
+            const data = await response.json(); // Assuming the response is in JSON format
+
+            const tableBody = document.querySelector("#pagination-table tbody");
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            // Loop through the data and create table rows dynamically
+            data.forEach(item => {
+                const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
+
+                const row = document.createElement("tr");
+                row.classList.add('border-b');
+
+                let badge_class = item.badge_class;
+
+                row.innerHTML = `
+                    <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
+                    <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+                    <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
+                    <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
+                    <td class="px-6 py-4">${formattedAmount}</td>
+                    <td class="px-6 py-4">${item.transaction_date}</td>
+                    <td class="px-6 py-4">
+                        <span class="${badge_class}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <button type="button" class="update-status-btn text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-amount="${formattedAmount}" data-payment-img="../users/paymentprooft/${item.payment_prooft}" data-current-status="${item.status}">
+                            Confirm
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Initialize DataTable
+            if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
+                new simpleDatatables.DataTable("#pagination-table", {
+                    searchable: true,
+                    paging: true,
+                    perPage: 5,
+                    perPageSelect: [5, 10, 15, 20, 25],
+                    sortable: false
+                });
+            }
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
     // Open the modal and populate with transaction details
     document.addEventListener('click', (event) => {
         if (event.target && event.target.classList.contains('update-status-btn')) {
