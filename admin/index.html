@@ -259,9 +259,7 @@ async function fetchData() {
         const data = await response.json(); // Assuming the response is in JSON format
 
         const tableBody = document.querySelector("#pagination-table tbody");
-
-        // Clear any existing rows in the table body
-        tableBody.innerHTML = '';
+        tableBody.innerHTML = ''; // Clear existing rows
 
         // Loop through the data and create table rows dynamically
         data.forEach(item => {
@@ -272,7 +270,7 @@ async function fetchData() {
 
             let badge_class = item.badge_class;
 
-            // Log status information when generating the label
+            // Log status information when rendering the label
             console.log('Rendering row:', item.transaction_id, 'with status:', item.status);
 
             row.innerHTML = `
@@ -291,7 +289,7 @@ async function fetchData() {
             tableBody.appendChild(row);
         });
 
-        // Initialize the DataTable after the data is populated
+        // Initialize DataTable
         if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
             new simpleDatatables.DataTable("#pagination-table", {
                 searchable: true,
@@ -302,15 +300,18 @@ async function fetchData() {
             });
         }
 
-        // Reset label status before adding event listeners
+        // Reset status button event listeners
         const statusButtons = document.querySelectorAll('.status-button');
         statusButtons.forEach(button => {
-            button.removeEventListener('click', handleStatusClick); // Remove existing listeners
-            button.addEventListener('click', handleStatusClick); // Add new listeners
+            button.removeEventListener('click', handleStatusClick); // Clean previous listeners
+            button.addEventListener('click', handleStatusClick); // Add new listener
         });
 
         // Event handler for opening modal and displaying transaction details
         function handleStatusClick(e) {
+            // Reset the modal before opening
+            resetModalState();
+
             // Fetch the data from the clicked button
             const name = e.target.getAttribute('data-name');
             const paymentProof = e.target.getAttribute('data-payment-proof');
@@ -326,37 +327,32 @@ async function fetchData() {
             console.log('Payment Proof URL:', paymentProof);
 
             // Update modal content dynamically
-            document.getElementById('modal-name').textContent = name; // Set name
-            document.getElementById('modal-amount').textContent = amount; // Set amount
-            document.getElementById('payment-proof-image').src = paymentProof; // Set payment proof image
+            document.getElementById('modal-name').textContent = name;
+            document.getElementById('modal-amount').textContent = amount;
+            document.getElementById('payment-proof-image').src = paymentProof;
 
             // Get the verified button inside the modal
             const verifiedButton = document.getElementById('verified-btn');
-
-            // Reset the verified button state when modal is opened
-            verifiedButton.removeAttribute('disabled');
-            verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
 
             // Disable the button if the status is not 'paid'
             if (status !== 'paid') {
                 verifiedButton.setAttribute('disabled', 'true');
                 verifiedButton.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                verifiedButton.removeAttribute('disabled');
+                verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
             }
 
             // Show the modal
             const modal = document.getElementById('popup-modal');
-            modal.classList.remove('hidden'); // Remove the 'hidden' class to show the modal
+            modal.classList.remove('hidden');
 
-            // First, remove any old event listeners on the "verified" button before adding the new one
-            const currentVerifiedButton = document.getElementById('verified-btn');
-            const oldVerifiedButtonListener = currentVerifiedButton.onclick;
-            if (oldVerifiedButtonListener) {
-                currentVerifiedButton.removeEventListener('click', oldVerifiedButtonListener);
-            }
+            // When clicking the verified button
+            verifiedButton.removeEventListener('click', handleVerifiedClick); // Clean previous event listener
+            verifiedButton.addEventListener('click', handleVerifiedClick);
 
-            verifiedButton.addEventListener('click', async () => {
+            async function handleVerifiedClick() {
                 try {
-                    // Send POST request to update the status of the transaction to "verified"
                     const response = await fetch('update_transactions.php', {
                         method: 'POST',
                         headers: {
@@ -364,37 +360,31 @@ async function fetchData() {
                         },
                         body: JSON.stringify({
                             transaction_id: transactionId,
-                            status: 'verified', // Update the status to 'verified'
+                            status: 'verified',
                         }),
                     });
 
-                    // Log the response to check the result
                     const result = await response.json();
                     console.log('Response from server:', result);
 
-                    // After successful status update
                     if (result.success) {
-                        // Show success message
                         iziToast.success({
                             title: 'Success',
                             message: 'Status successfully updated to Verified!',
-                            position: 'topRight', // Adjust the position as needed
+                            position: 'topRight',
                         });
 
-                        // Find the label button that was clicked
+                        // Update the status button in the row
                         const statusButton = e.target;
-
-                        // Update the status text to 'verified' on the button
                         statusButton.textContent = 'verified';
-                        
-                        // Close the modal by triggering the close action
-                        const closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
-                        closeButton.click(); // Programmatically trigger the modal close mim 
 
-                        // Optionally, refresh the data table or trigger fetchData again if needed
-                        fetchData(); // Uncomment this line to reload data after status update
+                        // Close the modal
+                        const closeButton = document.querySelector('[data-modal-hide="popup-modal"]');
+                        closeButton.click(); // Close modal
+
+                        // Optionally, reload the data or trigger fetchData again
+                        fetchData();
                     } else {
-                        // Error handling
                         iziToast.error({
                             title: 'Error',
                             message: 'Failed to update status.',
@@ -403,14 +393,28 @@ async function fetchData() {
                     }
                 } catch (error) {
                     console.error('Error updating status:', error);
-                    // Use IziToast for error notification
                     iziToast.error({
                         title: 'Error',
                         message: 'Error updating status.',
                         position: 'topRight',
                     });
                 }
-            });
+            }
+        }
+
+        // Reset modal state to avoid interference
+        function resetModalState() {
+            const modal = document.getElementById('popup-modal');
+            modal.classList.add('hidden'); // Hide the modal initially
+
+            // Reset modal content
+            document.getElementById('modal-name').textContent = '';
+            document.getElementById('modal-amount').textContent = '';
+            document.getElementById('payment-proof-image').src = '';
+
+            const verifiedButton = document.getElementById('verified-btn');
+            verifiedButton.removeAttribute('disabled');
+            verifiedButton.classList.remove('opacity-50', 'cursor-not-allowed');
         }
 
     } catch (error) {
