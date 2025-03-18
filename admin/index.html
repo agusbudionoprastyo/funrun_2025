@@ -316,53 +316,6 @@
     </div>
 </div>
 
-
-
-<!-- Modal for updating status (using Flowbite modal structure) -->
-<!-- <div id="update-status-modal" class="fixed inset-0 flex items-center justify-center hidden z-50">
-    <div class="modal-overlay absolute inset-0 bg-gray-800 opacity-50"></div>
-    <div class="modal-container bg-white w-full md:w-1/2 rounded-lg p-6 relative">
-        <button id="close-modal" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
-            &times;
-        </button>
-        <h2 class="text-xl font-semibold mb-4">Update Transaction Status</h2>
-        <form id="update-status-form">
-            <div class="mb-4">
-                <input type="hidden" id="modal-transaction-id" />
-                <label for="modal-name" class="block text-sm font-medium text-gray-700">Name</label>
-                <p id="modal-name" class="text-sm text-gray-900"></p>
-            </div>
-            <div class="mb-4">
-                <label for="modal-email" class="block text-sm font-medium text-gray-700">Email</label>
-                <p id="modal-email" class="text-sm text-gray-900"></p>
-            </div>
-            <div class="mb-4">
-                <label for="modal-phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                <p id="modal-phone" class="text-sm text-gray-900"></p>
-            </div>
-            <div class="mb-4">
-                <label for="modal-amount" class="block text-sm font-medium text-gray-700">Amount</label>
-                <p id="modal-amount" class="text-sm text-gray-900"></p>
-            </div>
-            <div class="mb-4">
-                <label for="modal-date" class="block text-sm font-medium text-gray-700">Transaction Date</label>
-                <p id="modal-date" class="text-sm text-gray-900"></p>
-            </div>
-            <div class="mb-4">
-                <label for="status-select" class="block text-sm font-medium text-gray-700">Update Status</label>
-                <select id="status-select" class="select2 block w-full mt-1">
-                    <option value="pending">Pending</option>
-                    <option value="approved">Approved</option>
-                    <option value="rejected">Rejected</option>
-                </select>
-            </div>
-            <div class="mt-4 flex justify-end">
-                <button type="submit" id="update-status-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Update Status</button>
-            </div>
-        </form>
-    </div>
-</div> -->
-
 <script>
     async function fetchData() {
         try {
@@ -394,7 +347,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <button class="update-status-btn text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2}" data-email="${item.email_1}" data-phone="${item.phone_1}" data-amount="${formattedAmount}" data-date="${item.transaction_date}" data-current-status="${item.status}">
+                        <button class="update-status-btn text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2}" data-email="${item.email_1}" data-phone="${item.phone_1}" data-amount="${formattedAmount}" data-payment-img="../users/paymentprooft/${item.payment_prooft}" data-current-status="${item.status}">
                             Update Status
                         </button>
                     </td>
@@ -426,11 +379,11 @@
             const email = event.target.getAttribute('data-email');
             const phone = event.target.getAttribute('data-phone');
             const amount = event.target.getAttribute('data-amount');
-            const date = event.target.getAttribute('data-date');
+            const paymentImg = event.target.getAttribute('data-payment-img');
             const currentStatus = event.target.getAttribute('data-current-status');
 
             // Populate modal with details
-            document.getElementById('payment-proof-image').src = 'path/to/your/payment-proof-image.jpg'; // Optionally set the image
+            document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
             document.getElementById('modal-name').textContent = name;
             document.getElementById('modal-amount').textContent = amount;
             document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
@@ -451,7 +404,7 @@
         const newStatus = document.getElementById('status-select').value;
 
         try {
-            const response = await fetch('update_status.php', {
+            const response = await fetch('update_transactions.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
