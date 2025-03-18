@@ -149,61 +149,96 @@
         }
     }
 
-    // Open the modal and populate with transaction details
     document.addEventListener('click', (event) => {
-        if (event.target && event.target.classList.contains('update-status-btn')) {
-            const transactionId = event.target.getAttribute('data-transaction-id');
-            const name = event.target.getAttribute('data-name');
-            const amount = event.target.getAttribute('data-amount');
-            const paymentImg = event.target.getAttribute('data-payment-img');
-            const currentStatus = event.target.getAttribute('data-current-status');
+    if (event.target && event.target.classList.contains('update-status-btn')) {
+        const transactionId = event.target.getAttribute('data-transaction-id');
+        const name = event.target.getAttribute('data-name');
+        const amount = event.target.getAttribute('data-amount');
+        const paymentImg = event.target.getAttribute('data-payment-img');
+        const currentStatus = event.target.getAttribute('data-current-status');
 
-            // Populate modal with details
-            document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
-            document.getElementById('modal-name').textContent = name;
-            document.getElementById('modal-amount').textContent = amount;
-            document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
-
-            // Show the modal
-            document.getElementById('update-status-modal').classList.remove('hidden');
-        }
-    });
-
-    // Close the modal
-    document.getElementById('close-modal').addEventListener('click', () => {
-        document.getElementById('update-status-modal').classList.add('hidden');
-    });
-
-    // Handle the status update form submission to Verified
-    document.getElementById('verified-btn').addEventListener('click', async (event) => {
-        const transactionId = event.target.dataset.transactionId;
-        const newStatus = "Verified"; // Set status directly to "Verified"
-
-        try {
-            const response = await fetch('update_transactions.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+        // Prevent opening the modal if the status is "Pending"
+        if (currentStatus === 'Pending') {
+            iziToast.error({
+                title: 'Error',
+                message: 'This transaction is still pending and cannot be updated.',
+                position: 'topRight',
+                timeout: 3000,
             });
-
-            const result = await response.json();
-            if (result.success) {
-                alert('Status updated to Verified!');
-                fetchData(); // Refresh the data after update
-                document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
-            } else {
-                alert('Failed to update status. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error updating status:', error);
-            alert('Error updating status. Please try again.');
+            return;
         }
-    });
 
-    // Call fetchData to populate the table
-    fetchData();
+        // Populate modal with details
+        document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
+        document.getElementById('modal-name').textContent = name;
+        document.getElementById('modal-amount').textContent = amount;
+        document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
+
+        // Enable/Disable the "Confirm" button based on status
+        const confirmButton = document.getElementById('verified-btn');
+        if (currentStatus === 'Paid') {
+            confirmButton.disabled = false; // Enable button for "Paid" status
+        } else {
+            confirmButton.disabled = true; // Disable button for all other statuses
+        }
+
+        // Show the modal
+        document.getElementById('update-status-modal').classList.remove('hidden');
+    }
+});
+
+// Close the modal
+document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('update-status-modal').classList.add('hidden');
+});
+
+// Handle the status update form submission to Verified
+document.getElementById('verified-btn').addEventListener('click', async (event) => {
+    const transactionId = event.target.dataset.transactionId;
+    const newStatus = "Verified"; // Set status directly to "Verified"
+
+    try {
+        const response = await fetch('update_transactions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            iziToast.success({
+                title: 'Success',
+                message: 'Status updated to Verified!',
+                position: 'topRight',
+                timeout: 3000,
+            });
+            fetchData(); // Refresh the data after update
+            document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
+        } else {
+            iziToast.error({
+                title: 'Error',
+                message: 'Failed to update status. Please try again.',
+                position: 'topRight',
+                timeout: 3000,
+            });
+        }
+    } catch (error) {
+        console.error('Error updating status:', error);
+        iziToast.error({
+            title: 'Error',
+            message: 'Error updating status. Please try again.',
+            position: 'topRight',
+            timeout: 3000,
+        });
+    }
+});
+
+// Call fetchData to populate the table
+fetchData();
+
+
 </script>
 
 </body>
