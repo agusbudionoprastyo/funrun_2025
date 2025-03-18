@@ -111,7 +111,7 @@
 
                 row.innerHTML = `
                     <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <img class="w-10 h-10 rounded-full" src="https://placehold.co/600x400?text=D" alt="D">
+                    <img class="w-10 h-10 rounded-full" src="https://placehold.co/500x500?text=D" alt="D">
                     <div class="ps-3">
                         <div class="font-semibold text-gray-500">${item.name_1} (${item.mantan_1})</div>
                         <div class="font-semibold text-gray-500">${item.name_2} (${item.mantan_2})</div>
@@ -123,10 +123,15 @@
                         <div class="font-normal text-gray-500">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</div>
                     </ht>
 
-                    <td scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        <span class="font-normal text-gray-500">${item.size_1}</span>
-                        <span class="font-normal text-gray-500">${item.size_2}</span>
-                    </td>
+                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        {{#if item.size_1}}
+                            <div class="font-normal text-gray-500">{{item.size_1}}</div>
+                        {{/if}}
+                        {{#if item.size_2}}
+                            <div class="font-normal text-gray-500">{{item.size_2}}</div>
+                        {{/if}}
+                    </th>
+
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">
