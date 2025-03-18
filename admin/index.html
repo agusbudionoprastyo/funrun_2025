@@ -398,10 +398,10 @@
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
-    // Handle the status update form submission
+    // Handle the status update form submission to Verified
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
-        const newStatus = document.getElementById('status-select').value;
+        const newStatus = "Verified"; // Set status directly to "Verified"
 
         try {
             const response = await fetch('update_transactions.php', {
@@ -414,7 +414,7 @@
 
             const result = await response.json();
             if (result.success) {
-                alert('Status updated successfully!');
+                alert('Status updated to Verified!');
                 fetchData(); // Refresh the data after update
                 document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
             } else {
