@@ -27,16 +27,13 @@
         <thead class="bg-blue-100">
             <tr>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Nama
+                    Runners
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Mantan
+                    Size Jarsey
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Email
-                </th>
-                <th class="px-6 py-3 font-medium text-gray-900">
-                    Phone
+                    Details
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Amount
@@ -45,7 +42,7 @@
                     Transaction Date
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Status
+                    Payment Status
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                 </th>
@@ -94,118 +91,6 @@
     </div>
 </div>
 
-<!-- <script>
-    async function fetchData() {
-        try {
-            const response = await fetch('get_transactions.php');
-            const data = await response.json(); // Assuming the response is in JSON format
-
-            const tableBody = document.querySelector("#pagination-table tbody");
-            tableBody.innerHTML = ''; // Clear existing rows
-
-            // Loop through the data and create table rows dynamically
-            data.forEach(item => {
-                const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
-
-                const row = document.createElement("tr");
-                row.classList.add('border-b');
-
-                let badge_class = item.badge_class;
-
-                row.innerHTML = `
-                    <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
-                    <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
-                    <td class="px-6 py-4">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</td>
-                    <td class="px-6 py-4">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</td>
-                    <td class="px-6 py-4">${formattedAmount}</td>
-                    <td class="px-6 py-4">${item.transaction_date}</td>
-                    <td class="px-6 py-4">
-                        <span class="${badge_class}">
-                            ${item.status}
-                        </span>
-                    </td>
-                    <td class="px-6 py-4">
-                        <button type="button" class="update-status-btn text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-amount="${formattedAmount}" data-payment-img="../users/paymentprooft/${item.payment_prooft}" data-current-status="${item.status}">
-                            Confirm
-                        </button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-
-            // Initialize DataTable
-            if (document.getElementById("pagination-table") && typeof simpleDatatables.DataTable !== 'undefined') {
-                new simpleDatatables.DataTable("#pagination-table", {
-                    searchable: true,
-                    paging: true,
-                    perPage: 5,
-                    perPageSelect: [5, 10, 15, 20, 25],
-                    sortable: false
-                });
-            }
-
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
-
-    // Open the modal and populate with transaction details
-    document.addEventListener('click', (event) => {
-        if (event.target && event.target.classList.contains('update-status-btn')) {
-            const transactionId = event.target.getAttribute('data-transaction-id');
-            const name = event.target.getAttribute('data-name');
-            const amount = event.target.getAttribute('data-amount');
-            const paymentImg = event.target.getAttribute('data-payment-img');
-            const currentStatus = event.target.getAttribute('data-current-status');
-
-            // Populate modal with details
-            document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
-            document.getElementById('modal-name').textContent = name;
-            document.getElementById('modal-amount').textContent = amount;
-            document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
-
-            // Show the modal
-            document.getElementById('update-status-modal').classList.remove('hidden');
-        }
-    });
-
-    // Close the modal
-    document.getElementById('close-modal').addEventListener('click', () => {
-        document.getElementById('update-status-modal').classList.add('hidden');
-    });
-
-    // Handle the status update form submission to Verified
-    document.getElementById('verified-btn').addEventListener('click', async (event) => {
-        const transactionId = event.target.dataset.transactionId;
-        const newStatus = "Verified"; // Set status directly to "Verified"
-
-        try {
-            const response = await fetch('update_transactions.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                alert('Status updated to Verified!');
-                fetchData(); // Refresh the data after update
-                document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
-            } else {
-                alert('Failed to update status. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error updating status:', error);
-            alert('Error updating status. Please try again.');
-        }
-    });
-
-    // Call fetchData to populate the table
-    fetchData();
-</script> -->
-
 <script>
     async function fetchData() {
         try {
@@ -228,12 +113,20 @@
                     <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                     <img class="w-10 h-10 rounded-full" src="https://placehold.co/600x400?text=D" alt="D">
                     <div class="ps-3">
-                        <div class="text-base font-semibold">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</div>
-                        <div class="font-normal text-gray-500">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</div>
-                        <div class="font-normal text-gray-500">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</div>
+                        <div class="font-semibold text-gray-500">${item.name_1} (${item.mantan_1})</div>
+                        <div class="font-semibold text-gray-500">${item.name_2} (${item.mantan_2})</div>
                     </div>
                     </th>
-                    <td class="px-6 py-4">${item.mantan_1} ${item.mantan_2 ? ' / ' + item.mantan_2 : ''}</td>
+
+                    <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <div class="font-normal text-gray-500">${item.email_1} ${item.email_2 ? ' / ' + item.email_2 : ''}</div>
+                        <div class="font-normal text-gray-500">${item.phone_1} ${item.phone_2 ? ' / ' + item.phone_2 : ''}</div>
+                    </th>
+
+                    <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                        <div class="font-normal text-gray-500">${item.size_1}</div>
+                        <div class="font-normal text-gray-500">${item.size_2}</div>
+                    </th>
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">
