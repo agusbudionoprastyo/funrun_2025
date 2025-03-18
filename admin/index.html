@@ -394,7 +394,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <button class="update-status-btn text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2}" data-amount="${formattedAmount}">
+                        <button class="update-status-btn text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2}" data-email="${item.email_1}" data-phone="${item.phone_1}" data-amount="${formattedAmount}" data-date="${item.transaction_date}" data-current-status="${item.status}">
                             Update Status
                         </button>
                     </td>
@@ -423,14 +423,17 @@
         if (event.target && event.target.classList.contains('update-status-btn')) {
             const transactionId = event.target.getAttribute('data-transaction-id');
             const name = event.target.getAttribute('data-name');
+            const email = event.target.getAttribute('data-email');
+            const phone = event.target.getAttribute('data-phone');
             const amount = event.target.getAttribute('data-amount');
+            const date = event.target.getAttribute('data-date');
             const currentStatus = event.target.getAttribute('data-current-status');
 
             // Populate modal with details
-            document.getElementById('modal-transaction-id').value = transactionId;
+            document.getElementById('payment-proof-image').src = 'path/to/your/payment-proof-image.jpg'; // Optionally set the image
             document.getElementById('modal-name').textContent = name;
             document.getElementById('modal-amount').textContent = amount;
-            document.getElementById('status-select').value = currentStatus;
+            document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
 
             // Show the modal
             document.getElementById('update-status-modal').classList.remove('hidden');
@@ -443,14 +446,12 @@
     });
 
     // Handle the status update form submission
-    document.getElementById('update-status-form').addEventListener('submit', async (event) => {
-        event.preventDefault(); // Prevent form submission
-
-        const transactionId = document.getElementById('modal-transaction-id').value;
+    document.getElementById('verified-btn').addEventListener('click', async (event) => {
+        const transactionId = event.target.dataset.transactionId;
         const newStatus = document.getElementById('status-select').value;
 
         try {
-            const response = await fetch('update_transactions.php', {
+            const response = await fetch('update_status.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
