@@ -423,19 +423,13 @@
         if (event.target && event.target.classList.contains('update-status-btn')) {
             const transactionId = event.target.getAttribute('data-transaction-id');
             const name = event.target.getAttribute('data-name');
-            const email = event.target.getAttribute('data-email');
-            const phone = event.target.getAttribute('data-phone');
             const amount = event.target.getAttribute('data-amount');
-            const date = event.target.getAttribute('data-date');
             const currentStatus = event.target.getAttribute('data-current-status');
 
             // Populate modal with details
             document.getElementById('modal-transaction-id').value = transactionId;
             document.getElementById('modal-name').textContent = name;
-            document.getElementById('modal-email').textContent = email;
-            document.getElementById('modal-phone').textContent = phone;
             document.getElementById('modal-amount').textContent = amount;
-            document.getElementById('modal-date').textContent = date;
             document.getElementById('status-select').value = currentStatus;
 
             // Show the modal
