@@ -252,6 +252,7 @@
 // fetchData();
 // Fetch data from your server-side API or database
 // Fetch data from your server-side API or database
+// Fetch data from your server-side API or database
 async function fetchData() {
     try {
         const response = await fetch('get_transactions.php');
@@ -310,7 +311,7 @@ async function fetchData() {
 
         // Event handler for opening modal and displaying transaction details
         function handleStatusClick(e) {
-            // Log data when a label is clicked
+            // Fetch the data from the clicked button
             const name = e.target.getAttribute('data-name');
             const paymentProof = e.target.getAttribute('data-payment-proof');
             const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
@@ -345,6 +346,13 @@ async function fetchData() {
             // Show the modal
             const modal = document.getElementById('popup-modal');
             modal.classList.remove('hidden'); // Remove the 'hidden' class to show the modal
+
+            // First, remove any old event listeners on the "verified" button before adding the new one
+            const currentVerifiedButton = document.getElementById('verified-btn');
+            const oldVerifiedButtonListener = currentVerifiedButton.onclick;
+            if (oldVerifiedButtonListener) {
+                currentVerifiedButton.removeEventListener('click', oldVerifiedButtonListener);
+            }
 
             verifiedButton.addEventListener('click', async () => {
                 try {
