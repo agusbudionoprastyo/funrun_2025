@@ -39,12 +39,12 @@
                     Email
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Amount
-                </th>
-                <th class="px-6 py-3 font-medium text-gray-900">
                     Transaction Date
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
+                    Amount
+                </th>
+                <th class="px-6 py-3 font-medium text-center text-gray-900">
                     Payment Status
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
@@ -128,7 +128,7 @@
                     <td class="px-6 py-4">${item.email_1}</td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">${formattedAmount}</td>
-                    <td class="px-6 py-4">
+                    <td class="text-center px-6 py-4">
                         <span class="${badge_class}">
                             ${item.status}
                         </span>
