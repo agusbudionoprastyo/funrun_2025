@@ -288,10 +288,11 @@
 
 </script>
 
+<!-- Modal HTML -->
 <div id="update-status-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-gray-900 bg-opacity-50">
     <div class="relative p-4 w-full max-w-md max-h-full bg-white rounded-lg shadow-lg">
         <!-- Close Button -->
-        <button type="button" class="absolute top-3 right-3 text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1" data-modal-hide="popup-modal">
+        <button type="button" class="absolute top-3 right-3 text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1" id="close-modal">
             <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
             </svg>
@@ -393,7 +394,7 @@
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <button class="update-status-btn text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2}" data-email="${item.email_1}" data-phone="${item.phone_1}" data-amount="${formattedAmount}" data-date="${item.transaction_date}" data-current-status="${item.status}">
+                        <button class="update-status-btn text-white bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2}" data-amount="${formattedAmount}">
                             Update Status
                         </button>
                     </td>
