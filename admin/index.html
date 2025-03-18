@@ -64,9 +64,11 @@
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
 <!-- Modal HTML -->
-<div id="update-status-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full bg-white bg-opacity-50">
+<div id="update-status-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
-        <div class="relative bg-white rounded-lg shadow-lg">
+        <div class="relative bg-white shadow-lg">
+            <!-- Image (Payment Proof) -->
+            <img id="payment-proof-image" class="w-full h-auto rounded-lg shadow-sm mb-4" src="" alt="Payment Proof" />
             <!-- Close Button -->
             <button type="button" class="absolute top-3 end-2.5 text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1" id="close-modal">
                 <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -76,10 +78,7 @@
             </button>
 
             <!-- Modal Content -->
-            <div class="p-6 space-y-4">
-                <!-- Image (Payment Proof) -->
-                <img id="payment-proof-image" class="w-full h-auto rounded-lg shadow-sm mb-4" src="" alt="Payment Proof" />
-                
+            <div class="p-4 space-y-4">
                 <!-- Transaction Details -->
                 <h5 id="modal-name" class="text-lg font-semibold tracking-tight text-gray-900">Name Here</h5>
                 <div class="flex items-center justify-between">
