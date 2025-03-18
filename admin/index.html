@@ -251,8 +251,7 @@
 // // Call fetchData to populate the table
 // fetchData();
 // Fetch data from your server-side API or database
-// Fetch data from your server-side API or database
-// Fetch data from your server-side API or database
+
 async function fetchData() {
     try {
         const response = await fetch('get_transactions.php');
@@ -281,9 +280,9 @@ async function fetchData() {
                 <td class="px-6 py-4">${formattedAmount}</td>
                 <td class="px-6 py-4">${item.transaction_date}</td>
                 <td class="px-6 py-4">
-                    <label for="status_modal" class="${badge_class} status-button" data-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-status="${item.status}" data-payment-proof="../users/paymentprooft/${item.payment_prooft}">
+                    <span class="${badge_class}">
                         ${item.status}
-                    </label>
+                    </span>
                 </td>
             `;
             tableBody.appendChild(row);
@@ -299,13 +298,6 @@ async function fetchData() {
                 sortable: false
             });
         }
-
-        // Reset status button event listeners
-        const statusButtons = document.querySelectorAll('.status-button');
-        statusButtons.forEach(button => {
-            button.removeEventListener('click', handleStatusClick); // Clean previous listeners
-            button.addEventListener('click', handleStatusClick); // Add new listener
-        });
 
     } catch (error) {
         console.error('Error fetching data:', error);
