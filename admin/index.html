@@ -251,6 +251,7 @@
 // // Call fetchData to populate the table
 // fetchData();
 // Fetch data from your server-side API or database
+// Fetch data from your server-side API or database
 async function fetchData() {
     try {
         const response = await fetch('get_transactions.php');
@@ -269,6 +270,9 @@ async function fetchData() {
             row.classList.add('border-b');
 
             let badge_class = item.badge_class;
+
+            // Log status information when generating the label
+            console.log('Rendering row:', item.transaction_id, 'with status:', item.status);
 
             row.innerHTML = `
                 <td class="px-6 py-4">${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}</td>
@@ -306,12 +310,19 @@ async function fetchData() {
 
         // Event handler for opening modal and displaying transaction details
         function handleStatusClick(e) {
-            // Fetch the data from the clicked button
+            // Log data when a label is clicked
             const name = e.target.getAttribute('data-name');
             const paymentProof = e.target.getAttribute('data-payment-proof');
             const amount = e.target.closest('tr').querySelector('td:nth-child(5)').textContent;
-            const transactionId = e.target.getAttribute('data-id'); // Transaction ID
-            const status = e.target.getAttribute('data-status'); // Status of the transaction
+            const transactionId = e.target.getAttribute('data-id');
+            const status = e.target.getAttribute('data-status');
+
+            console.log('Label clicked:');
+            console.log('Transaction ID:', transactionId);
+            console.log('Name:', name);
+            console.log('Status:', status);
+            console.log('Amount:', amount);
+            console.log('Payment Proof URL:', paymentProof);
 
             // Update modal content dynamically
             document.getElementById('modal-name').textContent = name; // Set name
@@ -351,7 +362,7 @@ async function fetchData() {
 
                     // Log the response to check the result
                     const result = await response.json();
-                    console.log('Response:', result);  // Debugging line
+                    console.log('Response from server:', result);
 
                     // After successful status update
                     if (result.success) {
@@ -401,7 +412,6 @@ async function fetchData() {
 
 // Call fetchData to populate the table
 fetchData();
-
 
 </script>
 
