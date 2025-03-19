@@ -26,8 +26,8 @@ distanceElement.style.fontWeight = 'bold';
 map.getContainer().appendChild(distanceElement);
 
 // Fungsi untuk mendapatkan rute menggunakan Mapbox Directions API
-function getRoute(userLongitude, userLatitude) {
-  var origin = [userLongitude, userLatitude]; // Titik asal menggunakan lokasi pengguna
+function getRoute() {
+  var origin = [110.41126589038201, -6.979400345836346]; // Titik asal menggunakan lokasi pengguna
   var destination1 = [110.39930988166765, -6.962930379803198]; // Tujuan pertama
   var destination2 = [110.41123269023053, -6.979460242162332]; // Tujuan akhir
 
@@ -175,10 +175,10 @@ function addUserLocation() {
 map.on('load', function() {
   addUserLocation();
 
-  // new mapboxgl.Marker({ color: 'pink' })
-  //   .setLngLat([110.41126589038201, -6.979400345836346])
-  //   .setPopup(new mapboxgl.Popup().setText('Start'))
-  //   .addTo(map);
+  new mapboxgl.Marker({ color: 'pink' })
+    .setLngLat([110.41126589038201, -6.979400345836346])
+    .setPopup(new mapboxgl.Popup().setText('Start'))
+    .addTo(map);
 
   new mapboxgl.Marker({ color: 'teal' })
     .setLngLat([110.39930988166765, -6.962930379803198])
