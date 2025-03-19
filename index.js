@@ -16,12 +16,12 @@ var distanceElement = document.createElement('div');
 distanceElement.className = 'distance-info';
 distanceElement.style.position = 'absolute';
 distanceElement.style.top = '10px';
-distanceElement.style.left = '10px';
+distanceElement.style.left = '4px';
 distanceElement.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
 distanceElement.style.padding = '10px';
-distanceElement.style.borderRadius = '15px';
+distanceElement.style.borderRadius = '10px';
 distanceElement.style.fontSize = '16px';
-distanceElement.style.color = '#ff005b';
+distanceElement.style.color = '#000000';
 distanceElement.style.fontWeight = 'bold';
 map.getContainer().appendChild(distanceElement);
 
