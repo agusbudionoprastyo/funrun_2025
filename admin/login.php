@@ -1,6 +1,6 @@
 <?php
 // Include the db.php file to establish a database connection
-include('../../helper/db.php');
+include('../helper/db.php');
 
 // Handle login form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
