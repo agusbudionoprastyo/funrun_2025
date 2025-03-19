@@ -106,9 +106,9 @@ function addUserLocation() {
       const circleMarker = document.createElement('div');
 
       // Mengatur gaya untuk membuat marker berbentuk lingkaran
-      circleMarker.style.backgroundColor = '#4385f4'; // Warna marker
-      circleMarker.style.width = '20px';           // Lebar marker
-      circleMarker.style.height = '20px';          // Tinggi marker
+      circleMarker.style.backgroundColor = 'rgb(235,32,93)'; // Warna marker
+      circleMarker.style.width = '15px';           // Lebar marker
+      circleMarker.style.height = '15px';          // Tinggi marker
       circleMarker.style.borderRadius = '50%';     // Membuat elemen menjadi lingkaran
       circleMarker.style.cursor = 'pointer';       // Menambahkan kursor pointer saat hover
 
@@ -146,7 +146,7 @@ function addUserLocation() {
           },
           'paint': {
             'circle-radius': circleRadius, // Ukuran radius dalam piksel
-            'circle-color': 'rgba(38,146,236, 0.2)' // Warna lingkaran (biru transparan)
+            'circle-color': 'rgba(235,32,93, 0.2)' // Warna lingkaran (biru transparan)
           }
         });
       }
