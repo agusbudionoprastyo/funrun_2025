@@ -48,7 +48,7 @@ function getRoute() {
           var distance2 = data.routes[0].distance / 1000;
 
           var totalDistance = distance1 + distance2;
-          var distanceText = `Funrun ${totalDistance.toFixed(2)} km`;
+          var distanceText = `Distance ${totalDistance.toFixed(2)} km`;
 
           distanceElement.textContent = distanceText;
 
