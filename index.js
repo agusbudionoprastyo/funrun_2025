@@ -26,8 +26,8 @@ distanceElement.style.fontWeight = 'bold';
 map.getContainer().appendChild(distanceElement);
 
 // Fungsi untuk mendapatkan rute menggunakan Mapbox Directions API
-function getRoute() {
-  var origin = [110.41126589038201, -6.979400345836346]; // Titik asal
+function getRoute(userLongitude, userLatitude) {
+  var origin = [userLongitude, userLatitude]; // Titik asal menggunakan lokasi pengguna
   var destination1 = [110.39930988166765, -6.962930379803198]; // Tujuan pertama
   var destination2 = [110.41123269023053, -6.979460242162332]; // Tujuan akhir
 
@@ -95,34 +95,36 @@ function getRoute() {
     });
 }
 
-// Menambahkan lokasi pengguna ke peta
+// Menambahkan lokasi pengguna ke peta secara real-time
 function addUserLocation() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
+    // Watch posisi pengguna untuk update secara real-time
+    navigator.geolocation.watchPosition(function(position) {
       var userLongitude = position.coords.longitude;
       var userLatitude = position.coords.latitude;
 
-      // Membuat elemen div untuk marker
+      // Hapus marker yang lama jika sudah ada
+      if (window.userMarker) {
+        window.userMarker.remove();
+      }
+
+      // Menambahkan marker untuk lokasi pengguna
       const circleMarker = document.createElement('div');
+      circleMarker.style.backgroundColor = 'rgb(235,32,93)';
+      circleMarker.style.width = '15px';
+      circleMarker.style.height = '15px';
+      circleMarker.style.borderRadius = '50%';
+      circleMarker.style.cursor = 'pointer';
 
-      // Mengatur gaya untuk membuat marker berbentuk lingkaran
-      circleMarker.style.backgroundColor = 'rgb(235,32,93)'; // Warna marker
-      circleMarker.style.width = '15px';           // Lebar marker
-      circleMarker.style.height = '15px';          // Tinggi marker
-      circleMarker.style.borderRadius = '50%';     // Membuat elemen menjadi lingkaran
-      circleMarker.style.cursor = 'pointer';       // Menambahkan kursor pointer saat hover
-
-      // Menambahkan marker ke peta
-      new mapboxgl.Marker(circleMarker)
-        .setLngLat([userLongitude, userLatitude])  // Set koordinat marker
-        .addTo(map);                              // Menambahkan marker ke peta
-
+      window.userMarker = new mapboxgl.Marker(circleMarker)
+        .setLngLat([userLongitude, userLatitude])
+        .addTo(map);
 
       // Fungsi untuk memperbarui radius berdasarkan zoom
       function updateRadius() {
         var zoomLevel = map.getZoom();
-        var radiusInMeters = 50; // Radius 500 meter yang kita inginkan
-        var pixelsPerMeter = Math.pow(2, zoomLevel) * 256 / (40008000 / 360); // Faktor konversi dari meter ke piksel berdasarkan zoom
+        var radiusInMeters = 50; // Radius 50 meter
+        var pixelsPerMeter = Math.pow(2, zoomLevel) * 256 / (40008000 / 360);
         var circleRadius = radiusInMeters * pixelsPerMeter / 256;
 
         if (map.getLayer('user-radius')) {
@@ -130,7 +132,6 @@ function addUserLocation() {
           map.removeSource('user-radius');
         }
 
-        // Menambahkan radius yang disesuaikan
         map.addLayer({
           'id': 'user-radius',
           'type': 'circle',
@@ -145,8 +146,8 @@ function addUserLocation() {
             }
           },
           'paint': {
-            'circle-radius': circleRadius, // Ukuran radius dalam piksel
-            'circle-color': 'rgba(235,32,93, 0.2)' // Warna lingkaran (biru transparan)
+            'circle-radius': circleRadius,
+            'circle-color': 'rgba(235,32,93, 0.2)'
           }
         });
       }
@@ -155,23 +156,29 @@ function addUserLocation() {
       updateRadius(); // Panggil fungsi pertama kali untuk menampilkan radius
 
       map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
+
+      // Panggil fungsi untuk mendapatkan rute dengan lokasi pengguna
+      getRoute(userLongitude, userLatitude);
     }, function(error) {
       console.error('Error getting user location:', error);
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 10000, // Update lokasi setiap 10 detik
+      timeout: 5000 // Timeout setelah 5 detik jika tidak dapat mendapatkan lokasi
     });
   } else {
     console.log('Geolocation is not supported by this browser.');
   }
 }
 
-// Panggil fungsi untuk mendapatkan rute dan menampilkan lokasi pengguna
+// Panggil fungsi untuk menampilkan lokasi pengguna dan rute saat peta dimuat
 map.on('load', function() {
-  getRoute();
   addUserLocation();
 
-  new mapboxgl.Marker({ color: 'pink' })
-    .setLngLat([110.41126589038201, -6.979400345836346])
-    .setPopup(new mapboxgl.Popup().setText('Start'))
-    .addTo(map);
+  // new mapboxgl.Marker({ color: 'pink' })
+  //   .setLngLat([110.41126589038201, -6.979400345836346])
+  //   .setPopup(new mapboxgl.Popup().setText('Start'))
+  //   .addTo(map);
 
   new mapboxgl.Marker({ color: 'teal' })
     .setLngLat([110.39930988166765, -6.962930379803198])
