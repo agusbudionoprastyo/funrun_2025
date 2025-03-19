@@ -80,21 +80,24 @@ closeConnection();
 <body>
 <form action="" method="POST">
 <div class="form-structor">
+    <!-- Login Section -->
     <div class="login">
         <h2 class="form-title" id="login"><span>or</span>Log in</h2>
         <div class="form-holder">
-            <input type="email" class="input" placeholder="Email" />
-            <input type="password" class="input" placeholder="Password" />
+            <input type="email" class="input" placeholder="Email" name="email" />
+            <input type="password" class="input" placeholder="Password" name="password" />
         </div>
         <button class="submit-btn" name="login">Log in</button>
     </div>
+
+    <!-- Sign-Up Section -->
     <div class="signup slide-up">
         <div class="center">
             <h2 class="form-title" id="signup"><span>or</span>Sign up</h2>
             <div class="form-holder">
-                <input type="text" class="input" placeholder="Name" />
-                <input type="email" class="input" placeholder="Email" />
-                <input type="password" class="input" placeholder="Password" />
+                <input type="text" class="input" placeholder="Name" name="name" />
+                <input type="email" class="input" placeholder="Email" name="email" />
+                <input type="password" class="input" placeholder="Password" name="password" />
             </div>
             <button class="submit-btn" name="signup">Sign up</button>
         </div>
@@ -108,28 +111,29 @@ console.clear();
 const loginBtn = document.getElementById('login');
 const signupBtn = document.getElementById('signup');
 
+// Toggle between login and signup form
 signupBtn.addEventListener('click', (e) => {
-	let parent = e.target.parentNode.parentNode;
-	Array.from(e.target.parentNode.parentNode.classList).find((element) => {
-		if(element !== "slide-up") {
-			parent.classList.add('slide-up')
-		}else{
-			loginBtn.parentNode.classList.add('slide-up')
-			parent.classList.remove('slide-up')
-		}
-	});
+    let parent = e.target.parentNode.parentNode;
+    Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+        if(element !== "slide-up") {
+            parent.classList.add('slide-up')
+        }else{
+            loginBtn.parentNode.classList.add('slide-up')
+            parent.classList.remove('slide-up')
+        }
+    });
 });
 
 loginBtn.addEventListener('click', (e) => {
-	let parent = e.target.parentNode;
-	Array.from(e.target.parentNode.classList).find((element) => {
-		if(element !== "slide-up") {
-			parent.classList.add('slide-up')
-		}else{
-			signupBtn.parentNode.parentNode.classList.add('slide-up')
-			parent.classList.remove('slide-up')
-		}
-	});
+    let parent = e.target.parentNode;
+    Array.from(e.target.parentNode.classList).find((element) => {
+        if(element !== "slide-up") {
+            parent.classList.add('slide-up')
+        }else{
+            signupBtn.parentNode.parentNode.classList.add('slide-up')
+            parent.classList.remove('slide-up')
+        }
+    });
 });
 </script>
 </body>
