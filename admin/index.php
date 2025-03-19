@@ -126,7 +126,7 @@ if (!isset($_SESSION['user_id'])) {
 
                 row.innerHTML = `
                     <th scope="row" class="flex items-center px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                    <img class="w-10 h-10 rounded-full" src="https://i.pravatar.cc/300" alt="D">
+                    <img class="w-10 h-10 rounded-full" src="https://cdn.pixabay.com/photo/2017/07/18/23/23/user-2517433_1280.png" alt="D">
                     <div class="ps-3">
                         ${item.size_1 ? `<div class="font-semibold text-gray-500">${item.name_1} (${item.mantan_1})</div>` : ''}
                         ${item.size_2 ? `<div class="font-semibold text-gray-500">${item.name_2} (${item.mantan_2})</div>` : ''}
