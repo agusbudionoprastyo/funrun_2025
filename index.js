@@ -27,37 +27,31 @@ map.getContainer().appendChild(distanceElement);
 
 // Fungsi untuk mendapatkan rute menggunakan Mapbox Directions API
 function getRoute() {
-  // Titik asal dan tiga tujuan
   var origin = [110.41126589038201, -6.979400345836346]; // Titik asal
   var destination1 = [110.39930988166765, -6.962930379803198]; // Tujuan pertama
   var destination2 = [110.41123269023053, -6.979460242162332]; // Tujuan akhir
 
-  // Fetch rute pertama (dari asal ke tujuan pertama)
   var url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin[0]},${origin[1]};${destination1[0]},${destination1[1]}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
 
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      var route1 = data.routes[0].geometry; // Mengambil rute pertama
-      var distance1 = data.routes[0].distance / 1000; // Menghitung jarak dalam kilometer
+      var route1 = data.routes[0].geometry;
+      var distance1 = data.routes[0].distance / 1000;
 
-      // Fetch rute kedua (dari tujuan pertama ke tujuan kedua)
       var url2 = `https://api.mapbox.com/directions/v5/mapbox/driving/${destination1[0]},${destination1[1]};${destination2[0]},${destination2[1]}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
 
       fetch(url2)
         .then(response => response.json())
         .then(data => {
-          var route2 = data.routes[0].geometry; // Mengambil rute kedua
-          var distance2 = data.routes[0].distance / 1000; // Menghitung jarak dalam kilometer
+          var route2 = data.routes[0].geometry;
+          var distance2 = data.routes[0].distance / 1000;
 
-          // Total jarak
           var totalDistance = distance1 + distance2;
-          var distanceText = `Distance ${totalDistance.toFixed(2)} km`; // Format jarak dengan dua angka desimal
+          var distanceText = `Distance ${totalDistance.toFixed(2)} km`;
 
-          // Update jarak di elemen HTML
           distanceElement.textContent = distanceText;
 
-          // Menambahkan rute pertama sebagai layer pada peta
           map.addLayer({
             'id': 'route1',
             'type': 'line',
@@ -70,12 +64,11 @@ function getRoute() {
               }
             },
             'paint': {
-              'line-color': 'rgba(255,0,91, 0.5)', // Warna rute pertama
+              'line-color': 'rgba(255,0,91, 0.5)',
               'line-width': 4
             }
           });
 
-          // Menambahkan rute kedua sebagai layer pada peta
           map.addLayer({
             'id': 'route2',
             'type': 'line',
@@ -88,7 +81,7 @@ function getRoute() {
               }
             },
             'paint': {
-              'line-color': 'rgba(128,128,128, 0.8)', // Warna rute kedua
+              'line-color': 'rgba(128,128,128, 0.8)',
               'line-width': 4
             }
           });
@@ -109,13 +102,58 @@ function addUserLocation() {
       var userLongitude = position.coords.longitude;
       var userLatitude = position.coords.latitude;
 
-      // Tambahkan marker untuk lokasi pengguna
-      new mapboxgl.Marker({ color: 'blue' })
-        .setLngLat([userLongitude, userLatitude])
-        .setPopup(new mapboxgl.Popup().setText('Your Location'))
-        .addTo(map);
+      // Membuat elemen div untuk marker
+      const circleMarker = document.createElement('div');
 
-      // Pindahkan pusat peta ke lokasi pengguna
+      // Mengatur gaya untuk membuat marker berbentuk lingkaran
+      circleMarker.style.backgroundColor = '#4385f4'; // Warna marker
+      circleMarker.style.width = '20px';           // Lebar marker
+      circleMarker.style.height = '20px';          // Tinggi marker
+      circleMarker.style.borderRadius = '50%';     // Membuat elemen menjadi lingkaran
+      circleMarker.style.cursor = 'pointer';       // Menambahkan kursor pointer saat hover
+
+      // Menambahkan marker ke peta
+      new mapboxgl.Marker(circleMarker)
+        .setLngLat([userLongitude, userLatitude])  // Set koordinat marker
+        .addTo(map);                              // Menambahkan marker ke peta
+
+
+      // Fungsi untuk memperbarui radius berdasarkan zoom
+      function updateRadius() {
+        var zoomLevel = map.getZoom();
+        var radiusInMeters = 50; // Radius 500 meter yang kita inginkan
+        var pixelsPerMeter = Math.pow(2, zoomLevel) * 256 / (40008000 / 360); // Faktor konversi dari meter ke piksel berdasarkan zoom
+        var circleRadius = radiusInMeters * pixelsPerMeter / 256;
+
+        if (map.getLayer('user-radius')) {
+          map.removeLayer('user-radius');
+          map.removeSource('user-radius');
+        }
+
+        // Menambahkan radius yang disesuaikan
+        map.addLayer({
+          'id': 'user-radius',
+          'type': 'circle',
+          'source': {
+            'type': 'geojson',
+            'data': {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [userLongitude, userLatitude]
+              }
+            }
+          },
+          'paint': {
+            'circle-radius': circleRadius, // Ukuran radius dalam piksel
+            'circle-color': 'rgba(38,146,236, 0.2)' // Warna lingkaran (biru transparan)
+          }
+        });
+      }
+
+      map.on('zoom', updateRadius); // Perbarui radius saat zoom dilakukan
+      updateRadius(); // Panggil fungsi pertama kali untuk menampilkan radius
+
       map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
     }, function(error) {
       console.error('Error getting user location:', error);
@@ -130,19 +168,16 @@ map.on('load', function() {
   getRoute();
   addUserLocation();
 
-  // Menambahkan marker di titik asal
-  new mapboxgl.Marker({ color: 'pink' }) // Marker warna untuk titik asal
+  new mapboxgl.Marker({ color: 'pink' })
     .setLngLat([110.41126589038201, -6.979400345836346])
     .setPopup(new mapboxgl.Popup().setText('Start'))
     .addTo(map);
 
-  // Menambahkan marker di tujuan pertama dengan warna berbeda
   new mapboxgl.Marker({ color: 'teal' })
     .setLngLat([110.39930988166765, -6.962930379803198])
     .setPopup(new mapboxgl.Popup().setText('Checkpoint'))
     .addTo(map);
 
-  // Menambahkan marker di tujuan kedua dengan warna berbeda
   new mapboxgl.Marker({ color: 'gray' })
     .setLngLat([110.41123269023053, -6.979460242162332])
     .setPopup(new mapboxgl.Popup().setText('Finish'))
