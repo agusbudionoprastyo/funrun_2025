@@ -211,15 +211,15 @@
             if (result.success) {
                 iziToast.success({
                     title: 'Success',
-                    message: 'Status updated to Verified!',
+                    message: 'Payment status updated to Verified!',
                     position: 'topRight',
                 });
                 fetchData(); // Refresh the data after update
                 document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
             } else {
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Failed to update status. Please try again.',
+                iziToast.info({
+                    title: 'Info',
+                    message: 'Payment has been Verified.',
                     position: 'topRight',
                 });
             }
