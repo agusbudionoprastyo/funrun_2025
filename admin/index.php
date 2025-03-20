@@ -215,17 +215,14 @@ if (!isset($_SESSION['user_id'])) {
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
-        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // Ganti dengan API key kamu yang valid
-        const sender = "6281770019808"; // Ganti dengan nomor pengirim
-        const recipientNumber = event.target.dataset.phone; // Ambil nomor penerima dari data-phone yang disertakan di tombol
-        const message = "Your payment has been verified."; // Pesan yang akan dikirimkan
+        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
+        const sender = "6281770019808"; // Nomor pengirim
+        const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
+        const message = "Your payment has been verified."; // Pesan yang akan dikirim
 
-        // Cek apakah recipientNumber ada atau tidak
-        console.log('Recipient Number:', recipientNumber); // Log untuk memeriksa apakah nomor penerima berhasil diambil
-
-        // Pastikan recipientNumber valid (tidak kosong)
+        // Validasi jika nomor penerima ada
         if (!recipientNumber) {
-            console.error('No recipient number found!');
+            console.error('Recipient number is missing!');
             iziToast.error({
                 title: 'Error',
                 message: 'Recipient number is missing.',
@@ -235,7 +232,7 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         try {
-            // Step 1: Update the transaction status
+            // Step 1: Update status transaksi ke "verified"
             const updateResponse = await fetch('update_transactions.php', {
                 method: 'POST',
                 headers: {
@@ -246,30 +243,36 @@ if (!isset($_SESSION['user_id'])) {
 
             const updateResult = await updateResponse.json();
             if (updateResult.success) {
-                // Step 2: Send message after successful status update
+                // Step 2: Kirim pesan setelah status diperbarui
                 const sendMessageResponse = await fetch('https://wapi.dafam.cloud/send-message', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        api_key: apiKey,
-                        sender: sender,
-                        number: recipientNumber, // Pastikan nomor penerima ada di sini
-                        message: message
+                        api_key: apiKey, // API Key kamu
+                        sender: sender,  // Nomor pengirim
+                        number: recipientNumber,  // Nomor penerima
+                        message: message // Pesan yang ingin dikirim
                     }),
-                    mode: 'no-cors' // Menambahkan mode no-cors
                 });
 
-                // Karena dengan mode no-cors, respons tidak bisa diakses, maka kita hanya bisa memeriksa apakah request berhasil dikirim
-                iziToast.success({
-                    title: 'Success',
-                    message: 'Payment status updated to Verified and message sent!',
-                    position: 'topRight',
-                });
-
-                fetchData(); // Refresh the data after update
-                document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
+                const sendMessageResult = await sendMessageResponse.json();
+                if (sendMessageResult.success) {
+                    iziToast.success({
+                        title: 'Success',
+                        message: 'Payment status updated to Verified and message sent!',
+                        position: 'topRight',
+                    });
+                    fetchData(); // Memuat ulang data setelah pembaruan
+                    document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to send message. Please try again.',
+                        position: 'topRight',
+                    });
+                }
             } else {
                 iziToast.info({
                     title: 'Info',
@@ -286,6 +289,7 @@ if (!isset($_SESSION['user_id'])) {
             });
         }
     });
+
 
     // document.getElementById('verified-btn').addEventListener('click', async (event) => {
     //     const transactionId = event.target.dataset.transactionId;
