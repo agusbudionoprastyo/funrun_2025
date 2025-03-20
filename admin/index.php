@@ -178,6 +178,7 @@ if (!isset($_SESSION['user_id'])) {
     document.addEventListener('click', (event) => {
         if (event.target && event.target.classList.contains('update-status-btn')) {
             const transactionId = event.target.getAttribute('data-transaction-id');
+            const phone = event.target.getAttribute('data-phone');
             const name = event.target.getAttribute('data-name');
             const amount = event.target.getAttribute('data-amount');
             const paymentImg = event.target.getAttribute('data-payment-img');
@@ -210,64 +211,70 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
-    // Handle the status update form submission to Verified
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
-    const transactionId = event.target.dataset.transactionId;
-    const newStatus = "verified"; // Set status directly to "Verified"
-    const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // Replace with your actual API key
-    const sender = "6281770019808"; // Replace with your sender's number
-    const recipientNumber = event.target.dataset.phone; // Get the recipient's phone number from the clicked row (use `phone_1` dynamically)
-    const message = "Your payment has been verified."; // Customize the message as needed
+        const transactionId = event.target.dataset.transactionId;
+        const newStatus = "verified"; // Set status directly to "Verified"
+        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // Replace with your actual API key
+        const sender = "6281770019808"; // Replace with your sender's number
+        const recipientNumber = event.target.dataset.phone; // Get the recipient's phone number from the clicked row (use `phone_1` dynamically)
+        const message = "Your payment has been verified."; // Customize the message as needed
 
-    try {
-        // Step 1: Update the transaction status
-        const updateResponse = await fetch('update_transactions.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-        });
+        // Log to check the recipient's phone number
+        console.log('Recipient Number:', recipientNumber); // Log nomor telepon yang akan dikirim
 
-        const updateResult = await updateResponse.json();
-        if (updateResult.success) {
-            // Step 2: Send message after successful status update
-            const sendMessageResponse = await fetch('https://wapi.dafam.cloud/send-message', {
+        try {
+            // Step 1: Update the transaction status
+            const updateResponse = await fetch('update_transactions.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    api_key: apiKey,
-                    sender: sender,
-                    number: recipientNumber,
-                    message: message
-                }),
+                body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
             });
 
-            const sendMessageResult = await sendMessageResponse.json();
-            if (sendMessageResult.success) {
-                iziToast.success({
-                    title: 'Success',
-                    message: 'Payment status updated to Verified and message sent!',
-                    position: 'topRight',
+            const updateResult = await updateResponse.json();
+            if (updateResult.success) {
+                // Step 2: Send message after successful status update
+                const sendMessageResponse = await fetch('https://wapi.dafam.cloud/send-message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        api_key: apiKey,
+                        sender: sender,
+                        number: recipientNumber, // Here phone_1 is used as the recipient
+                        message: message
+                    }),
                 });
-                fetchData(); // Refresh the data after update
-                document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
+
+                const sendMessageResult = await sendMessageResponse.json();
+
+                // Log response from the API send-message
+                console.log('Response from send-message API:', sendMessageResult); // Log respons dari API
+
+                if (sendMessageResult.success) {
+                    iziToast.success({
+                        title: 'Success',
+                        message: 'Payment status updated to Verified and message sent!',
+                        position: 'topRight',
+                    });
+                    fetchData(); // Refresh the data after update
+                    document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
+                } else {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to send message. Please try again.',
+                        position: 'topRight',
+                    });
+                }
             } else {
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Failed to send message. Please try again.',
+                iziToast.info({
+                    title: 'Info',
+                    message: 'Payment has already been Verified.',
                     position: 'topRight',
                 });
             }
-        } else {
-            iziToast.info({
-                title: 'Info',
-                message: 'Payment has already been Verified.',
-                position: 'topRight',
-            });
-        }
         } catch (error) {
             console.error('Error updating status:', error);
             iziToast.error({
