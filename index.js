@@ -158,7 +158,7 @@ function addUserLocation() {
       // map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
 
       // Panggil fungsi untuk mendapatkan rute dengan lokasi pengguna
-      // getRoute();
+      getRoute();
     }, function(error) {
       console.error('Error getting user location:', error);
     }, {
