@@ -291,120 +291,104 @@ if (!isset($_SESSION['user_id'])) {
     // });
 
     document.addEventListener('click', (event) => {
-    if (event.target && event.target.classList.contains('update-status-btn')) {
-        const transactionId = event.target.getAttribute('data-transaction-id');
-        const phone = event.target.getAttribute('data-phone');
-        const name = event.target.getAttribute('data-name');
-        const amount = event.target.getAttribute('data-amount');
-        const paymentImg = event.target.getAttribute('data-payment-img');
-        const currentStatus = event.target.getAttribute('data-current-status');
+        if (event.target && event.target.classList.contains('update-status-btn')) {
+            const transactionId = event.target.getAttribute('data-transaction-id');
+            const phone = event.target.getAttribute('data-phone');
+            const name = event.target.getAttribute('data-name');
+            const amount = event.target.getAttribute('data-amount');
+            const paymentImg = event.target.getAttribute('data-payment-img');
+            const currentStatus = event.target.getAttribute('data-current-status');
 
-        // Check if the transaction status is "Pending"
-        if (currentStatus === 'pending') {
-            // Notify the user that the transaction is still pending
-            iziToast.info({
-                title: 'Info',
-                message: 'This transaction is still Pending. You cannot confirm it yet.',
+            // Check if the transaction status is "Pending"
+            if (currentStatus === 'pending') {
+                // Notify the user that the transaction is still pending
+                iziToast.info({
+                    title: 'Info',
+                    message: 'This transaction is still Pending. You cannot confirm it yet.',
+                    position: 'topRight',
+                });
+                return; // Do not proceed to open the modal if the status is Pending
+            }
+
+            // Populate modal with details
+            document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
+            document.getElementById('modal-name').textContent = name;
+            document.getElementById('modal-amount').textContent = amount;
+            document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
+            document.getElementById('verified-btn').dataset.phone = phone;
+
+            // Show the modal
+            document.getElementById('update-status-modal').classList.remove('hidden');
+        }
+    });
+
+    // Close the modal
+    document.getElementById('close-modal').addEventListener('click', () => {
+        document.getElementById('update-status-modal').classList.add('hidden');
+    });
+
+    document.getElementById('verified-btn').addEventListener('click', async (event) => {
+        const transactionId = event.target.dataset.transactionId;
+        const newStatus = "verified"; // Set status directly to "Verified"
+        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
+        const sender = "628567868154"; // Nomor pengirim
+        const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
+        const message = "Your payment has been verified."; // Pesan yang akan dikirim
+
+        // Validasi jika nomor penerima ada
+        if (!recipientNumber) {
+            console.error('Recipient number is missing!');
+            iziToast.error({
+                title: 'Error',
+                message: 'Recipient number is missing.',
                 position: 'topRight',
             });
-            return; // Do not proceed to open the modal if the status is Pending
+            return;
         }
 
-        // Populate modal with details
-        document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
-        document.getElementById('modal-name').textContent = name;
-        document.getElementById('modal-amount').textContent = amount;
-        document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
-        document.getElementById('verified-btn').dataset.phone = phone;
+        try {
+            // Step 1: Update status transaksi ke "verified"
+            const updateResponse = await fetch('update_transactions.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+            });
 
-        // Show the modal
-        document.getElementById('update-status-modal').classList.remove('hidden');
-    }
-});
+            const updateResult = await updateResponse.json();
+            if (updateResult.success) {
+                // Step 2: Kirim pesan setelah status diperbarui menggunakan GET request dan mode no-cors
+                const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
 
-// Close the modal
-document.getElementById('close-modal').addEventListener('click', () => {
-    document.getElementById('update-status-modal').classList.add('hidden');
-});
+                // Make a GET request to the API with 'no-cors' mode
+                const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
 
-document.getElementById('verified-btn').addEventListener('click', async (event) => {
-    const transactionId = event.target.dataset.transactionId;
-    const newStatus = "verified"; // Set status directly to "Verified"
-    const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-    const sender = "628567868154"; // Nomor pengirim
-    const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
-    const message = "Your payment has been verified."; // Pesan yang akan dikirim
-
-    // Validasi jika nomor penerima ada
-    if (!recipientNumber) {
-        console.error('Recipient number is missing!');
-        iziToast.error({
-            title: 'Error',
-            message: 'Recipient number is missing.',
-            position: 'topRight',
-        });
-        return;
-    }
-
-    try {
-        // Step 1: Update status transaksi ke "verified"
-        const updateResponse = await fetch('update_transactions.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-        });
-
-        const updateResult = await updateResponse.json();
-        if (updateResult.success) {
-            // Step 2: Kirim pesan setelah status diperbarui menggunakan GET request
-            const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
-
-            // Make a GET request to the API
-            const sendMessageResponse = await fetch(url);
-
-            // Check if the response is OK (status code 200-299)
-            if (sendMessageResponse.ok) {
-                const sendMessageResult = await sendMessageResponse.json();
-                if (sendMessageResult.success) {
-                    iziToast.success({
-                        title: 'Success',
-                        message: 'Payment status updated to Verified and message sent!',
-                        position: 'topRight',
-                    });
-                    fetchData(); // Memuat ulang data setelah pembaruan
-                    document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
-                } else {
-                    iziToast.error({
-                        title: 'Error',
-                        message: 'Failed to send message. Please try again.',
-                        position: 'topRight',
-                    });
-                }
+                // Karena mode 'no-cors', kita tidak bisa mengecek respons dari server, 
+                // jadi hanya mengirimkan permintaan tanpa mengharapkan respons yang bisa diproses.
+                iziToast.success({
+                    title: 'Success',
+                    message: 'Payment status updated to Verified and message sent!',
+                    position: 'topRight',
+                });
+                fetchData(); // Memuat ulang data setelah pembaruan
+                document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
             } else {
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Failed to send the message. Please try again later.',
+                iziToast.info({
+                    title: 'Info',
+                    message: 'Payment has already been Verified.',
                     position: 'topRight',
                 });
             }
-        } else {
-            iziToast.info({
-                title: 'Info',
-                message: 'Payment has already been Verified.',
+        } catch (error) {
+            console.error('Error updating status or sending message:', error);
+            iziToast.error({
+                title: 'Error',
+                message: 'Error updating status or sending message. Please try again.',
                 position: 'topRight',
             });
         }
-    } catch (error) {
-        console.error('Error updating status or sending message:', error);
-        iziToast.error({
-            title: 'Error',
-            message: 'Error updating status or sending message. Please try again.',
-            position: 'topRight',
-        });
-    }
-});
+    });
 
     // Call fetchData to populate the table
     fetchData();
