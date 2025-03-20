@@ -219,116 +219,11 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
-    // document.getElementById('verified-btn').addEventListener('click', async (event) => {
-    //     const transactionId = event.target.dataset.transactionId;
-    //     const newStatus = "verified"; // Set status directly to "Verified"
-    //     const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-    //     const sender = "628567868154"; // Nomor pengirim
-    //     const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
-    //     const message = "Your payment has been verified."; // Pesan yang akan dikirim
-
-    //     // Validasi jika nomor penerima ada
-    //     if (!recipientNumber) {
-    //         console.error('Recipient number is missing!');
-    //         iziToast.error({
-    //             title: 'Error',
-    //             message: 'Recipient number is missing.',
-    //             position: 'topRight',
-    //         });
-    //         return;
-    //     }
-
-    //     // Show loading spinner
-    //     document.getElementById('loading-spinner').style.display = 'block';
-
-    //     try {
-    //         // Step 1: Update status transaksi ke "verified"
-    //         const updateResponse = await fetch('update_transactions.php', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-    //         });
-
-    //         const updateResult = await updateResponse.json();
-    //         if (updateResult.success) {
-    //             // Step 2: Generate QR code for transaction ID
-    //             const qrCodeDataUrl = await generateQRCode(transactionId);  // Generates QR code and returns its Data URL
-
-    //             // Step 3: Send QR code data URL to backend for saving as an image in the "qrid" folder
-    //             const qrCodeFileUrl = await saveQRCode(qrCodeDataUrl, transactionId);  // Get the URL of the saved QR code
-
-    //             // Step 4: Send media message with the URL of the saved QR code to the recipient
-    //             const url = `https://wapi.dafam.cloud/send-media?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&media_type=image&caption=${encodeURIComponent(message)}&url=${encodeURIComponent(qrCodeFileUrl)}`;
-    //             const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
-
-    //             iziToast.success({
-    //                 title: 'Success',
-    //                 message: 'Payment status updated to Verified, QR code sent!',
-    //                 position: 'topRight',
-    //             });
-    //             fetchData(); // Reload data after update
-    //             document.getElementById('update-status-modal').classList.add('hidden'); // Close modal
-    //         } else {
-    //             iziToast.info({
-    //                 title: 'Info',
-    //                 message: 'Payment has already been Verified.',
-    //                 position: 'topRight',
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error('Error updating status or sending message:', error);
-    //         iziToast.error({
-    //             title: 'Error',
-    //             message: 'Error updating status or sending message. Please try again.',
-    //             position: 'topRight',
-    //         });
-    //     } finally {
-    //         // Hide loading spinner when the process is complete
-    //         document.getElementById('loading-spinner').style.display = 'none';
-    //     }
-    // });
-
-    // // Function to generate QR code as a data URL
-    // function generateQRCode(transactionId) {
-    //     return new Promise((resolve, reject) => {
-    //         try {
-    //             QRCode.toDataURL(transactionId, { width: 500, height: 500 }, (err, url) => {
-    //                 if (err) reject(err);
-    //                 else resolve(url);
-    //             });
-    //         } catch (err) {
-    //             reject(err);
-    //         }
-    //     });
-    // }
-
-    // // Function to send the generated QR code to the backend for saving
-    // async function saveQRCode(qrCodeDataUrl, transactionId) {
-    //     const response = await fetch('save_qr_code.php', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({ qr_code_data_url: qrCodeDataUrl, transaction_id: transactionId }),
-    //     });
-
-    //     const result = await response.json();
-    //     if (result.success) {
-    //         // Return the URL of the saved QR code image
-    //         return result.file_url;  // The file URL returned by the backend
-    //     } else {
-    //         console.error('Failed to save QR code');
-    //         throw new Error('Failed to save QR code');
-    //     }
-    // }
-
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
         const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-        const sender = "628567868154"; // Nomor pengirim
+        const sender = "6281770019808"; // Nomor pengirim
         const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
         const message = "*Pembayaran Anda telah diverifikasi!*\nTunjukkan QR code ini kepada petugas kami saat pengambilan *NOMOR BIB* (nomor dada).\nTerima kasih atas partisipasi anda.\n\n*Your payment has been verified!*\nPlease show this QR code to our staff when collecting *BIB NUMBER* (race number).\nThank you for your participation.\n\naccess the RunMap\nhttps://funrun.dafam.cloud ";
 
