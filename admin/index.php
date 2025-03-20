@@ -75,6 +75,8 @@ if (!isset($_SESSION['user_id'])) {
 <!-- Flowbite -->
 <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+
 <!-- Modal HTML -->
 <div id="update-status-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -174,121 +176,6 @@ if (!isset($_SESSION['user_id'])) {
             console.error('Error fetching data:', error);
         }
     }
-    // // Open the modal and populate with transaction details
-    // document.addEventListener('click', (event) => {
-    //     if (event.target && event.target.classList.contains('update-status-btn')) {
-    //         const transactionId = event.target.getAttribute('data-transaction-id');
-    //         const phone = event.target.getAttribute('data-phone');
-    //         const name = event.target.getAttribute('data-name');
-    //         const amount = event.target.getAttribute('data-amount');
-    //         const paymentImg = event.target.getAttribute('data-payment-img');
-    //         const currentStatus = event.target.getAttribute('data-current-status');
-
-    //         // Check if the transaction status is "Pending"
-    //         if (currentStatus === 'pending') {
-    //             // Notify the user that the transaction is still pending
-    //             iziToast.info({
-    //                 title: 'Info',
-    //                 message: 'This transaction is still Pending. You cannot confirm it yet.',
-    //                 position: 'topRight',
-    //             });
-    //             return; // Do not proceed to open the modal if the status is Pending
-    //         }
-
-    //         // Populate modal with details
-    //         document.getElementById('payment-proof-image').src = paymentImg; // Optionally set the image
-    //         document.getElementById('modal-name').textContent = name;
-    //         document.getElementById('modal-amount').textContent = amount;
-    //         document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
-    //         document.getElementById('verified-btn').dataset.phone = phone;
-
-    //         // Show the modal
-    //         document.getElementById('update-status-modal').classList.remove('hidden');
-    //     }
-    // });
-
-    // // Close the modal
-    // document.getElementById('close-modal').addEventListener('click', () => {
-    //     document.getElementById('update-status-modal').classList.add('hidden');
-    // });
-
-    // document.getElementById('verified-btn').addEventListener('click', async (event) => {
-    //     const transactionId = event.target.dataset.transactionId;
-    //     const newStatus = "verified"; // Set status directly to "Verified"
-    //     const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // Your API Key
-    //     const sender = "628567868154"; // Sender number
-    //     const recipientNumber = event.target.dataset.phone; // Recipient number taken from the button dataset
-    //     const message = "Your payment has been verified."; // The message to send
-
-    //     // Validate if the recipient number exists
-    //     if (!recipientNumber) {
-    //         console.error('Recipient number is missing!');
-    //         iziToast.error({
-    //             title: 'Error',
-    //             message: 'Recipient number is missing.',
-    //             position: 'topRight',
-    //         });
-    //         return;
-    //     }
-
-    //     try {
-    //         // Step 1: Update the transaction status to "verified"
-    //         const updateResponse = await fetch('update_transactions.php', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-    //         });
-
-    //         const updateResult = await updateResponse.json();
-    //         if (updateResult.success) {
-    //             // Step 2: Send message after the status is updated
-    //             const sendMessageResponse = await fetch('https://wapi.dafam.cloud/send-message', {
-    //                 method: 'POST',
-    //                 headers: {
-    //                     'Content-Type': 'application/json',
-    //                 },
-    //                 body: JSON.stringify({
-    //                     api_key: apiKey,
-    //                     sender: sender,
-    //                     number: recipientNumber,
-    //                     message: message
-    //                 }),
-    //             });
-
-    //             const sendMessageResult = await sendMessageResponse.json();
-    //             if (sendMessageResult.success) {
-    //                 iziToast.success({
-    //                     title: 'Success',
-    //                     message: 'Payment status updated to Verified and message sent!',
-    //                     position: 'topRight',
-    //                 });
-    //                 fetchData(); // Reload the data after update
-    //                 document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
-    //             } else {
-    //                 iziToast.error({
-    //                     title: 'Error',
-    //                     message: 'Failed to send message. Please try again.',
-    //                     position: 'topRight',
-    //                 });
-    //             }
-    //         } else {
-    //             iziToast.info({
-    //                 title: 'Info',
-    //                 message: 'Payment has already been Verified.',
-    //                 position: 'topRight',
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error('Error updating status:', error);
-    //         iziToast.error({
-    //             title: 'Error',
-    //             message: 'Error updating status or sending message. Please try again.',
-    //             position: 'topRight',
-    //         });
-    //     }
-    // });
 
     document.addEventListener('click', (event) => {
         if (event.target && event.target.classList.contains('update-status-btn')) {
@@ -327,6 +214,69 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
+    // document.getElementById('verified-btn').addEventListener('click', async (event) => {
+    //     const transactionId = event.target.dataset.transactionId;
+    //     const newStatus = "verified"; // Set status directly to "Verified"
+    //     const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
+    //     const sender = "628567868154"; // Nomor pengirim
+    //     const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
+    //     const message = "Your payment has been verified."; // Pesan yang akan dikirim
+
+    //     // Validasi jika nomor penerima ada
+    //     if (!recipientNumber) {
+    //         console.error('Recipient number is missing!');
+    //         iziToast.error({
+    //             title: 'Error',
+    //             message: 'Recipient number is missing.',
+    //             position: 'topRight',
+    //         });
+    //         return;
+    //     }
+
+    //     try {
+    //         // Step 1: Update status transaksi ke "verified"
+    //         const updateResponse = await fetch('update_transactions.php', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+    //         });
+
+    //         const updateResult = await updateResponse.json();
+    //         if (updateResult.success) {
+    //             // Step 2: Kirim pesan setelah status diperbarui menggunakan GET request dan mode no-cors
+    //             const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
+
+    //             // Make a GET request to the API with 'no-cors' mode
+    //             const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
+
+    //             // Karena mode 'no-cors', kita tidak bisa mengecek respons dari server, 
+    //             // jadi hanya mengirimkan permintaan tanpa mengharapkan respons yang bisa diproses.
+    //             iziToast.success({
+    //                 title: 'Success',
+    //                 message: 'Payment status updated to Verified and message sent!',
+    //                 position: 'topRight',
+    //             });
+    //             fetchData(); // Memuat ulang data setelah pembaruan
+    //             document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
+    //         } else {
+    //             iziToast.info({
+    //                 title: 'Info',
+    //                 message: 'Payment has already been Verified.',
+    //                 position: 'topRight',
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error updating status or sending message:', error);
+    //         iziToast.error({
+    //             title: 'Error',
+    //             message: 'Error updating status or sending message. Please try again.',
+    //             position: 'topRight',
+    //         });
+    //     }
+    // });
+
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
@@ -358,14 +308,16 @@ if (!isset($_SESSION['user_id'])) {
 
             const updateResult = await updateResponse.json();
             if (updateResult.success) {
-                // Step 2: Kirim pesan setelah status diperbarui menggunakan GET request dan mode no-cors
-                const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
+                // Step 2: Generate QR code for transaction ID
+                const qrCodeDataUrl = await generateQRCode(transactionId);  // Generates QR code and returns its Data URL
 
-                // Make a GET request to the API with 'no-cors' mode
+                // Step 3: Send QR code data URL to backend for saving as an image in the "qrid" folder
+                await saveQRCode(qrCodeDataUrl, transactionId);  // Pass QR data URL and transaction ID to backend for saving
+
+                // Step 4: Send message to recipient
+                const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
                 const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
 
-                // Karena mode 'no-cors', kita tidak bisa mengecek respons dari server, 
-                // jadi hanya mengirimkan permintaan tanpa mengharapkan respons yang bisa diproses.
                 iziToast.success({
                     title: 'Success',
                     message: 'Payment status updated to Verified and message sent!',
@@ -390,10 +342,41 @@ if (!isset($_SESSION['user_id'])) {
         }
     });
 
+    // Function to generate QR code as a data URL
+    function generateQRCode(transactionId) {
+        return new Promise((resolve, reject) => {
+            try {
+                QRCode.toDataURL(transactionId, (err, url) => {
+                    if (err) reject(err);
+                    else resolve(url);
+                });
+            } catch (err) {
+                reject(err);
+            }
+        });
+    }
+
+    // Function to send the generated QR code to the backend for saving
+    async function saveQRCode(qrCodeDataUrl, transactionId) {
+        const response = await fetch('save_qr_code.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ qr_code_data_url: qrCodeDataUrl, transaction_id: transactionId }),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+            console.log('QR Code saved successfully');
+        } else {
+            console.error('Failed to save QR code');
+        }
+    }
+
     // Call fetchData to populate the table
     fetchData();
 </script>
-
 
 </body>
 
