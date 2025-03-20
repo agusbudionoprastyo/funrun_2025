@@ -280,8 +280,8 @@ if (!isset($_SESSION['user_id'])) {
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
-        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-        const sender = "628567868154"; // Nomor pengirim
+        const apiKey = "1234567890";  // API Key kamu
+        const sender = "62888xxxx"; // Nomor pengirim
         const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
         const message = "Your payment has been verified."; // Pesan yang akan dikirim
 
@@ -312,19 +312,19 @@ if (!isset($_SESSION['user_id'])) {
                 const qrCodeDataUrl = await generateQRCode(transactionId);  // Generates QR code and returns its Data URL
 
                 // Step 3: Send QR code data URL to backend for saving as an image in the "qrid" folder
-                await saveQRCode(qrCodeDataUrl, transactionId);  // Pass QR data URL and transaction ID to backend for saving
+                const qrCodeFileUrl = await saveQRCode(qrCodeDataUrl, transactionId);  // Get the URL of the saved QR code
 
-                // Step 4: Send message to recipient
-                const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
+                // Step 4: Send media message with the URL of the saved QR code to the recipient
+                const url = `https://wapi.dafam.cloud/send-media?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&media_type=image&caption=${encodeURIComponent(message)}&url=${encodeURIComponent(qrCodeFileUrl)}`;
                 const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
 
                 iziToast.success({
                     title: 'Success',
-                    message: 'Payment status updated to Verified and message sent!',
+                    message: 'Payment status updated to Verified, QR code sent!',
                     position: 'topRight',
                 });
-                fetchData(); // Memuat ulang data setelah pembaruan
-                document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
+                fetchData(); // Reload data after update
+                document.getElementById('update-status-modal').classList.add('hidden'); // Close modal
             } else {
                 iziToast.info({
                     title: 'Info',
@@ -368,9 +368,11 @@ if (!isset($_SESSION['user_id'])) {
 
         const result = await response.json();
         if (result.success) {
-            console.log('QR Code saved successfully');
+            // Return the URL of the saved QR code image
+            return result.file_url;  // The file URL returned by the backend
         } else {
             console.error('Failed to save QR code');
+            throw new Error('Failed to save QR code');
         }
     }
 
