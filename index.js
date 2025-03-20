@@ -4,7 +4,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWd1c2J1ZGlvbm9wcmFzdHlvIiwiYSI6ImNsdW1mcTZnc
 var map = new mapboxgl.Map({
   container: 'map', // ID elemen HTML tempat peta akan ditampilkan
   style: 'mapbox://styles/mapbox/streets-v11', // Pilih gaya peta
-  center: [110.41201948215935, -6.9794677077623986], // Koordinat awal (longitude, latitude)
+  center: [110.41126589038201, -6.979400345836346], // Koordinat awal (longitude, latitude)
   zoom: 15
 });
 
@@ -64,7 +64,7 @@ function getRoute() {
               }
             },
             'paint': {
-              'line-color': 'rgba(255,0,91, 0.5)',
+              'line-color': 'rgba(255,0,91, 0.8)',
               'line-width': 4
             }
           });
@@ -158,7 +158,7 @@ function addUserLocation() {
       map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
 
       // Panggil fungsi untuk mendapatkan rute dengan lokasi pengguna
-      getRoute(userLongitude, userLatitude);
+      getRoute();
     }, function(error) {
       console.error('Error getting user location:', error);
     }, {
@@ -170,6 +170,72 @@ function addUserLocation() {
     console.log('Geolocation is not supported by this browser.');
   }
 }
+
+// Tambahkan tombol locate GPS
+var locateButton = document.createElement('button');
+locateButton.id = 'locate-btn';
+locateButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
+locateButton.style.position = 'absolute';
+locateButton.style.bottom = '50px';
+locateButton.style.right = '10px';
+locateButton.style.width = '50px'; // Ukuran tombol lebih besar untuk memberi ruang pada ikon
+locateButton.style.height = '50px'; // Ukuran tombol lebih besar untuk memberi ruang pada ikon
+locateButton.style.zIndex = 10;
+locateButton.style.padding = '0'; // Hapus padding agar ikon tepat di tengah
+locateButton.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; // Warna latar belakang dengan sedikit transparansi
+locateButton.style.color = 'black';
+locateButton.style.border = 'none';
+locateButton.style.borderRadius = '50%'; // Membuat tombol berbentuk lingkaran
+locateButton.style.cursor = 'pointer';
+
+// Styling untuk ikon agar berada di tengah
+var icon = locateButton.querySelector('i');
+icon.style.fontSize = '20px'; // Ukuran ikon
+icon.style.lineHeight = '50px'; // Pastikan ikon terpusat secara vertikal
+
+document.body.appendChild(locateButton);
+
+// Event listener untuk tombol locate GPS
+locateButton.addEventListener('click', function() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var userLongitude = position.coords.longitude;
+      var userLatitude = position.coords.latitude;
+
+      // Pindahkan peta ke lokasi pengguna
+      map.flyTo({
+        center: [userLongitude, userLatitude],
+        zoom: 15
+      });
+
+      // Hapus marker lama jika ada
+      if (window.userMarker) {
+        window.userMarker.remove();
+      }
+
+      const circleMarker = document.createElement('div');
+      circleMarker.style.backgroundColor = 'rgb(235,32,93)';
+      circleMarker.style.width = '15px';
+      circleMarker.style.height = '15px';
+      circleMarker.style.borderRadius = '50%';
+      circleMarker.style.cursor = 'pointer';
+
+      window.userMarker = new mapboxgl.Marker(circleMarker)
+        .setLngLat([userLongitude, userLatitude])
+        .addTo(map);
+
+      updateRadius(userLongitude, userLatitude);
+    }, function(error) {
+      console.error('Error getting user location:', error);
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 10000, // Update lokasi setiap 10 detik
+      timeout: 5000 // Timeout setelah 5 detik jika tidak dapat mendapatkan lokasi
+    });
+  } else {
+    console.log('Geolocation is not supported by this browser.');
+  }
+});
 
 // Panggil fungsi untuk menampilkan lokasi pengguna dan rute saat peta dimuat
 map.on('load', function() {
