@@ -24,7 +24,7 @@ $filePath = $folderPath . 'qr_' . $transactionId . '.png';
 // Save the image to the file
 if (file_put_contents($filePath, $imageData)) {
     // Get the URL of the saved image
-    $fileUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/' . $filePath;
+    $fileUrl = 'https://' . $_SERVER['HTTP_HOST'] . '/admin/' . $filePath;
     echo json_encode(['success' => true, 'message' => 'QR code saved successfully', 'file_url' => $fileUrl]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to save QR code']);
