@@ -146,7 +146,7 @@ if (!isset($_SESSION['user_id'])) {
                         </span>
                     </td>
                     <td class="px-6 py-4">
-                        <button type="button" class="update-status-btn text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2" data-transaction-id="${item.transaction_id}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-amount="${formattedAmount}" data-payment-img="../users/paymentprooft/${item.payment_prooft}" data-current-status="${item.status}">
+                        <button type="button" class="update-status-btn text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2 text-center me-2 mb-2" data-transaction-id="${item.transaction_id}" data-phone="${item.phone_1}" data-name="${item.name_1} ${item.name_2 ? ' / ' + item.name_2 : ''}" data-amount="${formattedAmount}" data-payment-img="../users/paymentprooft/${item.payment_prooft}" data-current-status="${item.status}">
                             Confirm
                         </button>
                     </td>
@@ -173,6 +173,7 @@ if (!isset($_SESSION['user_id'])) {
     document.addEventListener('click', (event) => {
         if (event.target && event.target.classList.contains('update-status-btn')) {
             const transactionId = event.target.getAttribute('data-transaction-id');
+            const phone = event.target.getAttribute('data_phone');
             const name = event.target.getAttribute('data-name');
             const amount = event.target.getAttribute('data-amount');
             const paymentImg = event.target.getAttribute('data-payment-img');
