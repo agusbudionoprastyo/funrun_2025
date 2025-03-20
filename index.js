@@ -155,10 +155,10 @@ function addUserLocation() {
       map.on('zoom', updateRadius); // Perbarui radius saat zoom dilakukan
       updateRadius(); // Panggil fungsi pertama kali untuk menampilkan radius
 
-      map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
+      // map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
 
       // Panggil fungsi untuk mendapatkan rute dengan lokasi pengguna
-      getRoute();
+      // getRoute();
     }, function(error) {
       console.error('Error getting user location:', error);
     }, {

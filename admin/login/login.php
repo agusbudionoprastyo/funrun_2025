@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
     $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
     // Check if email exists in the database
-    $stmt = $conn->prepare("SELECT user_id, user_name, password FROM auth WHERE email = ?");
+    $stmt = $conn->prepare("SELECT user_id, user_name, password FROM auth WHERE email = ? AND active = 'true'");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
