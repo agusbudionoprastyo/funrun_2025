@@ -32,6 +32,10 @@ if (!isset($_SESSION['user_id'])) {
 </head>
 
 <body class="bg-gray-100">
+<!-- Add this inside your body -->
+<div id="loading-spinner" style="display: none;">
+    <div class="spinner">Loading...</div>
+</div>
 
 <!-- Container for the Table -->
 <div class="container mx-auto p-6">
@@ -214,69 +218,6 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
-    // document.getElementById('verified-btn').addEventListener('click', async (event) => {
-    //     const transactionId = event.target.dataset.transactionId;
-    //     const newStatus = "verified"; // Set status directly to "Verified"
-    //     const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-    //     const sender = "628567868154"; // Nomor pengirim
-    //     const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
-    //     const message = "Your payment has been verified."; // Pesan yang akan dikirim
-
-    //     // Validasi jika nomor penerima ada
-    //     if (!recipientNumber) {
-    //         console.error('Recipient number is missing!');
-    //         iziToast.error({
-    //             title: 'Error',
-    //             message: 'Recipient number is missing.',
-    //             position: 'topRight',
-    //         });
-    //         return;
-    //     }
-
-    //     try {
-    //         // Step 1: Update status transaksi ke "verified"
-    //         const updateResponse = await fetch('update_transactions.php', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-    //         });
-
-    //         const updateResult = await updateResponse.json();
-    //         if (updateResult.success) {
-    //             // Step 2: Kirim pesan setelah status diperbarui menggunakan GET request dan mode no-cors
-    //             const url = `https://wapi.dafam.cloud/send-message?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&message=${encodeURIComponent(message)}`;
-
-    //             // Make a GET request to the API with 'no-cors' mode
-    //             const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
-
-    //             // Karena mode 'no-cors', kita tidak bisa mengecek respons dari server, 
-    //             // jadi hanya mengirimkan permintaan tanpa mengharapkan respons yang bisa diproses.
-    //             iziToast.success({
-    //                 title: 'Success',
-    //                 message: 'Payment status updated to Verified and message sent!',
-    //                 position: 'topRight',
-    //             });
-    //             fetchData(); // Memuat ulang data setelah pembaruan
-    //             document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
-    //         } else {
-    //             iziToast.info({
-    //                 title: 'Info',
-    //                 message: 'Payment has already been Verified.',
-    //                 position: 'topRight',
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error('Error updating status or sending message:', error);
-    //         iziToast.error({
-    //             title: 'Error',
-    //             message: 'Error updating status or sending message. Please try again.',
-    //             position: 'topRight',
-    //         });
-    //     }
-    // });
-
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
@@ -295,6 +236,9 @@ if (!isset($_SESSION['user_id'])) {
             });
             return;
         }
+
+        // Show loading spinner
+        document.getElementById('loading-spinner').style.display = 'block';
 
         try {
             // Step 1: Update status transaksi ke "verified"
@@ -339,6 +283,9 @@ if (!isset($_SESSION['user_id'])) {
                 message: 'Error updating status or sending message. Please try again.',
                 position: 'topRight',
             });
+        } finally {
+            // Hide loading spinner when the process is complete
+            document.getElementById('loading-spinner').style.display = 'none';
         }
     });
 
@@ -346,7 +293,7 @@ if (!isset($_SESSION['user_id'])) {
     function generateQRCode(transactionId) {
         return new Promise((resolve, reject) => {
             try {
-                QRCode.toDataURL(transactionId, (err, url) => {
+                QRCode.toDataURL(transactionId, { width: 500, height: 500 }, (err, url) => {
                     if (err) reject(err);
                     else resolve(url);
                 });
