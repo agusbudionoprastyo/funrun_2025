@@ -330,7 +330,7 @@ if (!isset($_SESSION['user_id'])) {
         const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
         const sender = "628567868154"; // Nomor pengirim
         const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
-        const message = `*Pembayaran Anda telah diverifikasi!* Tunjukkan QR code ini kepada petugas kami saat pengambilan BIB (nomor dada) di acara.\nAnda juga dapat mengakses RunMap di https://funrun.dafam.cloud untuk detail acara dan lokasi. Terima kasih atas partisipasi Anda, dan kami menantikan kehadiran Anda di acara!\n\n*Your payment has been verified!* Please show this QR code to our staff when collecting your BIB (race number) at the event.\nYou can also access the RunMap at https://funrun.dafam.cloud for event details and locations. Thank you for your participation, and we look forward to seeing you at the event!`;
+        const message = "*Pembayaran Anda telah diverifikasi!* Tunjukkan QR code ini kepada petugas kami saat pengambilan BIB (nomor dada) di acara.\nAnda juga dapat mengakses RunMap di https://funrun.dafam.cloud untuk detail acara dan lokasi. Terima kasih atas partisipasi Anda, dan kami menantikan kehadiran Anda di acara!\n\n*Your payment has been verified!* Please show this QR code to our staff when collecting your BIB (race number) at the event.\nYou can also access the RunMap at https://funrun.dafam.cloud for event details and locations. Thank you for your participation, and we look forward to seeing you at the event!";
 
         // Validasi jika nomor penerima ada
         if (!recipientNumber) {
