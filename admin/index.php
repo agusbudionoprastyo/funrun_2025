@@ -280,8 +280,8 @@ if (!isset($_SESSION['user_id'])) {
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
-        const apiKey = "1234567890";  // API Key kamu
-        const sender = "62888xxxx"; // Nomor pengirim
+        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
+        const sender = "628567868154"; // Nomor pengirim
         const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
         const message = "Your payment has been verified."; // Pesan yang akan dikirim
 
