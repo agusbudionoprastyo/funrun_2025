@@ -250,11 +250,12 @@ if (!isset($_SESSION['user_id'])) {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        api_key: apiKey, // API Key kamu
-                        sender: sender,  // Nomor pengirim
-                        number: recipientNumber,  // Nomor penerima
-                        message: message // Pesan yang ingin dikirim
+                        api_key: apiKey,
+                        sender: sender,
+                        number: recipientNumber,
+                        message: message
                     }),
+                    mode: 'no-cors'  // This prevents the CORS error but you can't access the response.
                 });
 
                 const sendMessageResult = await sendMessageResponse.json();
