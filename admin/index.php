@@ -207,43 +207,110 @@ if (!isset($_SESSION['user_id'])) {
 
     // Handle the status update form submission to Verified
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
-        const transactionId = event.target.dataset.transactionId;
-        const newStatus = "Verified"; // Set status directly to "Verified"
+    const transactionId = event.target.dataset.transactionId;
+    const newStatus = "verified"; // Set status directly to "Verified"
+    const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // Replace with your actual API key
+    const sender = "6281770019808"; // Replace with your sender's number
+    const recipientNumber = event.target.dataset.phone; // Get the recipient's phone number from the clicked row (use `phone_1` dynamically)
+    const message = "Your payment has been verified."; // Customize the message as needed
 
-        try {
-            const response = await fetch('update_transactions.php', {
+    try {
+        // Step 1: Update the transaction status
+        const updateResponse = await fetch('update_transactions.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+        });
+
+        const updateResult = await updateResponse.json();
+        if (updateResult.success) {
+            // Step 2: Send message after successful status update
+            const sendMessageResponse = await fetch('https://wapi.dafam.cloud/send-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+                body: JSON.stringify({
+                    api_key: apiKey,
+                    sender: sender,
+                    number: recipientNumber,
+                    message: message
+                }),
             });
 
-            const result = await response.json();
-            if (result.success) {
+            const sendMessageResult = await sendMessageResponse.json();
+            if (sendMessageResult.success) {
                 iziToast.success({
                     title: 'Success',
-                    message: 'Payment status updated to Verified!',
+                    message: 'Payment status updated to Verified and message sent!',
                     position: 'topRight',
                 });
                 fetchData(); // Refresh the data after update
                 document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
             } else {
-                iziToast.info({
-                    title: 'Info',
-                    message: 'Payment has been Verified.',
+                iziToast.error({
+                    title: 'Error',
+                    message: 'Failed to send message. Please try again.',
                     position: 'topRight',
                 });
             }
+        } else {
+            iziToast.info({
+                title: 'Info',
+                message: 'Payment has already been Verified.',
+                position: 'topRight',
+            });
+        }
         } catch (error) {
             console.error('Error updating status:', error);
             iziToast.error({
                 title: 'Error',
-                message: 'Error updating status. Please try again.',
+                message: 'Error updating status or sending message. Please try again.',
                 position: 'topRight',
             });
         }
     });
+
+    // document.getElementById('verified-btn').addEventListener('click', async (event) => {
+    //     const transactionId = event.target.dataset.transactionId;
+    //     const newStatus = "Verified"; // Set status directly to "Verified"
+
+    //     try {
+    //         const response = await fetch('update_transactions.php', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
+    //         });
+
+    //         const result = await response.json();
+    //         if (result.success) {
+    //             iziToast.success({
+    //                 title: 'Success',
+    //                 message: 'Payment status updated to Verified!',
+    //                 position: 'topRight',
+    //             });
+    //             fetchData(); // Refresh the data after update
+    //             document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
+    //         } else {
+    //             iziToast.info({
+    //                 title: 'Info',
+    //                 message: 'Payment has been Verified.',
+    //                 position: 'topRight',
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error updating status:', error);
+    //         iziToast.error({
+    //             title: 'Error',
+    //             message: 'Error updating status. Please try again.',
+    //             position: 'topRight',
+    //         });
+    //     }
+    // });
 
     // Call fetchData to populate the table
     fetchData();
