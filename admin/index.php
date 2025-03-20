@@ -200,6 +200,7 @@ if (!isset($_SESSION['user_id'])) {
             document.getElementById('modal-name').textContent = name;
             document.getElementById('modal-amount').textContent = amount;
             document.getElementById('verified-btn').dataset.transactionId = transactionId; // Add transactionId to the button for submission
+            document.getElementById('verified-btn').dataset.phone = phone;
 
             // Show the modal
             document.getElementById('update-status-modal').classList.remove('hidden');
