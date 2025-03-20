@@ -215,12 +215,12 @@ if (!isset($_SESSION['user_id'])) {
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
-        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-        const sender = "628567868154"; // Nomor pengirim
-        const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
-        const message = "Your payment has been verified."; // Pesan yang akan dikirim
+        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // Your API Key
+        const sender = "628567868154"; // Sender number
+        const recipientNumber = event.target.dataset.phone; // Recipient number taken from the button dataset
+        const message = "Your payment has been verified."; // The message to send
 
-        // Validasi jika nomor penerima ada
+        // Validate if the recipient number exists
         if (!recipientNumber) {
             console.error('Recipient number is missing!');
             iziToast.error({
@@ -232,7 +232,7 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         try {
-            // Step 1: Update status transaksi ke "verified"
+            // Step 1: Update the transaction status to "verified"
             const updateResponse = await fetch('update_transactions.php', {
                 method: 'POST',
                 headers: {
@@ -243,7 +243,7 @@ if (!isset($_SESSION['user_id'])) {
 
             const updateResult = await updateResponse.json();
             if (updateResult.success) {
-                // Step 2: Kirim pesan setelah status diperbarui
+                // Step 2: Send message after the status is updated
                 const sendMessageResponse = await fetch('https://wapi.dafam.cloud/send-message', {
                     method: 'POST',
                     headers: {
@@ -255,7 +255,6 @@ if (!isset($_SESSION['user_id'])) {
                         number: recipientNumber,
                         message: message
                     }),
-                    mode: 'no-cors'  // This prevents the CORS error but you can't access the response.
                 });
 
                 const sendMessageResult = await sendMessageResponse.json();
@@ -265,8 +264,8 @@ if (!isset($_SESSION['user_id'])) {
                         message: 'Payment status updated to Verified and message sent!',
                         position: 'topRight',
                     });
-                    fetchData(); // Memuat ulang data setelah pembaruan
-                    document.getElementById('update-status-modal').classList.add('hidden'); // Menutup modal
+                    fetchData(); // Reload the data after update
+                    document.getElementById('update-status-modal').classList.add('hidden'); // Close the modal
                 } else {
                     iziToast.error({
                         title: 'Error',
@@ -290,7 +289,6 @@ if (!isset($_SESSION['user_id'])) {
             });
         }
     });
-
 
     // document.getElementById('verified-btn').addEventListener('click', async (event) => {
     //     const transactionId = event.target.dataset.transactionId;
