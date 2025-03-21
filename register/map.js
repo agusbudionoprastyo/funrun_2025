@@ -70,7 +70,7 @@ function getRoute() {
               }
             },
             'paint': {
-              'line-color': 'rgba(255,0,91, 0.5)', // Warna rute pertama
+              'line-color': 'rgba(255,0,91, 0.8)', // Warna rute pertama
               'line-width': 4
             }
           });
