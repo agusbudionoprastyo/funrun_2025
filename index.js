@@ -95,6 +95,88 @@ function getRoute() {
     });
 }
 
+// // Menambahkan lokasi pengguna ke peta secara real-time
+// function addUserLocation() {
+//   if (navigator.geolocation) {
+//     // Watch posisi pengguna untuk update secara real-time
+//     navigator.geolocation.watchPosition(function(position) {
+//       var userLongitude = position.coords.longitude;
+//       var userLatitude = position.coords.latitude;
+
+//       // Hapus marker yang lama jika sudah ada
+//       if (window.userMarker) {
+//         window.userMarker.remove();
+//       }
+
+//       // Menambahkan marker untuk lokasi pengguna
+//       const circleMarker = document.createElement('div');
+//       circleMarker.style.backgroundColor = 'rgb(235,32,93)';
+//       circleMarker.style.width = '20px';
+//       circleMarker.style.height = '20px';
+//       circleMarker.style.border = '3px solid white';  // Menambahkan border putih
+//       circleMarker.style.borderRadius = '50%';
+//       circleMarker.style.cursor = 'pointer';
+
+//       window.userMarker = new mapboxgl.Marker(circleMarker)
+//         .setLngLat([userLongitude, userLatitude])
+//         .addTo(map);
+
+//       // Fungsi untuk memperbarui radius berdasarkan zoom
+//       function updateRadius() {
+//         var zoomLevel = map.getZoom();
+//         var radiusInMeters = 50; // Radius 50 meter
+//         var pixelsPerMeter = Math.pow(2, zoomLevel) * 256 / (40008000 / 360);
+//         var circleRadius = radiusInMeters * pixelsPerMeter / 256;
+
+//         // Periksa jika layer sudah ada, dan hanya update layer yang ada
+//         if (map.getLayer('user-radius')) {
+//           map.setPaintProperty('user-radius', 'circle-radius', circleRadius);
+//         } else {
+//           // Jika layer belum ada, buat layer baru
+//           map.addLayer({
+//             'id': 'user-radius',
+//             'type': 'circle',
+//             'source': {
+//               'type': 'geojson',
+//               'data': {
+//                 'type': 'Feature',
+//                 'geometry': {
+//                   'type': 'Point',
+//                   'coordinates': [userLongitude, userLatitude]
+//                 }
+//               }
+//             },
+//             'paint': {
+//               'circle-radius': circleRadius,
+//               'circle-color': 'rgba(235,32,93, 0.2)'
+//             }
+//           });
+//         }
+//       }
+
+//       // Menambahkan listener untuk zoom, tanpa perlu menghapus dan menambah layer baru
+//       map.on('zoom', updateRadius); // Perbarui radius saat zoom dilakukan
+//       updateRadius(); // Panggil fungsi pertama kali untuk menampilkan radius
+
+
+//       // map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
+
+//       // Panggil fungsi untuk mendapatkan rute dengan lokasi pengguna
+//       getRoute();
+//     }, function(error) {
+//       console.error('Error getting user location:', error);
+//     }, {
+//       enableHighAccuracy: true,
+//       maximumAge: 10000, // Update lokasi setiap 10 detik
+//       timeout: 5000 // Timeout setelah 5 detik jika tidak dapat mendapatkan lokasi
+//     });
+//   } else {
+//     console.log('Geolocation is not supported by this browser.');
+//   }
+// }
+
+// Tambahkan tombol locate GPS
+
 // Menambahkan lokasi pengguna ke peta secara real-time
 function addUserLocation() {
   if (navigator.geolocation) {
@@ -130,6 +212,15 @@ function addUserLocation() {
 
         // Periksa jika layer sudah ada, dan hanya update layer yang ada
         if (map.getLayer('user-radius')) {
+          map.getSource('user-radius').setData({
+            'type': 'Feature',
+            'geometry': {
+              'type': 'Point',
+              'coordinates': [userLongitude, userLatitude]
+            }
+          });
+
+          // Update circle-radius jika layer sudah ada
           map.setPaintProperty('user-radius', 'circle-radius', circleRadius);
         } else {
           // Jika layer belum ada, buat layer baru
@@ -158,9 +249,6 @@ function addUserLocation() {
       map.on('zoom', updateRadius); // Perbarui radius saat zoom dilakukan
       updateRadius(); // Panggil fungsi pertama kali untuk menampilkan radius
 
-
-      // map.flyTo({ center: [userLongitude, userLatitude], zoom: 15 });
-
       // Panggil fungsi untuk mendapatkan rute dengan lokasi pengguna
       getRoute();
     }, function(error) {
@@ -175,22 +263,22 @@ function addUserLocation() {
   }
 }
 
-// Tambahkan tombol locate GPS
+
 var locateButton = document.createElement('button');
-locateButton.id = 'locate-btn';
-locateButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
-locateButton.style.position = 'absolute';
-locateButton.style.bottom = '50px';
-locateButton.style.right = '10px';
-locateButton.style.width = '50px'; // Ukuran tombol lebih besar untuk memberi ruang pada ikon
-locateButton.style.height = '50px'; // Ukuran tombol lebih besar untuk memberi ruang pada ikon
-locateButton.style.zIndex = 10;
-locateButton.style.padding = '0'; // Hapus padding agar ikon tepat di tengah
-locateButton.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; // Warna latar belakang dengan sedikit transparansi
-locateButton.style.color = 'black';
-locateButton.style.border = 'none';
-locateButton.style.borderRadius = '50%'; // Membuat tombol berbentuk lingkaran
-locateButton.style.cursor = 'pointer';
+    locateButton.id = 'locate-btn';
+    locateButton.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
+    locateButton.style.position = 'absolute';
+    locateButton.style.bottom = '50px';
+    locateButton.style.right = '10px';
+    locateButton.style.width = '50px'; // Ukuran tombol lebih besar untuk memberi ruang pada ikon
+    locateButton.style.height = '50px'; // Ukuran tombol lebih besar untuk memberi ruang pada ikon
+    locateButton.style.zIndex = 10;
+    locateButton.style.padding = '0'; // Hapus padding agar ikon tepat di tengah
+    locateButton.style.backgroundColor = 'rgba(255, 255, 255, 0.8)'; // Warna latar belakang dengan sedikit transparansi
+    locateButton.style.color = 'black';
+    locateButton.style.border = 'none';
+    locateButton.style.borderRadius = '50%'; // Membuat tombol berbentuk lingkaran
+    locateButton.style.cursor = 'pointer';
 
 // Styling untuk ikon agar berada di tengah
 var icon = locateButton.querySelector('i');
