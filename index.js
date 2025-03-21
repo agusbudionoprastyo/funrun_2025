@@ -111,49 +111,15 @@ function addUserLocation() {
       // Menambahkan marker untuk lokasi pengguna
       const circleMarker = document.createElement('div');
       circleMarker.style.backgroundColor = 'rgb(235,32,93)';
-      circleMarker.style.width = '15px';
-      circleMarker.style.height = '15px';
+      circleMarker.style.width = '20px';
+      circleMarker.style.height = '20px';
+      circleMarker.style.border = '3px solid white';  // Menambahkan border putih
       circleMarker.style.borderRadius = '50%';
       circleMarker.style.cursor = 'pointer';
 
       window.userMarker = new mapboxgl.Marker(circleMarker)
         .setLngLat([userLongitude, userLatitude])
         .addTo(map);
-
-      // // Fungsi untuk memperbarui radius berdasarkan zoom
-      // function updateRadius() {
-      //   var zoomLevel = map.getZoom();
-      //   var radiusInMeters = 50; // Radius 50 meter
-      //   var pixelsPerMeter = Math.pow(2, zoomLevel) * 256 / (40008000 / 360);
-      //   var circleRadius = radiusInMeters * pixelsPerMeter / 256;
-
-      //   if (map.getLayer('user-radius')) {
-      //     map.removeLayer('user-radius');
-      //     map.removeSource('user-radius');
-      //   }
-
-      //   map.addLayer({
-      //     'id': 'user-radius',
-      //     'type': 'circle',
-      //     'source': {
-      //       'type': 'geojson',
-      //       'data': {
-      //         'type': 'Feature',
-      //         'geometry': {
-      //           'type': 'Point',
-      //           'coordinates': [userLongitude, userLatitude]
-      //         }
-      //       }
-      //     },
-      //     'paint': {
-      //       'circle-radius': circleRadius,
-      //       'circle-color': 'rgba(235,32,93, 0.2)'
-      //     }
-      //   });
-      // }
-
-      // map.on('zoom', updateRadius); // Perbarui radius saat zoom dilakukan
-      // updateRadius(); // Panggil fungsi pertama kali untuk menampilkan radius
 
       // Fungsi untuk memperbarui radius berdasarkan zoom
       function updateRadius() {
@@ -253,8 +219,9 @@ locateButton.addEventListener('click', function() {
 
       const circleMarker = document.createElement('div');
       circleMarker.style.backgroundColor = 'rgb(235,32,93)';
-      circleMarker.style.width = '15px';
-      circleMarker.style.height = '15px';
+      circleMarker.style.width = '20px';
+      circleMarker.style.height = '20px';
+      circleMarker.style.border = '3px solid white';
       circleMarker.style.borderRadius = '50%';
       circleMarker.style.cursor = 'pointer';
 
