@@ -50,10 +50,7 @@ if (!isset($_SESSION['user_id'])) {
                     Size Jarsey
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Phone
-                </th>
-                <th class="px-6 py-3 font-medium text-gray-900">
-                    Email
+                    Contact
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Transaction Date
@@ -143,8 +140,10 @@ if (!isset($_SESSION['user_id'])) {
                         ${item.size_1 ? `<div class="font-normal text-gray-500 uppercase">${item.size_1}</div>` : ''}
                         ${item.size_2 ? `<div class="font-normal text-gray-500 uppercase">${item.size_2}</div>` : ''}
                     </th>
-                    <td class="px-6 py-4">${item.phone_1}</td>
-                    <td class="px-6 py-4">${item.email_1}</td>
+                    <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
+                        <div class="font-normal text-gray-500">${item.phone_1}</div>
+                        <div class="font-normal text-gray-500">${item.email_1}</div>
+                    </th>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="text-center px-6 py-4">
