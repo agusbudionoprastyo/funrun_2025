@@ -170,7 +170,7 @@ if (!isset($_SESSION['user_id'])) {
                 new simpleDatatables.DataTable("#pagination-table", {
                     searchable: true,
                     paging: true,
-                    perPage: 5,
+                    perPage: 10,
                     perPageSelect: [5, 10, 15, 20, 25],
                     sortable: false
                 });
