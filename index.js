@@ -4,7 +4,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiYWd1c2J1ZGlvbm9wcmFzdHlvIiwiYSI6ImNsdW1mcTZnc
 var map = new mapboxgl.Map({
   container: 'map', // ID elemen HTML tempat peta akan ditampilkan
   style: 'mapbox://styles/mapbox/streets-v11', // Pilih gaya peta
-  center: [110.41126589038201, -6.979400345836346], // Koordinat awal (longitude, latitude)
+  center: [110.41124510648847, -6.979465144525227], // Koordinat awal (longitude, latitude)
   zoom: 15
 });
 
@@ -27,9 +27,9 @@ map.getContainer().appendChild(distanceElement);
 
 // Fungsi untuk mendapatkan rute menggunakan Mapbox Directions API
 function getRoute() {
-  var origin = [110.41126589038201, -6.979400345836346]; // Titik asal menggunakan lokasi pengguna
+  var origin = [110.41124510648847, -6.979465144525227]; // Titik asal menggunakan lokasi pengguna
   var destination1 = [110.39930988166765, -6.962930379803198]; // Tujuan pertama
-  var destination2 = [110.41126589038201, -6.979400345836346]; // Tujuan akhir
+  var destination2 = [110.41124510648847, -6.979465144525227]; // Tujuan akhir
 
   var url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin[0]},${origin[1]};${destination1[0]},${destination1[1]}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
 
