@@ -29,7 +29,7 @@ map.getContainer().appendChild(distanceElement);
 function getRoute() {
   var origin = [110.41126589038201, -6.979400345836346]; // Titik asal menggunakan lokasi pengguna
   var destination1 = [110.39930988166765, -6.962930379803198]; // Tujuan pertama
-  var destination2 = [110.41123269023053, -6.979460242162332]; // Tujuan akhir
+  var destination2 = [110.41126589038201, -6.979400345836346]; // Tujuan akhir
 
   var url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin[0]},${origin[1]};${destination1[0]},${destination1[1]}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
 
@@ -251,18 +251,54 @@ locateButton.addEventListener('click', function() {
 map.on('load', function() {
   addUserLocation();
 
-  new mapboxgl.Marker({ color: 'pink' })
-    .setLngLat([110.41126589038201, -6.979400345836346])
-    .setPopup(new mapboxgl.Popup().setText('Start'))
-    .addTo(map);
+  // Menambahkan marker kustom dengan gambar PNG untuk 'Start'
+  new mapboxgl.Marker({ element: createCustomMarker('flag.png', 0) }) // Menghapus offset dan rotasi
+    .setLngLat([110.41124510648847, -6.979465144525227])
+    .addTo(map)
+    .getElement().appendChild(createTextElement('START/FINISH')); // Menambahkan teks di atas marker
 
-  new mapboxgl.Marker({ color: 'teal' })
-    .setLngLat([110.39930988166765, -6.962930379803198])
-    .setPopup(new mapboxgl.Popup().setText('Checkpoint'))
-    .addTo(map);
+  // Menambahkan marker kustom dengan gambar PNG untuk 'Checkpoint'
+  new mapboxgl.Marker({ element: createCustomMarker('checkpoint.png', 0) }) // Menghapus offset dan rotasi
+    .setLngLat([110.39932636427956, -6.9628614134449744])
+    .addTo(map)
+    .getElement().appendChild(createTextElement('CHECKPOINT')); // Menambahkan teks di atas marker
+})
 
-  new mapboxgl.Marker({ color: 'gray' })
-    .setLngLat([110.41123269023053, -6.979460242162332])
-    .setPopup(new mapboxgl.Popup().setText('Finish'))
-    .addTo(map);
-});
+// Fungsi untuk membuat marker dengan gambar PNG
+function createCustomMarker(imageUrl, rotate) {
+  const markerDiv = document.createElement('div');
+  markerDiv.style.backgroundImage = `url(${imageUrl})`; // Ganti dengan gambar PNG yang diinginkan
+  markerDiv.style.width = '30px'; // Ukuran marker
+  markerDiv.style.height = '30px'; // Ukuran marker
+  markerDiv.style.backgroundSize = 'contain'; // Agar gambar tidak terpotong
+  markerDiv.style.backgroundRepeat = 'no-repeat'; // Gambar tidak diulang
+  markerDiv.style.cursor = 'pointer'; // Cursor pointer saat hover
+
+  // Posisi dan rotasi marker
+  markerDiv.style.transform = `rotate(${rotate}deg)`; // Mengatur rotasi
+  markerDiv.style.transformOrigin = 'center'; // Titik rotasi di tengah gambar
+  
+  // Menghilangkan pengaturan offset posisi
+  markerDiv.style.position = 'relative'; // Posisi relatif sesuai dengan peta
+  
+  return markerDiv;
+}
+
+// Fungsi untuk membuat elemen teks
+function createTextElement(text) {
+  const textElement = document.createElement('div');
+  textElement.style.position = 'absolute';
+  textElement.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+  textElement.style.padding = '5px';
+  textElement.style.borderRadius = '5px';
+  textElement.style.fontSize = '12px';
+  textElement.style.color = '#000';
+  textElement.textContent = text;
+  
+  // Posisi teks sedikit di atas marker dan terpusat
+  textElement.style.top = '-35px'; // Sesuaikan posisi teks di atas marker
+  textElement.style.left = '50%'; // Posisikan teks di tengah secara horizontal
+  textElement.style.transform = 'translateX(-50%)'; // Untuk memastikan teks terpusat dengan marker
+
+  return textElement;
+}
