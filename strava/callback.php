@@ -29,6 +29,13 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
 // Eksekusi request dan ambil respon
 $response = curl_exec($ch);
+
+// Cek jika ada error cURL
+if(curl_errno($ch)) {
+    echo "cURL Error: " . curl_error($ch);
+    exit();
+}
+
 curl_close($ch);
 
 // Decode JSON response
@@ -58,7 +65,12 @@ if (isset($response_data['access_token'])) {
     // Menutup statement
     $stmt->close();
 } else {
-    echo "Gagal mendapatkan access token.";
+    // Menangani jika tidak ada access token dalam respon
+    if (isset($response_data['errors'])) {
+        echo "Error: " . $response_data['errors'][0]['message'];
+    } else {
+        echo "Gagal mendapatkan access token.";
+    }
 }
 
 // Menutup koneksi
