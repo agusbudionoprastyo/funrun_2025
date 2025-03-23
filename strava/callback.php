@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Include koneksi ke database
-include('../helper/db.php'); 
+include('../helper/db.php');  // Pastikan path-nya benar
 
 // Mendapatkan kode dari URL
 if (isset($_GET['code'])) {
@@ -61,7 +61,9 @@ if (isset($response_data['access_token'])) {
 
     // Menjalankan query
     if ($stmt->execute()) {
-        echo "Data berhasil disimpan atau diperbarui!";
+        // Redirect ke halaman sukses setelah data disimpan
+        header("Location: https://funrun.dafam.cloud?status=success");
+        exit();
     } else {
         echo "Error: " . $stmt->error;
     }
