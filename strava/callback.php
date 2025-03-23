@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Include koneksi ke database
-include('helper/db.php'); 
+include('../helper/db.php'); 
 
 // Mendapatkan kode dari URL
 if (isset($_GET['code'])) {
