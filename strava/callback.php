@@ -1,14 +1,22 @@
 <?php
-// Include file koneksi database
-include('helper/db.php');  // Pastikan path-nya sesuai dengan struktur folder Anda
+// Menampilkan error untuk debugging
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-// Mendapatkan kode dari URL (callback)
-$code = $_GET['code'];
+// Include koneksi ke database
+include('helper/db.php'); 
+
+// Mendapatkan kode dari URL
+if (isset($_GET['code'])) {
+    $code = $_GET['code'];
+} else {
+    die('No authorization code received.');
+}
 
 // Menyiapkan data untuk POST request ke Strava API untuk mendapatkan access token
 $client_id = '152874';  // Ganti dengan Client ID Anda
 $client_secret = '8f08879c914efa7601a65c63967bfbc6d3a4e8c3';  // Ganti dengan Client Secret Anda
-$redirect_uri = 'https://funrun.dafam.cloud';  // Ganti dengan Redirect URI Anda
+$redirect_uri = 'https://funrun.dafam.cloud/strava/callback.php';  // Ganti dengan Redirect URI Anda
 
 // URL untuk tukar kode otorisasi menjadi access token
 $url = 'https://www.strava.com/oauth/token';
@@ -29,13 +37,9 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 
 // Eksekusi request dan ambil respon
 $response = curl_exec($ch);
-
-// Cek jika ada error cURL
 if(curl_errno($ch)) {
-    echo "cURL Error: " . curl_error($ch);
-    exit();
+    die('Error:' . curl_error($ch));
 }
-
 curl_close($ch);
 
 // Decode JSON response
@@ -65,12 +69,7 @@ if (isset($response_data['access_token'])) {
     // Menutup statement
     $stmt->close();
 } else {
-    // Menangani jika tidak ada access token dalam respon
-    if (isset($response_data['errors'])) {
-        echo "Error: " . $response_data['errors'][0]['message'];
-    } else {
-        echo "Gagal mendapatkan access token.";
-    }
+    echo "Gagal mendapatkan access token.";
 }
 
 // Menutup koneksi
