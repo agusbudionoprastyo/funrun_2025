@@ -38,6 +38,7 @@ $size = $_POST['size'];
 $mantan = $_POST['mantan'];
 $phone = $_POST['phone'];
 $email = $_POST['email'];
+$jerseyColor = $_POST['jerseyColor'];
 
 // Generate username dan password untuk pengguna pertama
 $username = generateUsername($name);
@@ -48,21 +49,22 @@ $conn->begin_transaction();
 
 try {
     // Proses penyimpanan data untuk pengguna pertama
-    $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, email, username, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, email, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("ssssssss", $transactionId, $name, $mantan, $size, $phone, $email, $username, $password);
+    $stmt->bind_param("sssssssss", $transactionId, $name, $mantan, $size, $phone, $email, $username, $password, $jerseyColor);
     $stmt->execute();
 
     if ($registrationType === 'couple') {
         $coupleName = $_POST['coupleUsername'];
         $coupleMantan = $_POST['coupleMantan'];
         $coupleSize = $_POST['coupleSize'];
+        $coupleJerseyColor = $_POST['coupleJerseyColor'];
         $coupleUsername = generateCoupleUsername($coupleName);
         
         // Proses penyimpanan data untuk pasangan
-        $query = "INSERT INTO users (transaction_id, name, mantan, size, username, password) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO users (transaction_id, name, mantan, size, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $coupleUsername, $password);
+        $stmt->bind_param("sssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $coupleUsername, $password, $coupleJerseyColor);
         $stmt->execute();
     }
 

@@ -17,6 +17,7 @@ $sql = "WITH RankedUsers AS (
         u.username,
         u.password,
         u.size,
+        u.jersey_color,
         ROW_NUMBER() OVER (PARTITION BY t.transaction_id ORDER BY u.name) AS user_rank
     FROM 
         transactions t
@@ -37,13 +38,15 @@ SELECT
     MAX(CASE WHEN user_rank = 1 THEN username END) AS username_1,
     MAX(CASE WHEN user_rank = 1 THEN password END) AS password_1,
     MAX(CASE WHEN user_rank = 1 THEN size END) AS size_1,
+    MAX(CASE WHEN user_rank = 1 THEN jersey_color END) AS jersey_color_1,
     MAX(CASE WHEN user_rank = 2 THEN name END) AS name_2,
     MAX(CASE WHEN user_rank = 2 THEN mantan END) AS mantan_2,
     MAX(CASE WHEN user_rank = 2 THEN email END) AS email_2,
     MAX(CASE WHEN user_rank = 2 THEN phone END) AS phone_2,
     MAX(CASE WHEN user_rank = 2 THEN username END) AS username_2,
     MAX(CASE WHEN user_rank = 2 THEN password END) AS password_2,
-    MAX(CASE WHEN user_rank = 2 THEN size END) AS size_2
+    MAX(CASE WHEN user_rank = 2 THEN size END) AS size_2,
+    MAX(CASE WHEN user_rank = 2 THEN jersey_color END) AS jersey_color_2
 FROM 
     RankedUsers
 GROUP BY 

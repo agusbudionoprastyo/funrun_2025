@@ -27,7 +27,43 @@ document.addEventListener('DOMContentLoaded', function() {
             sizeChartModal.classList.add('hidden');
         }
     });
+
+    // Jersey Preview Modal Functionality
+    const jerseyModal = document.getElementById('jerseyModal');
+    const closeJerseyBtn = document.getElementById('closeJerseyBtn');
+
+    // Close jersey modal
+    closeJerseyBtn.addEventListener('click', function() {
+        jerseyModal.classList.add('hidden');
+    });
+
+    // Close jersey modal when clicking outside
+    jerseyModal.addEventListener('click', function(e) {
+        if (e.target === jerseyModal) {
+            jerseyModal.classList.add('hidden');
+        }
+    });
+
+    // Close jersey modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !jerseyModal.classList.contains('hidden')) {
+            jerseyModal.classList.add('hidden');
+        }
+    });
 });
+
+// Function to show jersey popup
+function showJerseyPopup(color) {
+    const jerseyModal = document.getElementById('jerseyModal');
+    const jerseyPreview = document.getElementById('jerseyPreview');
+    
+    // Set the image source based on color
+    jerseyPreview.src = `./assets/image/jersey-${color}.png`;
+    jerseyPreview.alt = `${color.charAt(0).toUpperCase() + color.slice(1)} Jersey Preview`;
+    
+    // Show the modal
+    jerseyModal.classList.remove('hidden');
+}
 
 function copyToClipboard() {
     const rekNumber = document.getElementById('rek-number').innerText;
@@ -286,6 +322,7 @@ function copyToClipboard() {
     const phone = document.getElementById('phone').value;
     const email = document.getElementById('email').value;
     const size = document.querySelector('input[name="size"]:checked').value;
+    const jerseyColor = document.querySelector('input[name="jerseyColor"]:checked').value;
 
     formData.append('transactionid', generatedTransactionId);
     formData.append('registrationType', registrationType);
@@ -295,14 +332,17 @@ function copyToClipboard() {
     formData.append('phone', phone);
     formData.append('email', email);
     formData.append('size', size);
+    formData.append('jerseyColor', jerseyColor);
 
     if (registrationType === 'couple') {
         const coupleUsername = document.getElementById('coupleName').value;
         const coupleMantan = document.getElementById('coupleMantan').value;
         const coupleSize = document.querySelector('input[name="coupleSize"]:checked').value;
+        const coupleJerseyColor = document.querySelector('input[name="coupleJerseyColor"]:checked').value;
         formData.append('coupleUsername', coupleUsername);
         formData.append('coupleMantan', coupleMantan);
         formData.append('coupleSize', coupleSize);
+        formData.append('coupleJerseyColor', coupleJerseyColor);
     }
 
     fetch('register.php', {

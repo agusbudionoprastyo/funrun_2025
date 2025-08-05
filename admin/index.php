@@ -47,7 +47,10 @@ if (!isset($_SESSION['user_id'])) {
                     Runners
                 </th>
                 <th class="px-6 py-3 font-medium text-center text-gray-900">
-                    Size Jarsey
+                    Size Jersey
+                </th>
+                <th class="px-6 py-3 font-medium text-center text-gray-900">
+                    Jersey Color
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Contact
@@ -139,6 +142,10 @@ if (!isset($_SESSION['user_id'])) {
                     <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
                         ${item.size_1 ? `<div class="font-normal text-gray-500 uppercase">${item.size_1}</div>` : ''}
                         ${item.size_2 ? `<div class="font-normal text-gray-500 uppercase">${item.size_2}</div>` : ''}
+                    </th>
+                    <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
+                        ${item.jersey_color_1 ? `<div class="font-normal text-gray-500 uppercase">${item.jersey_color_1}</div>` : ''}
+                        ${item.jersey_color_2 ? `<div class="font-normal text-gray-500 uppercase">${item.jersey_color_2}</div>` : ''}
                     </th>
                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         <div class="font-normal text-gray-500">${item.phone_1}</div>

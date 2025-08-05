@@ -175,10 +175,30 @@
               <input type="text" id="mantan" class="mt-2 p-2 w-full border border-gray-300 rounded-full" placeholder="Mantan pelarian" required>
             </div>
           </div>
+          
+          <!-- Jersey Color -->
+          <div class="mt-2 flex space-x-4">
+            <div class="w-full">
+              <label for="jerseyColor" class="block text-gray-700">Warna Jersey</label>
+              <div class="flex items-center space-x-4 mt-2">
+                <label class="flex items-center">
+                  <input type="radio" name="jerseyColor" value="darkblue" id="darkblue" class="mr-2" required>
+                  <img src="./assets/image/jersey-darkblue.png" alt="Dark Blue Jersey" class="w-8 h-8 rounded mr-2 cursor-pointer" onclick="showJerseyPopup('darkblue')" onerror="this.style.display='none'">
+                  Dark Blue
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="jerseyColor" value="purple" id="purple" class="mr-2 ml-2" required>
+                  <img src="./assets/image/jersey-purple.png" alt="Purple Jersey" class="w-8 h-8 rounded mr-2 cursor-pointer" onclick="showJerseyPopup('purple')" onerror="this.style.display='none'">
+                  Purple
+                </label>
+              </div>
+            </div>
+          </div>
+          
           <!-- Size -->
           <div class="mt-2 flex space-x-4">
             <div class="w-full">
-              <label for="size" class="block text-gray-700">Size Jarsey</label>
+              <label for="size" class="block text-gray-700">Size Jersey</label>
               <label>
                 <input type="radio" name="size" value="s" id="s" class="mr-2" required>S
               </label>
@@ -213,9 +233,28 @@
               </div>
             </div>  
 
+            <!-- Couple Jersey Color -->
             <div class="mt-2 flex space-x-4">
               <div class="w-full">
-                <label for="coupleSize" class="block text-gray-700">Size Jarsey</label>
+                <label for="coupleJerseyColor" class="block text-gray-700">Warna Jersey</label>
+                <div class="flex items-center space-x-4 mt-2">
+                  <label class="flex items-center">
+                    <input type="radio" name="coupleJerseyColor" value="darkblue" id="coupleDarkblue" class="mr-2" required>
+                    <img src="./assets/image/jersey-darkblue.png" alt="Dark Blue Jersey" class="w-8 h-8 rounded mr-2 cursor-pointer" onclick="showJerseyPopup('darkblue')" onerror="this.style.display='none'">
+                    Dark Blue
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" name="coupleJerseyColor" value="purple" id="couplePurple" class="mr-2 ml-2" required>
+                    <img src="./assets/image/jersey-purple.png" alt="Purple Jersey" class="w-8 h-8 rounded mr-2 cursor-pointer" onclick="showJerseyPopup('purple')" onerror="this.style.display='none'">
+                    Purple
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-2 flex space-x-4">
+              <div class="w-full">
+                <label for="coupleSize" class="block text-gray-700">Size Jersey</label>
                 <label>
                   <input type="radio" name="coupleSize" value="s" id="scouple" class="mr-2" required>S
                 </label>
@@ -308,6 +347,24 @@
         </div>
         <div class="flex justify-center">
           <img src="./assets/image/sizechart.jpg" alt="Size Chart" class="max-w-full h-auto">
+        </div>
+      </div>
+    </div>
+
+    <!-- Jersey Preview Modal -->
+    <div id="jerseyModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white p-4 shadow-md max-w-md w-full mx-4 zoom-in">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-700">Jersey Preview</h2>
+          <button id="closeJerseyBtn" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path fill="currentColor" d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+            </svg>
+          </button>
+        </div>
+        <div class="flex justify-center">
+          <img id="jerseyPreview" src="" alt="Jersey Preview" class="max-w-full h-auto">
         </div>
       </div>
     </div>
