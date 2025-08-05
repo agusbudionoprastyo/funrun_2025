@@ -38,6 +38,31 @@
         <img alt="Thumbnail sponsor" class="h-8 object-fill" src="./assets/image/sponsor/babyface.png">
       </div>
     </div> -->
+
+    <!-- Official Merchant Section -->
+    <div class="mt-4 mb-8">
+      <div class="flex items-center justify-between mt-2">
+        <h3 class="text-lg font-semibold helvetica">Official Merchant</h3>
+        <span class="text-sm text-gray-500">Jersey Fun Run</span>
+      </div>
+      
+      <div class="bg-white rounded-[24px] p-4 shadow-md mt-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="font-semibold text-gray-800">Jersey Lari Sama Mantan</h4>
+            <p class="text-sm text-gray-600">Official Jersey Fun Run 2025</p>
+            <p class="text-lg font-bold text-[#ff5b1c] mt-1">Rp 100.000</p>
+          </div>
+          <div class="flex space-x-2">
+            <img src="./assets/image/jersey-darkblue.png" alt="Dark Blue Jersey" class="w-12 h-12 rounded cursor-pointer" onclick="showJerseyPopup('darkblue')" onerror="this.style.display='none'">
+            <img src="./assets/image/jersey-purple.png" alt="Purple Jersey" class="w-12 h-12 rounded cursor-pointer" onclick="showJerseyPopup('purple')" onerror="this.style.display='none'">
+          </div>
+        </div>
+        <button onclick="openJerseyOrderModal()" class="w-full mt-3 bg-[#ff5b1c] text-white font-semibold py-3 px-6 rounded-full hover:bg-[#e54d1a] transition-colors">
+          <i class="fab fa-whatsapp mr-2"></i>Order Jersey
+        </button>
+      </div>
+    </div>
     
     <div class="p-4">
       <h2 class="text-2xl font-semibold helvetica">Lari Sama Mantan</h2>
@@ -366,6 +391,96 @@
         <div class="flex justify-center">
           <img id="jerseyPreview" src="" alt="Jersey Preview" class="max-w-full h-auto">
         </div>
+      </div>
+    </div>
+
+    <!-- Jersey Order Modal -->
+    <div id="jerseyOrderModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white p-4 shadow-md max-w-md w-full mx-4 zoom-in">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-700">Order Jersey</h2>
+          <button id="closeJerseyOrderBtn" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path fill="currentColor" d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+            </svg>
+          </button>
+        </div>
+        
+        <form id="jerseyOrderForm">
+          <div class="space-y-4">
+            <!-- Name -->
+            <div>
+              <label for="orderName" class="block text-gray-700 text-sm font-medium mb-2">Nama Lengkap</label>
+              <input type="text" id="orderName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ff5b1c] focus:border-transparent" placeholder="Masukkan nama lengkap" required>
+            </div>
+            
+            <!-- Phone -->
+            <div>
+              <label for="orderPhone" class="block text-gray-700 text-sm font-medium mb-2">Alamat Pengiriman</label>
+              <textarea id="orderPhone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ff5b1c] focus:border-transparent" placeholder="Masukkan alamat lengkap pengiriman" rows="3" required></textarea>
+            </div>
+            
+            <!-- Jersey Color -->
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2">Warna Jersey</label>
+              <div class="flex space-x-4">
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseyColor" value="darkblue" class="mr-2" required>
+                  <span>Dark Blue</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseyColor" value="purple" class="mr-2" required>
+                  <span>Purple</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Jersey Size -->
+            <div>
+              <label class="block text-gray-700 text-sm font-medium mb-2">Size Jersey</label>
+              <div class="grid grid-cols-3 gap-2">
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseySize" value="S" class="mr-2" required>
+                  <span>S</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseySize" value="M" class="mr-2" required>
+                  <span>M</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseySize" value="L" class="mr-2" required>
+                  <span>L</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseySize" value="XL" class="mr-2" required>
+                  <span>XL</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseySize" value="XXL" class="mr-2" required>
+                  <span>XXL</span>
+                </label>
+                <label class="flex items-center">
+                  <input type="radio" name="orderJerseySize" value="XXXL" class="mr-2" required>
+                  <span>XXXL</span>
+                </label>
+              </div>
+            </div>
+            
+            <!-- Price Display -->
+            <div class="bg-gray-50 p-3 rounded-lg">
+              <div class="flex justify-between items-center">
+                <span class="text-gray-700">Total Harga:</span>
+                <span class="text-lg font-bold text-[#ff5b1c]">Rp 100.000</span>
+              </div>
+            </div>
+            
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-[#ff5b1c] text-white font-semibold py-3 px-6 rounded-lg hover:bg-[#e54d1a] transition-colors">
+              <i class="fab fa-whatsapp mr-2"></i>Order via WhatsApp
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 

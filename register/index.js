@@ -50,6 +50,61 @@ document.addEventListener('DOMContentLoaded', function() {
             jerseyModal.classList.add('hidden');
         }
     });
+
+    // Jersey Order Modal Functionality
+    const jerseyOrderModal = document.getElementById('jerseyOrderModal');
+    const closeJerseyOrderBtn = document.getElementById('closeJerseyOrderBtn');
+    const jerseyOrderForm = document.getElementById('jerseyOrderForm');
+
+    // Close jersey order modal
+    closeJerseyOrderBtn.addEventListener('click', function() {
+        jerseyOrderModal.classList.add('hidden');
+    });
+
+    // Close jersey order modal when clicking outside
+    jerseyOrderModal.addEventListener('click', function(e) {
+        if (e.target === jerseyOrderModal) {
+            jerseyOrderModal.classList.add('hidden');
+        }
+    });
+
+    // Close jersey order modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !jerseyOrderModal.classList.contains('hidden')) {
+            jerseyOrderModal.classList.add('hidden');
+        }
+    });
+
+    // Handle jersey order form submission
+    jerseyOrderForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('orderName').value;
+        const address = document.getElementById('orderPhone').value;
+        const color = document.querySelector('input[name="orderJerseyColor"]:checked').value;
+        const size = document.querySelector('input[name="orderJerseySize"]:checked').value;
+        
+        // Format the message for WhatsApp
+        const message = `*ORDER JERSEY FUN RUN 2025*%0A%0A` +
+            `*Nama:* ${name}%0A` +
+            `*Alamat Pengiriman:* ${address}%0A` +
+            `*Warna Jersey:* ${color.charAt(0).toUpperCase() + color.slice(1)}%0A` +
+            `*Size Jersey:* ${size}%0A` +
+            `*Harga:* Rp 100.000%0A%0A` +
+            `*Fun Run - Lari Sama Mantan*%0A` +
+            `12 Oktober 2025%0A` +
+            `Hotel Dafam Semarang`;
+        
+        // Open WhatsApp with the order details
+        const whatsappUrl = `https://wa.me/6281770019808?text=${message}`;
+        window.open(whatsappUrl, '_blank');
+        
+        // Close the modal
+        jerseyOrderModal.classList.add('hidden');
+        
+        // Reset the form
+        jerseyOrderForm.reset();
+    });
 });
 
 // Function to show jersey popup
@@ -63,6 +118,12 @@ function showJerseyPopup(color) {
     
     // Show the modal
     jerseyModal.classList.remove('hidden');
+}
+
+// Function to open jersey order modal
+function openJerseyOrderModal() {
+    const jerseyOrderModal = document.getElementById('jerseyOrderModal');
+    jerseyOrderModal.classList.remove('hidden');
 }
 
 function copyToClipboard() {
