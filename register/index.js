@@ -151,6 +151,9 @@ function copyToClipboard() {
   const xxlcouple = document.getElementById('xxlcouple');
   const xxxlcouple = document.getElementById('xxxlcouple');
 
+  const coupleDarkblue = document.getElementById('coupleDarkblue');
+  const couplePurple = document.getElementById('couplePurple');
+
   const registerBtn = document.getElementById("registerBtn");
   const closeBtn = document.getElementById("closeBtn");
   const box = document.getElementById("box");
@@ -166,6 +169,8 @@ function copyToClipboard() {
     xlcouple.removeAttribute('required');
     xxlcouple.removeAttribute('required');
     xxxlcouple.removeAttribute('required');
+    coupleDarkblue.removeAttribute('required');
+    couplePurple.removeAttribute('required');
   }
 
   // Show Couple Section and add required attributes when "Couple" radio is checked
@@ -180,6 +185,8 @@ function copyToClipboard() {
       xlcouple.setAttribute('required', 'true');
       xxlcouple.setAttribute('required', 'true');
       xxxlcouple.setAttribute('required', 'true');
+      coupleDarkblue.setAttribute('required', 'true');
+      couplePurple.setAttribute('required', 'true');
     }
   });
 
@@ -195,6 +202,8 @@ function copyToClipboard() {
       xlcouple.removeAttribute('required');
       xxlcouple.removeAttribute('required');
       xxxlcouple.removeAttribute('required');
+      coupleDarkblue.removeAttribute('required');
+      couplePurple.removeAttribute('required');
     }
   });
 
