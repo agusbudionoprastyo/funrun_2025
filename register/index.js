@@ -1,3 +1,34 @@
+// Size Chart Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const sizeChartBtn = document.getElementById('sizeChartBtn');
+    const sizeChartModal = document.getElementById('sizeChartModal');
+    const closeSizeChartBtn = document.getElementById('closeSizeChartBtn');
+
+    // Open size chart modal
+    sizeChartBtn.addEventListener('click', function() {
+        sizeChartModal.classList.remove('hidden');
+    });
+
+    // Close size chart modal
+    closeSizeChartBtn.addEventListener('click', function() {
+        sizeChartModal.classList.add('hidden');
+    });
+
+    // Close modal when clicking outside
+    sizeChartModal.addEventListener('click', function(e) {
+        if (e.target === sizeChartModal) {
+            sizeChartModal.classList.add('hidden');
+        }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !sizeChartModal.classList.contains('hidden')) {
+            sizeChartModal.classList.add('hidden');
+        }
+    });
+});
+
 function copyToClipboard() {
     const rekNumber = document.getElementById('rek-number').innerText;
     
@@ -108,7 +139,7 @@ function copyToClipboard() {
 //         descriptionElement.textContent = `${item.description}`;
         
 //         const priceElement = document.createElement('p');
-//         priceElement.className = 'helvetica text-[#ff005b] font-bold';
+//         priceElement.className = 'helvetica text-[#ff5b1c] font-bold';
 //         priceElement.textContent = `IDR ${formatPrice(item.price)} / Person`;
         
 //         itemElement.appendChild(descriptionElement);
@@ -164,7 +195,7 @@ function copyToClipboard() {
 
             // Create price element
             const priceElement = document.createElement('p');
-            priceElement.className = 'helvetica text-[#ff005b] font-bold';
+            priceElement.className = 'helvetica text-[#ff5b1c] font-bold';
             priceElement.textContent = `IDR ${formatPrice(price)}`;
 
             itemElement.appendChild(descriptionElement);

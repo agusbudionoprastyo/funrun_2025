@@ -1,0 +1,48 @@
+[26-Jun-2025 09:37:18 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[26-Jun-2025 09:37:25 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[26-Jun-2025 09:37:38 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[26-Jun-2025 09:44:54 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[26-Jun-2025 09:45:00 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[12-Jul-2025 19:06:47 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[18-Jul-2025 02:41:34 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[18-Jul-2025 02:41:51 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[18-Jul-2025 02:41:57 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[03-Aug-2025 11:24:30 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[03-Aug-2025 11:24:35 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47
+[03-Aug-2025 11:24:39 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined function closeConnection() in /home/dafm5634/public_html/funrun_2025/admin/login/login.php:47
+Stack trace:
+#0 {main}
+  thrown in /home/dafm5634/public_html/funrun_2025/admin/login/login.php on line 47

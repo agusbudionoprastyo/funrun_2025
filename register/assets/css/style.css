@@ -51,11 +51,11 @@
   }
 
   &.is-primary {
-    background-color:#ff005b;
+    background-color:#ff5b1c;
     color: #fff;
     &:hover,
     &:focus {
-      background-color:#e30351;
+      background-color:#c93204;
     }
   }
 }

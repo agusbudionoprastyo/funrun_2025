@@ -17,7 +17,7 @@
 <body class="bg-gray-100">
   <div class="max-w-md mx-auto overflow-hidden">
     <div class="relative">
-      <img alt="Lari Sama Mantan" class="w-full h-screen-1/2 object-cover" src="./assets/image/bgjuni.jpg">
+      <img alt="Lari Sama Mantan" class="w-full h-screen-1/2 object-cover" src="./assets/image/frbg.png">
     </div>
     <!-- <div class="scrolling-sponsors">
       <div class="sponsor-images">
@@ -44,22 +44,22 @@
       <h3 class="text-lg text-gray-700 font-semibold helvetica">Hotel Dafam Semarang</h3>
 
       <div class="flex items-center mt-2">
-        <i class="fas fa-calendar-alt text-[#ff005b]"></i>
-        <p class="ml-2 helvetica text-gray-700">22 06 2025</p>
+        <i class="fas fa-calendar-alt text-[#ff5b1c]"></i>
+        <p class="ml-2 helvetica text-gray-700">12 Oct 2025</p>
       </div>
 
       <div class="flex items-center mt-2">
-        <i class="fas fa-clock text-[#ff005b]"></i>
+        <i class="fas fa-clock text-[#ff5b1c]"></i>
         <p class="ml-2 helvetica text-gray-700">06:00 - 10:00 WIB</p>
       </div>
 
       <div class="mt-4 w-3/4">
         <h3 class="text-lg font-semibold helvetica">Official Fun Run</h3>
         <div class="flex justify-between items-center mt-2">
-          <a href="https://wa.me/6285702127087?text=Halo,%20saya%20ada%20pertanyaan">
+          <a href="https://wa.me/6281770019808?text=Halo,%20saya%20ada%20pertanyaan">
             <div class="flex items-center">
-              <i class="fab fa-whatsapp text-[#ff005b]"></i>
-              <p class="ml-2 helvetica text-gray-700">6285702127087</p>
+              <i class="fab fa-whatsapp text-[#ff5b1c]"></i>
+              <p class="ml-2 helvetica text-gray-700">6281770019808</p>
             </div>
           </a>
         </div>
@@ -75,7 +75,7 @@
 
         <div class="flex items-center mt-2">
           <a href="/" class="text-md font-semibold helvetica">
-            <i class="fas fa-map-location-dot text-[#ff005b]"></i>
+            <i class="fas fa-map-location-dot text-[#ff5b1c]"></i>
              View Large Map</a>
         </div>
       </div>
@@ -86,7 +86,7 @@
       
       <ul class="list-inside list-disc space-y-4 mb-12">
         <li class="text-sm font-medium"><strong>Fun Run - Lari Sama Mantan</strong>
-          <p class="text-sm font-medium ml-4">diadakan hari Minggu, 22 Juni 2025 berlokasi di 
+          <p class="text-sm font-medium ml-4">diadakan hari Minggu, 12 October 2025 berlokasi di 
             <strong>Hotel Dafam Semarang</strong>, Jl. Imam Bonjol No. 188 Semarang.
           </p>
         </li>
@@ -102,9 +102,9 @@
           </p>
         </li>
 
-        <li class="text-sm font-medium"><strong>Best Expression in CCTV</strong>
-          <p class="text-sm font-medium ml-4">Foto pose terunik di beberapa titik yang sudah ditentukan panitia.</p>
-        </li>
+        <!--<li class="text-sm font-medium"><strong>Best Expression in CCTV</strong>-->
+        <!--  <p class="text-sm font-medium ml-4">Foto pose terunik di beberapa titik yang sudah ditentukan panitia.</p>-->
+        <!--</li>-->
         <li class="text-sm font-medium"><strong>Best Costume Couple</strong>
           <p class="text-sm font-medium ml-4">Peserta yang memakai baju terbaik sesuai tema “Mantan”.</p>
         </li>
@@ -150,13 +150,18 @@
 
         <form id="registrationForm">
           <!-- Radio buttons for Single and Couple -->
-          <div class="mt-2 flex space-x-4">
-            <label>
-              <input type="radio" name="registrationType" value="single" id="single" class="mr-2" checked> Single
-            </label>
-            <label>
-              <input type="radio" name="registrationType" value="couple" id="couple" class="mr-2"> Couple
-            </label>
+          <div class="mt-2 flex space-x-4 items-center">
+            <div class="flex space-x-4">
+              <label>
+                <input type="radio" name="registrationType" value="single" id="single" class="mr-2" checked> Single
+              </label>
+              <label>
+                <input type="radio" name="registrationType" value="couple" id="couple" class="mr-2"> Couple
+              </label>
+            </div>
+            <button type="button" id="sizeChartBtn" class="text-[#ff5b1c] text-sm font-medium underline">
+              Size Chart
+            </button>
           </div>
 
           <!-- Name field -->
@@ -277,7 +282,7 @@
           <p class="mb-4 text-gray-500 text-xs text-center">
             Upload bukti pembayaran disini
             <label for="paymentproof" class="cursor-pointer">
-              <span class="text-[#ff005b]">Choose File</span>
+              <span class="text-[#ff5b1c]">Choose File</span>
             </label>
             <input type="file" id="paymentproof" class="hidden" accept="application/pdf, image/*">
           </p>
@@ -288,6 +293,24 @@
         </div>
       </div>
     </div>    
+
+    <!-- Size Chart Modal -->
+    <div id="sizeChartModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div class="bg-white p-4 shadow-md max-w-md w-full mx-4 zoom-in">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold text-gray-700">Size Chart</h2>
+          <button id="closeSizeChartBtn" class="text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path fill="currentColor" d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+            </svg>
+          </button>
+        </div>
+        <div class="flex justify-center">
+          <img src="./assets/image/sizechart.jpg" alt="Size Chart" class="max-w-full h-auto">
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>

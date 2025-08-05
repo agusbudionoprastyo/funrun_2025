@@ -17,88 +17,75 @@ distanceElement.className = 'distance-info';
 distanceElement.style.position = 'absolute';
 distanceElement.style.top = '10px';
 distanceElement.style.left = '10px';
-distanceElement.style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
+distanceElement.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
 distanceElement.style.padding = '10px';
 distanceElement.style.borderRadius = '15px';
-distanceElement.style.fontSize = '16px';
-distanceElement.style.color = '#ff005b';
+distanceElement.style.fontSize = '12px';
+distanceElement.style.color = 'black';
 distanceElement.style.fontWeight = 'bold';
 map.getContainer().appendChild(distanceElement);
 
 // Fungsi untuk mendapatkan rute menggunakan Mapbox Directions API
 function getRoute() {
-  // Titik asal dan tiga tujuan
-  var origin = [110.41124510648847, -6.979465144525227]; // Titik asal
-  var destination1 = [110.39930988166765, -6.962930379803198]; // Tujuan pertama
-  var destination2 = [110.41124510648847, -6.979465144525227]; // Tujuan akhir
+  // Array semua titik route: START/FINISH, Marshal 1-14, kembali ke START/FINISH
+  const routePoints = [
+    [110.41124510648847, -6.979465144525227], // START/FINISH
+    [110.4132822844655, -6.9749235700715015], // Marshal 1
+    [110.41480694499647, -6.973531583072864], // Marshal 2
+    [110.41953248369022, -6.971251919716325], // Marshal 3
+    [110.42232579371996, -6.969924453250012], // Marshal 4
+    [110.42517418618024, -6.9685237492191305], // Marshal 5
+    [110.42511580431477, -6.966584677114943], // Marshal 6
+    [110.42925817984032, -6.965291861701476], // Marshal 7
+    [110.43008569448317, -6.967665290748463], // Marshal 8
+    [110.4252425562517, -6.968728790584302], // Marshal 9
+    [110.4228079211141, -6.971106525390175], // Marshal 10
+    [110.42013374224155, -6.973821451482721], // Marshal 11
+    [110.41674208343511, -6.977250726160813], // Marshal 12
+    [110.41565448478823, -6.978286651448628], // Marshal 13
+    [110.40971114259015, -6.983524400093781], // Marshal 14
+    [110.41124510648847, -6.979465144525227]  // Kembali ke START/FINISH
+  ];
 
-  // Fetch rute pertama (dari asal ke tujuan pertama)
-  var url = `https://api.mapbox.com/directions/v5/mapbox/driving/${origin[0]},${origin[1]};${destination1[0]},${destination1[1]}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
+  // Build coordinates string for Mapbox Directions API
+  const coordinatesStr = routePoints.map(p => `${p[0]},${p[1]}`).join(';');
+  const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${coordinatesStr}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
 
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      var route1 = data.routes[0].geometry; // Mengambil rute pertama
-      var distance1 = data.routes[0].distance / 1000; // Menghitung jarak dalam kilometer
+      if (data.routes && data.routes.length > 0) {
+        const route = data.routes[0].geometry;
+        const distance = data.routes[0].distance / 1000;
+        // const distanceText = `Distance ${distance.toFixed(2)} km`;
+        const distanceText = `ⓘ Marshal`;
+        distanceElement.textContent = distanceText;
 
-      // Fetch rute kedua (dari tujuan pertama ke tujuan kedua)
-      var url2 = `https://api.mapbox.com/directions/v5/mapbox/driving/${destination1[0]},${destination1[1]};${destination2[0]},${destination2[1]}?alternatives=false&geometries=geojson&steps=true&access_token=${mapboxgl.accessToken}`;
+        // Hapus layer route lama jika ada
+        if (map.getLayer('route')) map.removeLayer('route');
+        if (map.getSource('route')) map.removeSource('route');
 
-      fetch(url2)
-        .then(response => response.json())
-        .then(data => {
-          var route2 = data.routes[0].geometry; // Mengambil rute kedua
-          var distance2 = data.routes[0].distance / 1000; // Menghitung jarak dalam kilometer
-
-          // Total jarak
-          var totalDistance = distance1 + distance2;
-          var distanceText = `Distance ${totalDistance.toFixed(2)} km`; // Format jarak dengan dua angka desimal
-
-          // Update jarak di elemen HTML
-          distanceElement.textContent = distanceText;
-
-          // Menambahkan rute pertama sebagai layer pada peta
-          map.addLayer({
-            'id': 'route1',
-            'type': 'line',
-            'source': {
-              'type': 'geojson',
-              'data': {
-                'type': 'Feature',
-                'properties': {},
-                'geometry': route1
-              }
-            },
-            'paint': {
-              'line-color': 'rgba(255,0,91, 0.8)', // Warna rute pertama
-              'line-width': 4
+        // Tambahkan polyline utama
+        map.addLayer({
+          'id': 'route',
+          'type': 'line',
+          'source': {
+            'type': 'geojson',
+            'data': {
+              'type': 'Feature',
+              'properties': {},
+              'geometry': route
             }
-          });
-
-          // Menambahkan rute kedua sebagai layer pada peta
-          map.addLayer({
-            'id': 'route2',
-            'type': 'line',
-            'source': {
-              'type': 'geojson',
-              'data': {
-                'type': 'Feature',
-                'properties': {},
-                'geometry': route2
-              }
-            },
-            'paint': {
-              'line-color': 'rgba(128,128,128, 0.8)', // Warna rute kedua
-              'line-width': 4
-            }
-          });
-        })
-        .catch(error => {
-          console.error('Error fetching route from destination 1 to destination 2:', error);
+          },
+          'paint': {
+            'line-color': 'rgba(255,0,91, 0.8)',
+            'line-width': 4
+          }
         });
+      }
     })
     .catch(error => {
-      console.error('Error fetching route from origin to destination 1:', error);
+      console.error('Error fetching route:', error);
     });
 }
 
@@ -106,18 +93,115 @@ function getRoute() {
 map.on('load', function() {
   getRoute();
 
-  // Menambahkan marker kustom dengan gambar PNG untuk 'Start'
-  new mapboxgl.Marker({ element: createCustomMarker('../flag.png', 0) }) // Menghapus offset dan rotasi
+  // Marker START/FINISH pakai emoji 🏁 di atas label
+  const startMarkerDiv = document.createElement('div');
+  startMarkerDiv.style.display = 'flex';
+  startMarkerDiv.style.flexDirection = 'column';
+  startMarkerDiv.style.alignItems = 'center';
+  startMarkerDiv.style.justifyContent = 'center';
+  startMarkerDiv.style.background = 'none';
+  startMarkerDiv.style.border = 'none';
+  startMarkerDiv.style.boxShadow = 'none';
+  startMarkerDiv.style.padding = '0';
+  const flag = document.createElement('span');
+  flag.textContent = '🏁';
+  flag.style.fontSize = '28px';
+  flag.style.lineHeight = '1';
+  flag.style.marginBottom = '-4px';
+  startMarkerDiv.appendChild(flag);
+  const label = document.createElement('span');
+  label.textContent = 'START/FINISH';
+  label.style.fontWeight = 'bold';
+  label.style.fontSize = '13px';
+  label.style.color = 'black';
+  label.style.background = 'none';
+  label.style.border = 'none';
+  label.style.marginTop = '0px';
+  startMarkerDiv.appendChild(label);
+  new mapboxgl.Marker({ element: startMarkerDiv })
     .setLngLat([110.41124510648847, -6.979465144525227])
-    .addTo(map)
-    .getElement().appendChild(createTextElement('START/FINISH')); // Menambahkan teks di atas marker
+    .addTo(map);
 
-  // Menambahkan marker kustom dengan gambar PNG untuk 'Checkpoint'
-  new mapboxgl.Marker({ element: createCustomMarker('../checkpoint.png', 0) }) // Menghapus offset dan rotasi
-    .setLngLat([110.39932636427956, -6.9628614134449744])
-    .addTo(map)
-    .getElement().appendChild(createTextElement('CHECKPOINT')); // Menambahkan teks di atas marker
-})
+  // Array checkpoint marshal
+  const marshalCheckpoints = [
+    { lng: 110.4132822844655, lat: -6.9749235700715015, name: 'Marshal 1' },
+    { lng: 110.41480694499647, lat: -6.973531583072864, name: 'Marshal 2' },
+    { lng: 110.41953248369022, lat: -6.971251919716325, name: 'Marshal 3' },
+    { lng: 110.42232579371996, lat: -6.969924453250012, name: 'Marshal 4' },
+    { lng: 110.42517418618024, lat: -6.9685237492191305, name: 'Marshal 5' },
+    { lng: 110.42511580431477, lat: -6.966584677114943, name: 'Marshal 6' },
+    { lng: 110.42925817984032, lat: -6.965291861701476, name: 'Marshal 7' },
+    { lng: 110.43008569448317, lat: -6.967665290748463, name: 'Marshal 8' },
+    { lng: 110.4252425562517, lat: -6.968728790584302, name: 'Marshal 9' },
+    { lng: 110.4228079211141, lat: -6.971106525390175, name: 'Marshal 10' },
+    { lng: 110.42013374224155, lat: -6.973821451482721, name: 'Marshal 11' },
+    { lng: 110.41674208343511, lat: -6.977250726160813, name: 'Marshal 12' },
+    { lng: 110.41565448478823, lat: -6.978286651448628, name: 'Marshal 13' },
+    { lng: 110.40971114259015, lat: -6.983524400093781, name: 'Marshal 14' }
+  ];
+
+  marshalCheckpoints.forEach(cp => {
+    // Marker bulat putih isi ⓘ
+    const markerDiv = document.createElement('div');
+    markerDiv.style.width = '20px';
+    markerDiv.style.height = '20px';
+    markerDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+    markerDiv.style.border = '2px solid white';
+    markerDiv.style.borderRadius = '50%';
+    markerDiv.style.display = 'flex';
+    markerDiv.style.alignItems = 'center';
+    markerDiv.style.justifyContent = 'center';
+    markerDiv.style.fontWeight = 'bold';
+    markerDiv.style.fontSize = '12px';
+    markerDiv.style.color = 'black';
+    markerDiv.style.cursor = 'pointer';
+    markerDiv.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
+    markerDiv.textContent = 'ⓘ';
+    const marker = new mapboxgl.Marker({ element: markerDiv })
+      .setLngLat([cp.lng, cp.lat])
+      .addTo(map);
+    marker.getElement().addEventListener('click', function() {
+      // Tampilkan popup nama marshal
+      new mapboxgl.Popup()
+        .setLngLat([cp.lng, cp.lat])
+        .setHTML(`<strong>${cp.name}</strong>`)
+        .addTo(map);
+    });
+  });
+
+  // Water Station
+  const waterStations = [
+    { lng: 110.42388938448875, lat: -6.969628740201411, name: 'Water Station' },
+    { lng: 110.4183192790272, lat: -6.975631995264069, name: 'Water Station' }
+  ];
+  waterStations.forEach(cp => {
+    const markerDiv = document.createElement('div');
+    markerDiv.style.width = '80px';
+    markerDiv.style.height = '25px';
+    markerDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+    markerDiv.style.border = '2px solid white';
+    markerDiv.style.borderRadius = '12px';
+    markerDiv.style.display = 'flex';
+    markerDiv.style.alignItems = 'center';
+    markerDiv.style.justifyContent = 'center';
+    markerDiv.style.fontWeight = 'bold';
+    markerDiv.style.fontSize = '8px';
+    markerDiv.style.color = 'black';
+    markerDiv.style.cursor = 'pointer';
+    markerDiv.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)';
+    markerDiv.style.padding = '0 6px';
+    markerDiv.textContent = cp.name;
+    const marker = new mapboxgl.Marker({ element: markerDiv })
+      .setLngLat([cp.lng, cp.lat])
+      .addTo(map);
+    marker.getElement().addEventListener('click', function() {
+      new mapboxgl.Popup()
+        .setLngLat([cp.lng, cp.lat])
+        .setHTML(`<strong>${cp.name}</strong>`)
+        .addTo(map);
+    });
+  });
+});
 
 // Fungsi untuk membuat marker dengan gambar PNG
 function createCustomMarker(imageUrl, rotate) {
