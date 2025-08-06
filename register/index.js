@@ -355,7 +355,7 @@ function copyToClipboard() {
             
             if (selectedCoupleSize && selectedCoupleSize.value === 'xxxl') {
                 displayPrice = price + 10000;
-                priceText = `IDR ${formatPrice(displayPrice)} (includes XXXL surcharge)`;
+                priceText = `IDR ${formatPrice(displayPrice)} + Rp10.000`;
             }
             
             priceElement.textContent = priceText;
