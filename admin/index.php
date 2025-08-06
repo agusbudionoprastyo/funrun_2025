@@ -11,9 +11,9 @@ if (!isset($_SESSION['user_id'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="w-full">
 
-<head>
+<head class="w-full">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaction Data</title>
@@ -35,6 +35,37 @@ if (!isset($_SESSION['user_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
 
     <style>
+        /* Full width table container */
+        .table-container {
+            width: 100vw;
+            max-width: 100vw;
+            padding: 0 24px;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        
+        /* Table styling for full width */
+        #pagination-table {
+            width: 100%;
+            min-width: 100%;
+            table-layout: auto;
+            border-collapse: collapse;
+        }
+        
+        /* Ensure table cells have proper spacing */
+        #pagination-table th,
+        #pagination-table td {
+            padding: 12px 16px;
+            vertical-align: top;
+        }
+        
+        /* Make sure the table header spans full width */
+        #pagination-table thead th {
+            background-color: #dbeafe;
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+        
         .editable-jersey, .editable-status {
             transition: all 0.2s ease;
             cursor: pointer;
@@ -79,14 +110,36 @@ if (!isset($_SESSION['user_id'])) {
             font-size: 0.75rem;
             font-weight: 500;
         }
+        
+        /* Ensure full width for body and html */
+        html, body {
+            width: 100vw;
+            max-width: 100vw;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Responsive padding for different screen sizes */
+        @media (max-width: 768px) {
+            .table-container {
+                padding: 0 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .table-container {
+                padding: 0 12px;
+            }
+        }
     </style>
 
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 w-full">
 
 <!-- Container for the Table -->
-<div class="container mx-auto p-6">
+<div class="table-container py-6">
     <table id="pagination-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
         <thead class="bg-blue-100">
             <tr>
