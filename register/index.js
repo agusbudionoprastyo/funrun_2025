@@ -75,6 +75,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Function to update jersey order price
+    function updateJerseyOrderPrice() {
+        const selectedSize = document.querySelector('input[name="orderJerseySize"]:checked');
+        const priceElement = document.getElementById('jerseyOrderPrice');
+        
+        if (selectedSize) {
+            let price = 100000; // Base price
+            if (selectedSize.value === 'XXXL') {
+                price += 10000; // Add surcharge for XXXL
+            }
+            priceElement.textContent = `Rp ${price.toLocaleString('id-ID')}`;
+        }
+    }
+
+    // Add event listeners for jersey order size changes
+    const jerseyOrderSizeInputs = document.querySelectorAll('input[name="orderJerseySize"]');
+    jerseyOrderSizeInputs.forEach(input => {
+        input.addEventListener('change', updateJerseyOrderPrice);
+    });
+
     // Handle jersey order form submission
     jerseyOrderForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -84,13 +104,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const color = document.querySelector('input[name="orderJerseyColor"]:checked').value;
         const size = document.querySelector('input[name="orderJerseySize"]:checked').value;
         
+        // Calculate price with XXXL surcharge
+        let jerseyPrice = 100000; // Base price
+        if (size === 'XXXL') {
+            jerseyPrice += 10000; // Add surcharge for XXXL
+        }
+        
         // Format the message for WhatsApp
         const message = `*ORDER JERSEY FUN RUN 2025*%0A%0A` +
             `*Nama:* ${name}%0A` +
             `*Alamat Pengiriman:* ${address}%0A` +
             `*Warna Jersey:* ${color.charAt(0).toUpperCase() + color.slice(1)}%0A` +
             `*Size Jersey:* ${size}%0A` +
-            `*Harga:* Rp 100.000%0A%0A` +
+            `*Harga:* Rp ${jerseyPrice.toLocaleString('id-ID')}${size === 'XXXL' ? ' (includes XXXL surcharge)' : ''}%0A%0A` +
             `*Fun Run - Lari Sama Mantan*%0A` +
             `12 Oktober 2025%0A` +
             `Hotel Dafam Semarang`;
@@ -269,20 +295,32 @@ function copyToClipboard() {
 
     // Function to calculate the correct price and description based on single/couple selection
     function getPriceAndDescriptionForSelection(item) {
+        let basePrice;
+        let description;
+        
         if (coupleRadio.checked) {
             // Use couple price and couple description if 'Couple' is selected
-            return {
-                price: item.couplePrice ? item.couplePrice : item.price,
-                description: item.coupleDescription || item.description // Use couple description if available
-            };
+            basePrice = item.couplePrice ? item.couplePrice : item.price;
+            description = item.coupleDescription || item.description;
         } else {
             // Use single price and single description if 'Single' is selected
-            return {
-                price: item.price,
-                description: item.description
-            };
+            basePrice = item.price;
+            description = item.description;
         }
+        
+        return {
+            price: basePrice,
+            description: description
+        };
     }   
+
+    // Function to calculate price with XXXL surcharge
+    function calculatePriceWithSurcharge(basePrice, size) {
+        if (size === 'xxxl') {
+            return basePrice + 10000; // Add Rp 10,000 surcharge for XXXL
+        }
+        return basePrice;
+    }
 
     // Function to render items dynamically
     function renderItems(data) {
@@ -302,7 +340,25 @@ function copyToClipboard() {
             // Create price element
             const priceElement = document.createElement('p');
             priceElement.className = 'helvetica text-[#ff5b1c] font-bold';
-            priceElement.textContent = `IDR ${formatPrice(price)}`;
+            
+            // Check if XXXL is selected and show surcharge
+            const selectedSize = document.querySelector('input[name="size"]:checked');
+            const selectedCoupleSize = document.querySelector('input[name="coupleSize"]:checked');
+            
+            let displayPrice = price;
+            let priceText = `IDR ${formatPrice(price)}`;
+            
+            if (selectedSize && selectedSize.value === 'xxxl') {
+                displayPrice = price + 10000;
+                priceText = `IDR ${formatPrice(displayPrice)} (includes XXXL surcharge)`;
+            }
+            
+            if (selectedCoupleSize && selectedCoupleSize.value === 'xxxl') {
+                displayPrice = price + 10000;
+                priceText = `IDR ${formatPrice(displayPrice)} (includes XXXL surcharge)`;
+            }
+            
+            priceElement.textContent = priceText;
 
             itemElement.appendChild(descriptionElement);
             itemElement.appendChild(priceElement);
@@ -329,6 +385,14 @@ function copyToClipboard() {
             if (this.checked) {
                 renderItems(data); // Re-render with updated prices and descriptions for "Single"
             }
+        });
+
+        // Add event listeners for size changes to update pricing
+        const sizeInputs = document.querySelectorAll('input[name="size"], input[name="coupleSize"]');
+        sizeInputs.forEach(input => {
+            input.addEventListener('change', function() {
+                renderItems(data); // Re-render with updated prices when size changes
+            });
         });
     })
     .catch(error => console.error('Error:', error));

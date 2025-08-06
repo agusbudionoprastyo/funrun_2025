@@ -81,8 +81,25 @@ try {
         throw new Exception('Item tidak tersedia');
     }
 
-    // Jika pendaftaran adalah pasangan, kalikan harga item dengan 2 dan kurangi stok 2 kali
-    $totalAmount = ($registrationType === 'couple') ? $couplePrice : $itemPrice;
+    // Function to calculate price with XXXL surcharge
+    function calculatePriceWithSurcharge($basePrice, $size) {
+        if ($size === 'xxxl') {
+            return $basePrice + 10000; // Add Rp 10,000 surcharge for XXXL
+        }
+        return $basePrice;
+    }
+
+    // Calculate base price
+    $basePrice = ($registrationType === 'couple') ? $couplePrice : $itemPrice;
+    
+    // Calculate total amount with surcharge for XXXL size
+    $totalAmount = calculatePriceWithSurcharge($basePrice, $size);
+    
+    // If it's a couple registration, also check the couple's size
+    if ($registrationType === 'couple') {
+        $coupleSize = $_POST['coupleSize'];
+        $totalAmount += calculatePriceWithSurcharge($basePrice, $coupleSize) - $basePrice; // Add surcharge for couple's size if needed
+    }
 
     // Proses penyimpanan transaksi
     $query = "INSERT INTO transactions (transaction_id, total_amount, status) VALUES (?, ?, 'pending')";
