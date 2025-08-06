@@ -71,7 +71,8 @@ if (!isset($_SESSION['user_id'])) {
             cursor: pointer;
             padding: 2px 4px;
             border-radius: 4px;
-            display: inline-block;
+            display: block;
+            text-align: center;
         }
         
         .editable-jersey:hover, .editable-status:hover {
@@ -109,6 +110,26 @@ if (!isset($_SESSION['user_id'])) {
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
+        }
+        
+        /* Jersey color container styling */
+        .jersey-color-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Jersey color individual styling */
+        .editable-jersey {
+            min-width: 80px;
+            font-weight: 500;
+        }
+        
+        /* Status styling - keep inline for multiple statuses */
+        .editable-status {
+            display: inline-block;
+            margin: 2px;
         }
         
         /* Ensure full width for body and html */
@@ -243,9 +264,11 @@ if (!isset($_SESSION['user_id'])) {
                         ${item.size_1 ? `<div class="font-normal text-gray-500 uppercase">${item.size_1}</div>` : ''}
                         ${item.size_2 ? `<div class="font-normal text-gray-500 uppercase">${item.size_2}</div>` : ''}
                     </th>
-                    <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
-                        ${item.jersey_color_1 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_1" data-value="${item.jersey_color_1}" title="Click to edit jersey color">${item.jersey_color_1.toUpperCase()}</div>` : ''}
-                        ${item.jersey_color_2 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_2" data-value="${item.jersey_color_2}" title="Click to edit jersey color">${item.jersey_color_2.toUpperCase()}</div>` : ''}
+                    <th class="px-6 py-4 font-medium text-center text-gray-900">
+                        <div class="jersey-color-container">
+                            ${item.jersey_color_1 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_1" data-value="${item.jersey_color_1}" title="Click to edit jersey color">${item.jersey_color_1.toUpperCase()}</div>` : ''}
+                            ${item.jersey_color_2 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_2" data-value="${item.jersey_color_2}" title="Click to edit jersey color">${item.jersey_color_2.toUpperCase()}</div>` : ''}
+                        </div>
                     </th>
                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         <div class="font-normal text-gray-500">${item.phone_1}</div>
