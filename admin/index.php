@@ -707,23 +707,19 @@ if (!isset($_SESSION['user_id'])) {
         filterTableByStatus(selectedStatus);
     });
     
-    // Function to update status counts
+    // Function to update status counts (from all data, not just visible rows)
     function updateStatusCounts() {
-        const tableBody = document.querySelector("#pagination-table tbody");
-        const rows = tableBody.querySelectorAll("tr");
-        
+        const selectedStatus = document.getElementById('status-filter').value;
         let pendingCount = 0;
         let paidCount = 0;
         let verifiedCount = 0;
         let totalCount = 0;
-        
-        rows.forEach(row => {
-            const statusCell = row.querySelector('.editable-status');
-            if (statusCell) {
-                const rowStatus = statusCell.getAttribute('data-value');
+
+        // Count from all originalData, but apply filter if needed
+        originalData.forEach(item => {
+            if (selectedStatus === '' || item.status === selectedStatus) {
                 totalCount++;
-                
-                switch(rowStatus) {
+                switch(item.status) {
                     case 'pending':
                         pendingCount++;
                         break;
@@ -736,8 +732,7 @@ if (!isset($_SESSION['user_id'])) {
                 }
             }
         });
-        
-        // Update the count displays
+
         document.getElementById('pending-count').textContent = pendingCount;
         document.getElementById('paid-count').textContent = paidCount;
         document.getElementById('verified-count').textContent = verifiedCount;
