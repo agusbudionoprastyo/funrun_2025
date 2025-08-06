@@ -340,7 +340,7 @@ if (!isset($_SESSION['user_id'])) {
     <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2" id="table-header-bar">
         <div id="datatable-search-box"></div>
     </div>
-    <div class="flex items-center space-x-6" id="status-badges-bar">
+    <div class="flex items-center space-x-6 mb-2" id="status-badges-bar">
         <div class="status-counter">
             <span>Pending:</span>
             <span id="pending-count" class="text-yellow-600 bg-yellow-100">0</span>
