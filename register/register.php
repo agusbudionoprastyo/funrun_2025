@@ -93,7 +93,10 @@ try {
     $basePrice = ($registrationType === 'couple') ? $couplePrice : $itemPrice;
     
     // Calculate total amount with surcharge for XXXL size
-    $totalAmount = calculatePriceWithSurcharge($basePrice, $size);
+    $totalAmount = $basePrice;
+    
+    // Add surcharge for first person
+    $totalAmount += calculatePriceWithSurcharge($basePrice, $size) - $basePrice;
     
     // If it's a couple registration, also check the couple's size
     if ($registrationType === 'couple') {

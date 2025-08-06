@@ -347,15 +347,23 @@ function copyToClipboard() {
             
             let displayPrice = price;
             let priceText = `IDR ${formatPrice(price)}`;
+            let surchargeAmount = 0;
             
+            // Calculate surcharge for single registration
             if (selectedSize && selectedSize.value === 'xxxl') {
-                displayPrice = price + 10000;
-                priceText = `IDR ${formatPrice(price)} <span class="text-red-500 text-xs">+ 10K</span>`;
+                surchargeAmount += 10000;
             }
             
+            // Calculate surcharge for couple registration
             if (selectedCoupleSize && selectedCoupleSize.value === 'xxxl') {
-                displayPrice = price + 10000;
-                priceText = `IDR ${formatPrice(price)} <span class="text-red-500 text-xs">+ 10K</span>`;
+                surchargeAmount += 10000;
+            }
+            
+            // Add surcharge to display if any
+            if (surchargeAmount > 0) {
+                displayPrice = price + surchargeAmount;
+                const surchargeText = surchargeAmount === 10000 ? '+ 10K' : '+ 20K';
+                priceText = `IDR ${formatPrice(price)} <span class="text-red-500 text-sm">${surchargeText}</span>`;
             }
             
             priceElement.innerHTML = priceText;
