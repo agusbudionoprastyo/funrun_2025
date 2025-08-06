@@ -378,12 +378,14 @@ function copyToClipboard() {
         coupleRadio.addEventListener('change', function() {
             if (this.checked) {
                 renderItems(data); // Re-render with updated prices and descriptions for "Couple"
+                updateSurchargeIndicator(); // Update surcharge indicator
             }
         });
 
         singleRadio.addEventListener('change', function() {
             if (this.checked) {
                 renderItems(data); // Re-render with updated prices and descriptions for "Single"
+                updateSurchargeIndicator(); // Update surcharge indicator
             }
         });
 
@@ -392,8 +394,23 @@ function copyToClipboard() {
         sizeInputs.forEach(input => {
             input.addEventListener('change', function() {
                 renderItems(data); // Re-render with updated prices when size changes
+                updateSurchargeIndicator(); // Update surcharge indicator
             });
         });
+
+        // Function to update surcharge indicator
+        function updateSurchargeIndicator() {
+            const surchargeIndicator = document.getElementById('surcharge-indicator');
+            const selectedSize = document.querySelector('input[name="size"]:checked');
+            const selectedCoupleSize = document.querySelector('input[name="coupleSize"]:checked');
+            
+            if ((selectedSize && selectedSize.value === 'xxxl') || 
+                (selectedCoupleSize && selectedCoupleSize.value === 'xxxl')) {
+                surchargeIndicator.classList.remove('hidden');
+            } else {
+                surchargeIndicator.classList.add('hidden');
+            }
+        }
     })
     .catch(error => console.error('Error:', error));
 
