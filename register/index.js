@@ -629,3 +629,66 @@ function copyToClipboard() {
                 }
             });
         });
+
+    // Harga dasar
+    const BASE_PRICE_SINGLE = 100000;
+    const BASE_PRICE_COUPLE = 200000;
+    const EXTRA_SIZE = ['xxxl', '4xl', '5xl'];
+    const EXTRA_PRICE = 10000;
+
+    // Helper untuk cek apakah size termasuk extra
+    function isExtraSize(size) {
+        return EXTRA_SIZE.includes(size.toLowerCase());
+    }
+
+    // Update harga di form utama
+    function updateMainFormPrice() {
+        let price = BASE_PRICE_SINGLE;
+        let size = document.querySelector('input[name="size"]:checked');
+        if (coupleRadio.checked) {
+            price = BASE_PRICE_COUPLE;
+            let size1 = document.querySelector('input[name="size"]:checked');
+            let size2 = document.querySelector('input[name="coupleSize"]:checked');
+            let extra = 0;
+            if (size1 && isExtraSize(size1.value)) extra += EXTRA_PRICE;
+            if (size2 && isExtraSize(size2.value)) extra += EXTRA_PRICE;
+            price += extra;
+        } else {
+            if (size && isExtraSize(size.value)) price += EXTRA_PRICE;
+        }
+        // Update tampilan harga
+        let priceDisplay = document.querySelector('.bg-gray-50 .font-bold');
+        if (priceDisplay) {
+            priceDisplay.textContent = 'Rp ' + price.toLocaleString('id-ID');
+        }
+    }
+
+    // Event listener untuk update harga saat size berubah
+    document.querySelectorAll('input[name="size"]').forEach(el => {
+        el.addEventListener('change', updateMainFormPrice);
+    });
+    document.querySelectorAll('input[name="coupleSize"]').forEach(el => {
+        el.addEventListener('change', updateMainFormPrice);
+    });
+    coupleRadio.addEventListener('change', updateMainFormPrice);
+    singleRadio.addEventListener('change', updateMainFormPrice);
+    // Panggil sekali saat load
+    updateMainFormPrice();
+
+    // Update harga di modal order jersey
+    function updateOrderModalPrice() {
+        let price = BASE_PRICE_SINGLE;
+        let size = document.querySelector('input[name="orderJerseySize"]:checked');
+        if (size && isExtraSize(size.value)) price += EXTRA_PRICE;
+        let priceDisplay = document.querySelector('#jerseyOrderModal .font-bold');
+        if (priceDisplay) {
+            priceDisplay.textContent = 'Rp ' + price.toLocaleString('id-ID');
+        }
+    }
+    document.querySelectorAll('input[name="orderJerseySize"]').forEach(el => {
+        el.addEventListener('change', updateOrderModalPrice);
+    });
+    // Panggil sekali saat modal dibuka
+    document.getElementById('jerseyOrderModal').addEventListener('click', function(e) {
+        if (e.target.id === 'jerseyOrderModal') updateOrderModalPrice();
+    });
