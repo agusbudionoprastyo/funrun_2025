@@ -273,6 +273,42 @@ if (!isset($_SESSION['user_id'])) {
             border-color: #9ca3af;
         }
         
+        /* Status counter styling */
+        .status-counter {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-counter span:first-child {
+            font-size: 11px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+        
+        .status-counter span:last-child {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 12px;
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Responsive counter layout */
+        @media (max-width: 768px) {
+            .filter-container .flex.justify-between {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .filter-container .flex.items-center.space-x-6 {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+        }
+        
         /* Responsive padding for different screen sizes */
         @media (max-width: 768px) {
             .table-container {
@@ -313,6 +349,24 @@ if (!isset($_SESSION['user_id'])) {
                         <option value="paid">Paid</option>
                         <option value="verified">Verified</option>
                     </select>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="status-counter">
+                    <span>Pending:</span>
+                    <span id="pending-count" class="text-yellow-600 bg-yellow-100">0</span>
+                </div>
+                <div class="status-counter">
+                    <span>Paid:</span>
+                    <span id="paid-count" class="text-green-600 bg-green-100">0</span>
+                </div>
+                <div class="status-counter">
+                    <span>Verified:</span>
+                    <span id="verified-count" class="text-pink-600 bg-pink-100">0</span>
+                </div>
+                <div class="status-counter">
+                    <span>Total:</span>
+                    <span id="total-count" class="text-blue-600 bg-blue-100">0</span>
                 </div>
             </div>
         </div>
@@ -403,6 +457,14 @@ if (!isset($_SESSION['user_id'])) {
             const tableBody = document.querySelector("#pagination-table tbody");
             tableBody.innerHTML = ''; // Clear existing rows
 
+            // Sort data by status: pending first, then paid, then verified
+            data.sort((a, b) => {
+                const statusOrder = { 'pending': 1, 'paid': 2, 'verified': 3 };
+                const aOrder = statusOrder[a.status] || 4;
+                const bOrder = statusOrder[b.status] || 4;
+                return aOrder - bOrder;
+            });
+            
             // Loop through the data and create table rows dynamically
             data.forEach(item => {
                 const formattedAmount = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.total_amount);
@@ -482,6 +544,9 @@ if (!isset($_SESSION['user_id'])) {
                     sortable: false
                 });
             }
+            
+            // Update status counts after data is loaded
+            updateStatusCounts();
 
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -642,6 +707,43 @@ if (!isset($_SESSION['user_id'])) {
         filterTableByStatus(selectedStatus);
     });
     
+    // Function to update status counts
+    function updateStatusCounts() {
+        const tableBody = document.querySelector("#pagination-table tbody");
+        const rows = tableBody.querySelectorAll("tr");
+        
+        let pendingCount = 0;
+        let paidCount = 0;
+        let verifiedCount = 0;
+        let totalCount = 0;
+        
+        rows.forEach(row => {
+            const statusCell = row.querySelector('.editable-status');
+            if (statusCell) {
+                const rowStatus = statusCell.getAttribute('data-value');
+                totalCount++;
+                
+                switch(rowStatus) {
+                    case 'pending':
+                        pendingCount++;
+                        break;
+                    case 'paid':
+                        paidCount++;
+                        break;
+                    case 'verified':
+                        verifiedCount++;
+                        break;
+                }
+            }
+        });
+        
+        // Update the count displays
+        document.getElementById('pending-count').textContent = pendingCount;
+        document.getElementById('paid-count').textContent = paidCount;
+        document.getElementById('verified-count').textContent = verifiedCount;
+        document.getElementById('total-count').textContent = totalCount;
+    }
+    
     // Function to filter table by status
     function filterTableByStatus(status) {
         const tableBody = document.querySelector("#pagination-table tbody");
@@ -663,6 +765,9 @@ if (!isset($_SESSION['user_id'])) {
         if (window.dataTable) {
             window.dataTable.refresh();
         }
+        
+        // Update counts after filtering
+        updateStatusCounts();
     }
 
     // Add event listeners for inline editing
