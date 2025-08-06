@@ -679,7 +679,7 @@ function copyToClipboard() {
     // Harga dasar
     const BASE_PRICE_SINGLE = 100000;
     const BASE_PRICE_COUPLE = 200000;
-    const EXTRA_SIZE = ['xxxl', '4xl', '5xl'];
+    const EXTRA_SIZE = ['3xl', '4xl', '5xl'];
     const EXTRA_PRICE = 10000;
 
     // Helper untuk cek apakah size termasuk extra
@@ -691,7 +691,7 @@ function copyToClipboard() {
     function updateMainFormPrice() {
         let price = BASE_PRICE_SINGLE;
         let size = document.querySelector('input[name="size"]:checked');
-        if (coupleRadio.checked) {
+        if (coupleRadio && coupleRadio.checked) {
             price = BASE_PRICE_COUPLE;
             let size1 = document.querySelector('input[name="size"]:checked');
             let size2 = document.querySelector('input[name="coupleSize"]:checked');
