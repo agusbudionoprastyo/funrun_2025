@@ -171,6 +171,35 @@ if (!isset($_SESSION['user_id'])) {
             color: #6b7280;
         }
         
+        /* Size container styling */
+        .size-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* Editable size styling */
+        .editable-size {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            display: block;
+            text-align: center;
+            min-width: 60px;
+            font-weight: 500;
+        }
+        
+        .editable-size:hover {
+            background-color: #f3f4f6 !important;
+            transform: scale(1.05);
+        }
+        
+        .editable-size:active {
+            transform: scale(0.95);
+        }
+        
         /* Ensure full width for body and html */
         html, body {
             width: 100vw;
@@ -207,7 +236,7 @@ if (!isset($_SESSION['user_id'])) {
                     Runners
                 </th>
                 <th class="px-6 py-3 font-medium text-center text-gray-900">
-                    Size Jersey
+                    Size Jersey <span class="text-xs text-gray-500">(Click to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-center text-gray-900">
                     Jersey Color <span class="text-xs text-gray-500">(Click to edit)</span>
@@ -299,9 +328,11 @@ if (!isset($_SESSION['user_id'])) {
                         ${item.size_2 ? `<div class="font-semibold text-gray-500">${item.name_2} (${item.mantan_2})</div>` : ''}
                     </div>
                     </th>
-                    <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
-                        ${item.size_1 ? `<div class="font-normal text-gray-500 uppercase">${item.size_1}</div>` : ''}
-                        ${item.size_2 ? `<div class="font-normal text-gray-500 uppercase">${item.size_2}</div>` : ''}
+                    <th class="px-6 py-4 font-medium text-center text-gray-900">
+                        <div class="size-container">
+                            ${item.size_1 ? `<div class="editable-size" data-transaction-id="${item.transaction_id}" data-field="size_1" data-value="${item.size_1}" title="Click to edit jersey size">${item.size_1.toUpperCase()}</div>` : ''}
+                            ${item.size_2 ? `<div class="editable-size" data-transaction-id="${item.transaction_id}" data-field="size_2" data-value="${item.size_2}" title="Click to edit jersey size">${item.size_2.toUpperCase()}</div>` : ''}
+                        </div>
                     </th>
                     <th class="px-6 py-4 font-medium text-center text-gray-900">
                         <div class="jersey-color-container">
@@ -325,7 +356,7 @@ if (!isset($_SESSION['user_id'])) {
                                         title="Click to add phone number">Add phone number</span>`
                                 }
                             </div>
-                            <div class="font-normal text-gray-500">${item.email_1}</div>
+                            <div class="ml-1 font-normal text-gray-500">${item.email_1}</div>
                         </div>
                     </th>
                     <td class="px-6 py-4">${item.transaction_date}</td>
@@ -786,6 +817,87 @@ if (!isset($_SESSION['user_id'])) {
                     this.remove();
                     e.target.style.display = 'inline';
                 }
+            });
+        }
+        
+        // Handle size editing
+        if (e.target.classList.contains('editable-size')) {
+            const currentValue = e.target.getAttribute('data-value');
+            const transactionId = e.target.getAttribute('data-transaction-id');
+            const field = e.target.getAttribute('data-field');
+            
+            // Create dropdown for jersey sizes
+            const sizes = ['xs', 's', 'm', 'l', 'xl', '2xl', '3xl', '4xl', '5xl'];
+            const dropdown = document.createElement('select');
+            dropdown.className = 'editable-dropdown';
+            
+            sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size.toUpperCase();
+                if (size === currentValue) {
+                    option.selected = true;
+                }
+                dropdown.appendChild(option);
+            });
+            
+            // Replace the div with dropdown
+            e.target.style.display = 'none';
+            e.target.parentNode.insertBefore(dropdown, e.target);
+            dropdown.focus();
+            
+            // Handle dropdown change
+            dropdown.addEventListener('change', async function() {
+                const newValue = this.value;
+                try {
+                    const response = await fetch('update_jersey_status.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            transaction_id: transactionId,
+                            field: field,
+                            value: newValue
+                        }),
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        e.target.textContent = newValue.toUpperCase();
+                        e.target.setAttribute('data-value', newValue);
+                        
+                        iziToast.success({
+                            title: 'Success',
+                            message: 'Jersey size updated successfully!',
+                            position: 'topRight',
+                        });
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: result.message || 'Failed to update jersey size',
+                            position: 'topRight',
+                        });
+                    }
+                } catch (error) {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to update jersey size',
+                        position: 'topRight',
+                    });
+                }
+                
+                // Remove dropdown and show div again
+                this.remove();
+                e.target.style.display = 'block';
+            });
+            
+            // Handle dropdown blur (cancel edit)
+            dropdown.addEventListener('blur', function() {
+                setTimeout(() => {
+                    this.remove();
+                    e.target.style.display = 'block';
+                }, 100);
             });
         }
     });
