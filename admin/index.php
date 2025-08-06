@@ -161,6 +161,16 @@ if (!isset($_SESSION['user_id'])) {
             transform: scale(0.95);
         }
         
+        /* Styling for empty phone number */
+        .editable-phone.italic {
+            font-style: italic;
+            color: #9ca3af;
+        }
+        
+        .editable-phone.italic:hover {
+            color: #6b7280;
+        }
+        
         /* Ensure full width for body and html */
         html, body {
             width: 100vw;
@@ -203,7 +213,7 @@ if (!isset($_SESSION['user_id'])) {
                     Jersey Color <span class="text-xs text-gray-500">(Click to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Contact <span class="text-xs text-gray-500">(Click phone to edit)</span>
+                    Contact <span class="text-xs text-gray-500">(Click phone to edit/add)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Transaction Date
@@ -302,11 +312,18 @@ if (!isset($_SESSION['user_id'])) {
                     <th class="px-6 py-4 font-medium text-gray-900">
                         <div class="contact-container">
                             <div class="contact-item">
-                                <span class="editable-phone font-normal text-gray-500" 
-                                    data-transaction-id="${item.transaction_id}" 
-                                    data-field="phone_1" 
-                                    data-value="${item.phone_1}" 
-                                    title="Click to edit phone number">${item.phone_1}</span>
+                                ${item.phone_1 ? 
+                                    `<span class="editable-phone font-normal text-gray-500" 
+                                        data-transaction-id="${item.transaction_id}" 
+                                        data-field="phone_1" 
+                                        data-value="${item.phone_1}" 
+                                        title="Click to edit phone number">${item.phone_1}</span>` : 
+                                    `<span class="editable-phone font-normal text-gray-400 italic" 
+                                        data-transaction-id="${item.transaction_id}" 
+                                        data-field="phone_1" 
+                                        data-value="" 
+                                        title="Click to add phone number">Add phone number</span>`
+                                }
                             </div>
                             <div class="font-normal text-gray-500">${item.email_1}</div>
                         </div>
@@ -690,7 +707,7 @@ if (!isset($_SESSION['user_id'])) {
             input.type = 'tel';
             input.value = currentValue;
             input.className = 'editable-dropdown';
-            input.placeholder = 'Enter phone number';
+            input.placeholder = currentValue ? 'Enter phone number' : 'Enter phone number to add';
             
             // Replace the span with input
             e.target.style.display = 'none';
@@ -719,9 +736,10 @@ if (!isset($_SESSION['user_id'])) {
                         const result = await response.json();
                         if (result.success) {
                             // Update the phone number display
-                            const phoneSpan = e.target.previousElementSibling;
-                            phoneSpan.textContent = newValue;
+                            e.target.textContent = newValue;
                             e.target.setAttribute('data-value', newValue);
+                            e.target.className = 'editable-phone font-normal text-gray-500';
+                            e.target.setAttribute('title', 'Click to edit phone number');
                             
                             iziToast.success({
                                 title: 'Success',
@@ -742,6 +760,12 @@ if (!isset($_SESSION['user_id'])) {
                             position: 'topRight',
                         });
                     }
+                } else if (!newValue && currentValue) {
+                    // If user cleared the phone number, show "Add phone number" again
+                    e.target.textContent = 'Add phone number';
+                    e.target.setAttribute('data-value', '');
+                    e.target.className = 'editable-phone font-normal text-gray-400 italic';
+                    e.target.setAttribute('title', 'Click to add phone number');
                 }
                 
                 // Remove input and show span again
