@@ -392,8 +392,10 @@ function copyToClipboard() {
     }
 
     const registrationForm = document.getElementById('registrationForm');
+    console.log('Registration form found:', registrationForm);
     if (registrationForm) {
         registrationForm.addEventListener('submit', function(event) {
+        console.log('Form submitted!');
         event.preventDefault(); 
 
         const formData = new FormData();
