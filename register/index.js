@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (selectedSize) {
             let price = 100000; // Base price
-            if (selectedSize.value === 'XXXL') {
-                price += 10000; // Add surcharge for XXXL
+            if (selectedSize.value === '3XL' || selectedSize.value === '4XL' || selectedSize.value === '5XL') {
+                price += 10000; // Add surcharge for larger sizes
             }
             priceElement.textContent = `Rp ${price.toLocaleString('id-ID')}`;
         }
@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const color = document.querySelector('input[name="orderJerseyColor"]:checked').value;
         const size = document.querySelector('input[name="orderJerseySize"]:checked').value;
         
-        // Calculate price with XXXL surcharge
+        // Calculate price with surcharge for larger sizes
         let jerseyPrice = 100000; // Base price
-        if (size === 'XXXL') {
-            jerseyPrice += 10000; // Add surcharge for XXXL
+        if (size === '3XL' || size === '4XL' || size === '5XL') {
+            jerseyPrice += 10000; // Add surcharge for larger sizes
         }
         
         // Format the message for WhatsApp
@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             `*Alamat Pengiriman:* ${address}%0A` +
             `*Warna Jersey:* ${color.charAt(0).toUpperCase() + color.slice(1)}%0A` +
             `*Size Jersey:* ${size}%0A` +
-            `*Harga:* Rp ${jerseyPrice.toLocaleString('id-ID')}${size === 'XXXL' ? ' (includes XXXL surcharge)' : ''}%0A%0A` +
+            `*Harga:* Rp ${jerseyPrice.toLocaleString('id-ID')}${(size === '3XL' || size === '4XL' || size === '5XL') ? ' (includes surcharge)' : ''}%0A%0A` +
             `*Fun Run - Lari Sama Mantan*%0A` +
             `12 Oktober 2025%0A` +
             `Hotel Dafam Semarang`;
@@ -350,19 +350,19 @@ function copyToClipboard() {
             let surchargeAmount = 0;
             
             // Calculate surcharge for single registration
-            if (selectedSize && selectedSize.value === 'xxxl') {
+            if (selectedSize && (selectedSize.value === '3xl' || selectedSize.value === '4xl' || selectedSize.value === '5xl')) {
                 surchargeAmount += 10000;
             }
             
             // Calculate surcharge for couple registration
-            if (selectedCoupleSize && selectedCoupleSize.value === 'xxxl') {
+            if (selectedCoupleSize && (selectedCoupleSize.value === '3xl' || selectedCoupleSize.value === '4xl' || selectedCoupleSize.value === '5xl')) {
                 surchargeAmount += 10000;
             }
             
             // Add surcharge to display if any
             if (surchargeAmount > 0) {
                 displayPrice = price + surchargeAmount;
-                const surchargeText = surchargeAmount === 10000 ? '+ 10K' : '+ 20K';
+                const surchargeText = surchargeAmount === 10000 ? '+ 10K surcharge' : '+ 20K surcharge';
                 priceText = `IDR ${formatPrice(price)} <span class="text-red-500 text-sm">${surchargeText}</span>`;
             }
             

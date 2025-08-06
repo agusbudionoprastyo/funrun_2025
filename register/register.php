@@ -81,10 +81,10 @@ try {
         throw new Exception('Item tidak tersedia');
     }
 
-    // Function to calculate price with XXXL surcharge
+    // Function to calculate price with surcharge for larger sizes
     function calculatePriceWithSurcharge($basePrice, $size) {
-        if ($size === 'xxxl') {
-            return $basePrice + 10000; // Add Rp 10,000 surcharge for XXXL
+        if ($size === '3xl' || $size === '4xl' || $size === '5xl') {
+            return $basePrice + 10000; // Add Rp 10,000 surcharge for 3XL, 4XL, 5XL
         }
         return $basePrice;
     }
