@@ -142,17 +142,23 @@ if (!isset($_SESSION['user_id'])) {
         .contact-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
         }
         
-        .edit-phone-btn {
+        .editable-phone {
             transition: all 0.2s ease;
-            font-size: 0.75rem;
-            padding: 2px 6px;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            display: inline-block;
         }
         
-        .edit-phone-btn:hover {
+        .editable-phone:hover {
+            background-color: #f3f4f6 !important;
             transform: scale(1.05);
+        }
+        
+        .editable-phone:active {
+            transform: scale(0.95);
         }
         
         /* Ensure full width for body and html */
@@ -197,7 +203,7 @@ if (!isset($_SESSION['user_id'])) {
                     Jersey Color <span class="text-xs text-gray-500">(Click to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Contact <span class="text-xs text-gray-500">(Phone editable)</span>
+                    Contact <span class="text-xs text-gray-500">(Click phone to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Transaction Date
@@ -296,14 +302,11 @@ if (!isset($_SESSION['user_id'])) {
                     <th class="px-6 py-4 font-medium text-gray-900">
                         <div class="contact-container">
                             <div class="contact-item">
-                                <span class="font-normal text-gray-500">${item.phone_1}</span>
-                                <button class="edit-phone-btn ml-2 text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded" 
+                                <span class="editable-phone font-normal text-gray-500" 
                                     data-transaction-id="${item.transaction_id}" 
                                     data-field="phone_1" 
                                     data-value="${item.phone_1}" 
-                                    title="Edit phone number">
-                                    Edit
-                                </button>
+                                    title="Click to edit phone number">${item.phone_1}</span>
                             </div>
                             <div class="font-normal text-gray-500">${item.email_1}</div>
                         </div>
@@ -677,7 +680,7 @@ if (!isset($_SESSION['user_id'])) {
         }
         
         // Handle phone number editing
-        if (e.target.classList.contains('edit-phone-btn')) {
+        if (e.target.classList.contains('editable-phone')) {
             const currentValue = e.target.getAttribute('data-value');
             const transactionId = e.target.getAttribute('data-transaction-id');
             const field = e.target.getAttribute('data-field');
@@ -689,7 +692,7 @@ if (!isset($_SESSION['user_id'])) {
             input.className = 'editable-dropdown';
             input.placeholder = 'Enter phone number';
             
-            // Replace the button with input
+            // Replace the span with input
             e.target.style.display = 'none';
             e.target.parentNode.insertBefore(input, e.target);
             input.focus();
@@ -741,9 +744,9 @@ if (!isset($_SESSION['user_id'])) {
                     }
                 }
                 
-                // Remove input and show button again
+                // Remove input and show span again
                 this.remove();
-                e.target.style.display = 'inline-block';
+                e.target.style.display = 'inline';
             });
             
             // Handle Enter key
@@ -757,7 +760,7 @@ if (!isset($_SESSION['user_id'])) {
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape') {
                     this.remove();
-                    e.target.style.display = 'inline-block';
+                    e.target.style.display = 'inline';
                 }
             });
         }
