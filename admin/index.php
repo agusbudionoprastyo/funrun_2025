@@ -337,30 +337,6 @@ if (!isset($_SESSION['user_id'])) {
 
 <!-- Container for the Table -->
 <div class="table-container">
-    <!-- Filter and Search Container -->
-    <div class="filter-container">
-        <div class="flex justify-between items-center">
-            <div></div>
-            <div class="flex items-center space-x-6">
-                <div class="status-counter">
-                    <span>Pending:</span>
-                    <span id="pending-count" class="text-yellow-600 bg-yellow-100">0</span>
-                </div>
-                <div class="status-counter">
-                    <span>Paid:</span>
-                    <span id="paid-count" class="text-green-600 bg-green-100">0</span>
-                </div>
-                <div class="status-counter">
-                    <span>Verified:</span>
-                    <span id="verified-count" class="text-pink-600 bg-pink-100">0</span>
-                </div>
-                <div class="status-counter">
-                    <span>Total:</span>
-                    <span id="total-count" class="text-blue-600 bg-blue-100">0</span>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <table id="pagination-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
         <thead class="bg-blue-100">
@@ -394,6 +370,30 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Data rows will be inserted here dynamically -->
         </tbody>
     </table>
+        <!-- Filter and Search Container -->
+        <div class="filter-container">
+        <div class="flex justify-between items-center">
+            <div></div>
+            <div class="flex items-center space-x-6">
+                <div class="status-counter">
+                    <span>Pending:</span>
+                    <span id="pending-count" class="text-yellow-600 bg-yellow-100">0</span>
+                </div>
+                <div class="status-counter">
+                    <span>Paid:</span>
+                    <span id="paid-count" class="text-green-600 bg-green-100">0</span>
+                </div>
+                <div class="status-counter">
+                    <span>Verified:</span>
+                    <span id="verified-count" class="text-pink-600 bg-pink-100">0</span>
+                </div>
+                <div class="status-counter">
+                    <span>Total:</span>
+                    <span id="total-count" class="text-blue-600 bg-blue-100">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
