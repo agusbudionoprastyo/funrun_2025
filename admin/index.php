@@ -42,6 +42,8 @@ if (!isset($_SESSION['user_id'])) {
             padding: 24px 24px;
             margin: 0;
             box-sizing: border-box;
+            background-color: #ffffff;
+            border-radius: 8px;
         }
         
         /* Table styling for full width */
@@ -50,6 +52,9 @@ if (!isset($_SESSION['user_id'])) {
             min-width: 100%;
             table-layout: auto;
             border-collapse: collapse;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-radius: 8px;
+            overflow: hidden;
         }
         
         /* Ensure table cells have proper spacing */
@@ -57,6 +62,12 @@ if (!isset($_SESSION['user_id'])) {
         #pagination-table td {
             padding: 12px 16px;
             vertical-align: top;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        /* Remove border from last row */
+        #pagination-table tbody tr:last-child td {
+            border-bottom: none;
         }
         
         /* Make sure the table header spans full width */
@@ -64,6 +75,27 @@ if (!isset($_SESSION['user_id'])) {
             background-color: #dbeafe;
             font-weight: 600;
             color: #1e3a8a;
+            border-bottom: 2px solid #3b82f6;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        /* Zebra striping for table rows */
+        #pagination-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        
+        #pagination-table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        /* Hover effect for table rows */
+        #pagination-table tbody tr:hover {
+            background-color: #f3f4f6 !important;
+            transition: background-color 0.2s ease;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .editable-jersey, .editable-status {
