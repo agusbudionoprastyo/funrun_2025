@@ -149,7 +149,7 @@ function copyToClipboard() {
   const lcouple = document.getElementById('lcouple');
   const xlcouple = document.getElementById('xlcouple');
   const xxlcouple = document.getElementById('xxlcouple');
-  const xxxlcouple = document.getElementById('3xlcouple'); // Updated ID
+  const xxxlcouple = document.getElementById('xxxlcouple');
 
   const coupleDarkblue = document.getElementById('coupleDarkblue');
   const couplePurple = document.getElementById('couplePurple');
@@ -160,76 +160,68 @@ function copyToClipboard() {
   const signupContainer = document.getElementById("signup-container");
 
   // Hide the Couple Section initially and remove required attributes
-  if (coupleContainer && coupleContainer.classList.contains('hidden')) {
-    if (coupleName) coupleName.removeAttribute('required');
-    if (coupleMantan) coupleMantan.removeAttribute('required');
-    if (scouple) scouple.removeAttribute('required');
-    if (mcouple) mcouple.removeAttribute('required');
-    if (lcouple) lcouple.removeAttribute('required');
-    if (xlcouple) xlcouple.removeAttribute('required');
-    if (xxlcouple) xxlcouple.removeAttribute('required');
-    if (xxxlcouple) xxxlcouple.removeAttribute('required');
-    if (coupleDarkblue) coupleDarkblue.removeAttribute('required');
-    if (couplePurple) couplePurple.removeAttribute('required');
+  if (coupleContainer.classList.contains('hidden')) {
+    coupleName.removeAttribute('required');
+    coupleMantan.removeAttribute('required');
+    scouple.removeAttribute('required');
+    mcouple.removeAttribute('required');
+    lcouple.removeAttribute('required');
+    xlcouple.removeAttribute('required');
+    xxlcouple.removeAttribute('required');
+    xxxlcouple.removeAttribute('required');
+    coupleDarkblue.removeAttribute('required');
+    couplePurple.removeAttribute('required');
   }
 
   // Show Couple Section and add required attributes when "Couple" radio is checked
-  if (coupleRadio) {
-    coupleRadio.addEventListener('change', function () {
-      if (this.checked && coupleContainer) {
-        coupleContainer.classList.remove('hidden');
-        if (coupleName) coupleName.setAttribute('required', 'true');
-        if (coupleMantan) coupleMantan.setAttribute('required', 'true');
-        if (scouple) scouple.setAttribute('required', 'true');
-        if (mcouple) mcouple.setAttribute('required', 'true');
-        if (lcouple) lcouple.setAttribute('required', 'true');
-        if (xlcouple) xlcouple.setAttribute('required', 'true');
-        if (xxlcouple) xxlcouple.setAttribute('required', 'true');
-        if (xxxlcouple) xxxlcouple.setAttribute('required', 'true');
-        if (coupleDarkblue) coupleDarkblue.setAttribute('required', 'true');
-        if (couplePurple) couplePurple.setAttribute('required', 'true');
-      }
-    });
-  }
+  coupleRadio.addEventListener('change', function () {
+    if (this.checked) {
+      coupleContainer.classList.remove('hidden');
+      coupleName.setAttribute('required', 'true');
+      coupleMantan.setAttribute('required', 'true');
+      scouple.setAttribute('required', 'true');
+      mcouple.setAttribute('required', 'true');
+      lcouple.setAttribute('required', 'true');
+      xlcouple.setAttribute('required', 'true');
+      xxlcouple.setAttribute('required', 'true');
+      xxxlcouple.setAttribute('required', 'true');
+      coupleDarkblue.setAttribute('required', 'true');
+      couplePurple.setAttribute('required', 'true');
+    }
+  });
 
   // Hide Couple Section and remove required attributes when "Single" radio is checked
-  if (singleRadio) {
-    singleRadio.addEventListener('change', function () {
-      if (this.checked && coupleContainer) {
-        coupleContainer.classList.add('hidden');
-        if (coupleName) coupleName.removeAttribute('required');
-        if (coupleMantan) coupleMantan.removeAttribute('required');
-        if (scouple) scouple.removeAttribute('required');
-        if (mcouple) mcouple.removeAttribute('required');
-        if (lcouple) lcouple.removeAttribute('required');
-        if (xlcouple) xlcouple.removeAttribute('required');
-        if (xxlcouple) xxlcouple.removeAttribute('required');
-        if (xxxlcouple) xxxlcouple.removeAttribute('required');
-        if (coupleDarkblue) coupleDarkblue.removeAttribute('required');
-        if (couplePurple) couplePurple.removeAttribute('required');
-      }
-    });
-  }
+  singleRadio.addEventListener('change', function () {
+    if (this.checked) {
+      coupleContainer.classList.add('hidden');
+      coupleName.removeAttribute('required');
+      coupleMantan.removeAttribute('required');
+      scouple.removeAttribute('required');
+      mcouple.removeAttribute('required');
+      lcouple.removeAttribute('required');
+      xlcouple.removeAttribute('required');
+      xxlcouple.removeAttribute('required');
+      xxxlcouple.removeAttribute('required');
+      coupleDarkblue.removeAttribute('required');
+      couplePurple.removeAttribute('required');
+    }
+  });
 
-  if (registerBtn) {
-    registerBtn.addEventListener("click", function() {
-        if (box) box.classList.add("expanded");
-        registerBtn.classList.add("hidden");
-        setTimeout(function() {
-          if (signupContainer) signupContainer.classList.remove("hidden");
-        }, 200);
-    });
-  }
+  registerBtn.addEventListener("click", function() {
+      box.classList.add("expanded");
+      registerBtn.classList.add("hidden");
+      setTimeout(function() {
+        signupContainer.classList.remove("hidden");
+      }, 200);
+  });
 
-  if (closeBtn) {
-    closeBtn.addEventListener("click", function() {
-        if (box) box.classList.remove("expanded");
-        if (registerBtn) registerBtn.classList.remove("hidden");
-        setTimeout(function() {
-          if (signupContainer) signupContainer.classList.add("hidden");
-        }, 200);
-    });
-  }
+  closeBtn.addEventListener("click", function() {
+      box.classList.remove("expanded");
+      registerBtn.classList.remove("hidden");
+      setTimeout(function() {
+        signupContainer.classList.add("hidden");
+      }, 200);
+  });
 
 //   function formatPrice(price) {
 //       if (price >= 1000000) {
@@ -387,158 +379,122 @@ function copyToClipboard() {
 
     const transactionIdInput = document.getElementById('transactionid');
     const generatedTransactionId = generateTransactionId();
-    if (transactionIdInput) {
-        transactionIdInput.value = generatedTransactionId;
+    transactionIdInput.value = generatedTransactionId;
+
+    registrationForm.addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    const formData = new FormData();
+
+    const registrationType = document.querySelector('input[name="registrationType"]:checked').value;
+    const username = document.getElementById('name').value;
+    const mantan = document.getElementById('mantan').value;
+    const phone = document.getElementById('phone').value;
+    const email = document.getElementById('email').value;
+    const size = document.querySelector('input[name="size"]:checked').value;
+    const jerseyColor = document.querySelector('input[name="jerseyColor"]:checked').value;
+
+    formData.append('transactionid', generatedTransactionId);
+    formData.append('registrationType', registrationType);
+
+    formData.append('username', username);
+    formData.append('mantan', mantan);
+    formData.append('phone', phone);
+    formData.append('email', email);
+    formData.append('size', size);
+    formData.append('jerseyColor', jerseyColor);
+
+    if (registrationType === 'couple') {
+        const coupleUsername = document.getElementById('coupleName').value;
+        const coupleMantan = document.getElementById('coupleMantan').value;
+        const coupleSize = document.querySelector('input[name="coupleSize"]:checked').value;
+        const coupleJerseyColor = document.querySelector('input[name="coupleJerseyColor"]:checked').value;
+        formData.append('coupleUsername', coupleUsername);
+        formData.append('coupleMantan', coupleMantan);
+        formData.append('coupleSize', coupleSize);
+        formData.append('coupleJerseyColor', coupleJerseyColor);
     }
 
-    const registrationForm = document.getElementById('registrationForm');
-    console.log('Registration form found:', registrationForm);
-    if (registrationForm) {
-        registrationForm.addEventListener('submit', function(event) {
-        console.log('Form submitted!');
-        event.preventDefault(); 
+    fetch('register.php', {
+        method: 'POST',
+        body: formData 
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); 
+        if (data.status === 'success') {
+            localStorage.setItem('registrationSuccess', 'true');
+            localStorage.setItem('transactionid', generatedTransactionId);
 
-        const formData = new FormData();
+            box.classList.remove("expanded");
+            registerBtn.classList.remove("hidden");
+            setTimeout(function() {
+                signupContainer.classList.add("hidden");
+            }, 200);
+            
+            const transactionIdFromLocalStorage = localStorage.getItem('transactionid');
 
-        const registrationTypeElement = document.querySelector('input[name="registrationType"]:checked');
-        const usernameElement = document.getElementById('name');
-        const mantanElement = document.getElementById('mantan');
-        const phoneElement = document.getElementById('phone');
-        const emailElement = document.getElementById('email');
-        const sizeElement = document.querySelector('input[name="size"]:checked');
-        const jerseyColorElement = document.querySelector('input[name="jerseyColor"]:checked');
+            const successModal = document.getElementById('successModal');
+            successModal.classList.remove('hidden');
 
-        if (!registrationTypeElement || !usernameElement || !mantanElement || !phoneElement || !emailElement || !sizeElement || !jerseyColorElement) {
-            alert('Mohon lengkapi semua field yang diperlukan');
-            return;
-        }
+            // const transactionIdDisplay = document.getElementById('transaction-id');
+            fetch(`get_transaction.php?transaction_id=${transactionIdFromLocalStorage}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Transaction Details:', data);
 
-        const registrationType = registrationTypeElement.value;
-        const username = usernameElement.value;
-        const mantan = mantanElement.value;
-        const phone = phoneElement.value;
-        const email = emailElement.value;
-        const size = sizeElement.value;
-        const jerseyColor = jerseyColorElement.value;
+                const transactionDetailsContainer = document.getElementById('transaction-details-container');
+                if (data.error) {
+                    transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">${data.error}</p>`;
+                } else {
+                    const totalAmount = parseFloat(data[0].total_amount); 
+                    const transactionDate = data[0].transaction_date;
 
-        formData.append('transactionid', generatedTransactionId);
-        formData.append('registrationType', registrationType);
+                    const formattedDate = new Date(transactionDate.replace(' ', 'T')).toLocaleString();  
 
-        formData.append('username', username);
-        formData.append('mantan', mantan);
-        formData.append('phone', phone);
-        formData.append('email', email);
-        formData.append('size', size);
-        formData.append('jerseyColor', jerseyColor);
+                    const formattedAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
+                        maximumFractionDigits: 0 
+                    }).format(totalAmount);
 
-        if (registrationType === 'couple') {
-            const coupleUsernameElement = document.getElementById('coupleName');
-            const coupleMantanElement = document.getElementById('coupleMantan');
-            const coupleSizeElement = document.querySelector('input[name="coupleSize"]:checked');
-            const coupleJerseyColorElement = document.querySelector('input[name="coupleJerseyColor"]:checked');
-
-            if (!coupleUsernameElement || !coupleMantanElement || !coupleSizeElement || !coupleJerseyColorElement) {
-                alert('Mohon lengkapi semua field untuk pasangan');
-                return;
-            }
-
-            const coupleUsername = coupleUsernameElement.value;
-            const coupleMantan = coupleMantanElement.value;
-            const coupleSize = coupleSizeElement.value;
-            const coupleJerseyColor = coupleJerseyColorElement.value;
-            formData.append('coupleUsername', coupleUsername);
-            formData.append('coupleMantan', coupleMantan);
-            formData.append('coupleSize', coupleSize);
-            formData.append('coupleJerseyColor', coupleJerseyColor);
-        }
-
-        fetch('register.php', {
-            method: 'POST',
-            body: formData 
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data); 
-            if (data.status === 'success') {
-                localStorage.setItem('registrationSuccess', 'true');
-                localStorage.setItem('transactionid', generatedTransactionId);
-
-                if (box) box.classList.remove("expanded");
-                if (registerBtn) registerBtn.classList.remove("hidden");
-                setTimeout(function() {
-                    if (signupContainer) signupContainer.classList.add("hidden");
-                }, 200);
-                
-                const transactionIdFromLocalStorage = localStorage.getItem('transactionid');
-
-                const successModal = document.getElementById('successModal');
-                if (successModal) successModal.classList.remove('hidden');
-
-                // const transactionIdDisplay = document.getElementById('transaction-id');
-                fetch(`get_transaction.php?transaction_id=${transactionIdFromLocalStorage}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Transaction Details:', data);
-
-                    const transactionDetailsContainer = document.getElementById('transaction-details-container');
-                    if (data.error) {
-                        if (transactionDetailsContainer) {
-                            transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">${data.error}</p>`;
-                        }
-                    } else {
-                        const totalAmount = parseFloat(data[0].total_amount); 
-                        const transactionDate = data[0].transaction_date;
-
-                        const formattedDate = new Date(transactionDate.replace(' ', 'T')).toLocaleString();  
-
-                        const formattedAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
-                            maximumFractionDigits: 0 
-                        }).format(totalAmount);
-
-                        if (transactionDetailsContainer) {
-                            transactionDetailsContainer.innerHTML = `
-                                <ul>
-                                    <li class="flex justify-between">
-                                        <span><strong>Transaction ID</strong></span>
-                                        <span class="text-rigth">${transactionIdFromLocalStorage}</span>
-                                    </li>
-                                    <li class="flex justify-between">
-                                        <span><strong>Total Amount</strong></span>
-                                        <span class="text-rigth"><strong>${formattedAmount}</strong></span>
-                                    </li>
-                                    <li class="flex justify-between">
-                                        <span><strong>Transaction Date</strong></span>
-                                        <span class="text-right">${formattedDate}</span>
-                                    </li>
-                                </ul>
-                            `;
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching transaction details:', error);
-                    const transactionDetailsContainer = document.getElementById('transaction-details-container');
-                    if (transactionDetailsContainer) {
-                        transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">Terjadi kesalahan saat mengambil detail transaksi.</p>`;
-                    }
-                });
-
-                registrationForm.reset();
-            } else {
-                    alert('Terjadi kesalahan, coba lagi.');
+                    transactionDetailsContainer.innerHTML = `
+                        <ul>
+                            <li class="flex justify-between">
+                                <span><strong>Transaction ID</strong></span>
+                                <span class="text-rigth">${transactionIdFromLocalStorage}</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Total Amount</strong></span>
+                                <span class="text-rigth"><strong>${formattedAmount}</strong></span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Transaction Date</strong></span>
+                                <span class="text-right">${formattedDate}</span>
+                            </li>
+                        </ul>
+                    `;
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengirim data.');
+                console.error('Error fetching transaction details:', error);
+                const transactionDetailsContainer = document.getElementById('transaction-details-container');
+                transactionDetailsContainer.innerHTML = `<p class="text-center text-red-500">Terjadi kesalahan saat mengambil detail transaksi.</p>`;
             });
+
+            registrationForm.reset();
+        } else {
+                alert('Terjadi kesalahan, coba lagi.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat mengirim data.');
         });
-    }
+    });
     //===========================================================
 
     window.addEventListener('load', function() {
@@ -596,154 +552,80 @@ function copyToClipboard() {
           }
         });
 
-        const uploadButton = document.getElementById("uploadButton");
-        if (uploadButton) {
-            uploadButton.addEventListener("click", function() {
-            const fileInput = document.getElementById("paymentproof");
-            const file = fileInput ? fileInput.files[0] : null;
+        document.getElementById("uploadButton").addEventListener("click", function() {
+        const fileInput = document.getElementById("paymentproof");
+        const file = fileInput.files[0];
 
-            const transactionId = localStorage.getItem('transactionid');
-            if (!transactionId) {
-                alert("Transaction ID tidak ditemukan di localStorage.");
-                return;
-            }
+        const transactionId = localStorage.getItem('transactionid');
+        if (!transactionId) {
+            alert("Transaction ID tidak ditemukan di localStorage.");
+            return;
+        }
 
-            if (!file) {
-                alert("Silakan pilih file untuk diupload.");
-                return;
-            }
+        if (!file) {
+            alert("Silakan pilih file untuk diupload.");
+            return;
+        }
 
-            const formData = new FormData();
-            formData.append("paymentproof", file);
+        const formData = new FormData();
+        formData.append("paymentproof", file);
 
-            fetch(`prooft_payment.php?transaction_id=${transactionId}`, {
-                method: "POST",
-                body: formData,
-            })
-            .then(response => {
-                console.log('Response:', response);
-                return response.text();
-            })
-            .then(data => {
-                try {
-                    const jsonData = JSON.parse(data);
-                    if (jsonData.success) {
-                        const successModal = document.getElementById('successModal');
-                        if (successModal) successModal.classList.add('hidden');
+        fetch(`prooft_payment.php?transaction_id=${transactionId}`, {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => {
+            console.log('Response:', response);
+            return response.text();
+        })
+        .then(data => {
+            try {
+                const jsonData = JSON.parse(data);
+                if (jsonData.success) {
+                    const successModal = document.getElementById('successModal');
+                    successModal.classList.add('hidden');
 
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Thank you..',
-                            text: 'Bukti pembayaran telah kami terima, silakan menunggu konfirmasi',
-                            timer: 60000,
-                            timerProgressBar: true,
-                            showConfirmButton: false,
-                            customClass: {
-                                popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
-                                title: 'text-lg font-semibold',
-                                content: 'text-sm text-gray-500',
-                            },
-                            willClose: () => {
-                                localStorage.removeItem('transactionid');
-                                localStorage.removeItem('registrationSuccess');
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: jsonData.error || "Terjadi kesalahan saat mengupload file.",
-                            customClass: {
-                                popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
-                                title: 'text-lg font-semibold',
-                                content: 'text-sm text-gray-500',
-                            }
-                        });
-                    }
-                } catch (error) {
-                    console.error("Error parsing JSON:", error);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thank you..',
+                        text: 'Bukti pembayaran telah kami terima, silakan menunggu konfirmasi',
+                        timer: 60000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        customClass: {
+                            popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
+                            title: 'text-lg font-semibold',
+                            content: 'text-sm text-gray-500',
+                        },
+                        willClose: () => {
+                            localStorage.removeItem('transactionid');
+                            localStorage.removeItem('registrationSuccess');
+                        }
+                    });
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: "Terjadi kesalahan saat mengupload file.",
+                        text: jsonData.error || "Terjadi kesalahan saat mengupload file.",
                         customClass: {
-                                popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
-                                title: 'text-lg font-semibold',
-                                content: 'text-sm text-gray-500',
-                            }
-                        });
-                    }
-                });
+                            popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
+                            title: 'text-lg font-semibold',
+                            content: 'text-sm text-gray-500',
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: "Terjadi kesalahan saat mengupload file.",
+                    customClass: {
+                            popup: 'rounded-[24px] text-left text-gray-700 p-6 shadow-lg',
+                            title: 'text-lg font-semibold',
+                            content: 'text-sm text-gray-500',
+                        }
+                    });
+                }
             });
         });
-    }
-
-    // Harga dasar
-    const BASE_PRICE_SINGLE = 100000;
-    const BASE_PRICE_COUPLE = 200000;
-    const EXTRA_SIZE = ['3xl', '4xl', '5xl'];
-    const EXTRA_PRICE = 10000;
-
-    // Helper untuk cek apakah size termasuk extra
-    function isExtraSize(size) {
-        return EXTRA_SIZE.includes(size.toLowerCase());
-    }
-
-    // Update harga di form utama
-    function updateMainFormPrice() {
-        let price = BASE_PRICE_SINGLE;
-        let size = document.querySelector('input[name="size"]:checked');
-        if (coupleRadio && coupleRadio.checked) {
-            price = BASE_PRICE_COUPLE;
-            let size1 = document.querySelector('input[name="size"]:checked');
-            let size2 = document.querySelector('input[name="coupleSize"]:checked');
-            let extra = 0;
-            if (size1 && isExtraSize(size1.value)) extra += EXTRA_PRICE;
-            if (size2 && isExtraSize(size2.value)) extra += EXTRA_PRICE;
-            price += extra;
-        } else {
-            if (size && isExtraSize(size.value)) price += EXTRA_PRICE;
-        }
-        // Update tampilan harga
-        let priceDisplay = document.querySelector('.bg-gray-50 .font-bold');
-        if (priceDisplay) {
-            priceDisplay.textContent = 'Rp ' + price.toLocaleString('id-ID');
-        }
-    }
-
-    // Event listener untuk update harga saat size berubah
-    document.querySelectorAll('input[name="size"]').forEach(el => {
-        if (el) el.addEventListener('change', updateMainFormPrice);
-    });
-    document.querySelectorAll('input[name="coupleSize"]').forEach(el => {
-        if (el) el.addEventListener('change', updateMainFormPrice);
-    });
-    if (coupleRadio) coupleRadio.addEventListener('change', updateMainFormPrice);
-    if (singleRadio) singleRadio.addEventListener('change', updateMainFormPrice);
-    // Panggil sekali saat load
-    updateMainFormPrice();
-
-    // Update harga di modal order jersey
-    function updateOrderModalPrice() {
-        let price = BASE_PRICE_SINGLE;
-        let size = document.querySelector('input[name="orderJerseySize"]:checked');
-        if (size && isExtraSize(size.value)) price += EXTRA_PRICE;
-        let priceDisplay = document.querySelector('#jerseyOrderModal .font-bold');
-        if (priceDisplay) {
-            priceDisplay.textContent = 'Rp ' + price.toLocaleString('id-ID');
-        }
-    }
-    
-    // Event listener untuk order modal price
-    document.querySelectorAll('input[name="orderJerseySize"]').forEach(el => {
-        if (el) el.addEventListener('change', updateOrderModalPrice);
-    });
-    
-    // Panggil sekali saat modal dibuka
-    const jerseyOrderModal = document.getElementById('jerseyOrderModal');
-    if (jerseyOrderModal) {
-        jerseyOrderModal.addEventListener('click', function(e) {
-            if (e.target.id === 'jerseyOrderModal') updateOrderModalPrice();
-        });
-    }
-});
