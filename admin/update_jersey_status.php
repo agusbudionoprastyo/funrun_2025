@@ -28,7 +28,7 @@ if (!$transaction_id || !$field || $value === null) {
 }
 
 // Validate field
-$allowed_fields = ['status', 'jersey_color_1', 'jersey_color_2'];
+$allowed_fields = ['status', 'jersey_color_1', 'jersey_color_2', 'phone_1'];
 if (!in_array($field, $allowed_fields)) {
     echo json_encode(['success' => false, 'message' => 'Invalid field']);
     exit();
@@ -40,6 +40,29 @@ try {
         $sql = "UPDATE transactions SET status = ? WHERE transaction_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ss", $value, $transaction_id);
+    } elseif ($field === 'phone_1') {
+        // Update phone number for the first user
+        $get_user_sql = "SELECT u.id FROM users u 
+                        WHERE u.transaction_id = ? 
+                        ORDER BY u.name 
+                        LIMIT 1";
+        $get_user_stmt = $conn->prepare($get_user_sql);
+        $get_user_stmt->bind_param("s", $transaction_id);
+        $get_user_stmt->execute();
+        $user_result = $get_user_stmt->get_result();
+        
+        if ($user_result->num_rows > 0) {
+            $user_row = $user_result->fetch_assoc();
+            $user_id = $user_row['id'];
+            
+            // Update phone number
+            $sql = "UPDATE users SET phone = ? WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("si", $value, $user_id);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'User not found for transaction: ' . $transaction_id]);
+            exit();
+        }
     } else {
         // Update jersey color for specific user
         $user_rank = ($field === 'jersey_color_1') ? 1 : 2;

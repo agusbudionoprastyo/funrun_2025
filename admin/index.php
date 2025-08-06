@@ -132,6 +132,29 @@ if (!isset($_SESSION['user_id'])) {
             margin: 2px;
         }
         
+        /* Contact container styling */
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .edit-phone-btn {
+            transition: all 0.2s ease;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+        }
+        
+        .edit-phone-btn:hover {
+            transform: scale(1.05);
+        }
+        
         /* Ensure full width for body and html */
         html, body {
             width: 100vw;
@@ -174,7 +197,7 @@ if (!isset($_SESSION['user_id'])) {
                     Jersey Color <span class="text-xs text-gray-500">(Click to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
-                    Contact
+                    Contact <span class="text-xs text-gray-500">(Phone editable)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Transaction Date
@@ -270,9 +293,20 @@ if (!isset($_SESSION['user_id'])) {
                             ${item.jersey_color_2 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_2" data-value="${item.jersey_color_2}" title="Click to edit jersey color">${item.jersey_color_2.toUpperCase()}</div>` : ''}
                         </div>
                     </th>
-                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        <div class="font-normal text-gray-500">${item.phone_1}</div>
-                        <div class="font-normal text-gray-500">${item.email_1}</div>
+                    <th class="px-6 py-4 font-medium text-gray-900">
+                        <div class="contact-container">
+                            <div class="contact-item">
+                                <span class="font-normal text-gray-500">${item.phone_1}</span>
+                                <button class="edit-phone-btn ml-2 text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded" 
+                                    data-transaction-id="${item.transaction_id}" 
+                                    data-field="phone_1" 
+                                    data-value="${item.phone_1}" 
+                                    title="Edit phone number">
+                                    Edit
+                                </button>
+                            </div>
+                            <div class="font-normal text-gray-500">${item.email_1}</div>
+                        </div>
                     </th>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">${formattedAmount}</td>
@@ -639,6 +673,92 @@ if (!isset($_SESSION['user_id'])) {
                     this.remove();
                     e.target.style.display = 'inline';
                 }, 100);
+            });
+        }
+        
+        // Handle phone number editing
+        if (e.target.classList.contains('edit-phone-btn')) {
+            const currentValue = e.target.getAttribute('data-value');
+            const transactionId = e.target.getAttribute('data-transaction-id');
+            const field = e.target.getAttribute('data-field');
+            
+            // Create input field for phone number
+            const input = document.createElement('input');
+            input.type = 'tel';
+            input.value = currentValue;
+            input.className = 'editable-dropdown';
+            input.placeholder = 'Enter phone number';
+            
+            // Replace the button with input
+            e.target.style.display = 'none';
+            e.target.parentNode.insertBefore(input, e.target);
+            input.focus();
+            input.select();
+            
+            // Handle input change
+            input.addEventListener('blur', async function() {
+                const newValue = this.value.trim();
+                
+                if (newValue && newValue !== currentValue) {
+                    try {
+                        const response = await fetch('update_jersey_status.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                transaction_id: transactionId,
+                                field: field,
+                                value: newValue
+                            }),
+                        });
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                            // Update the phone number display
+                            const phoneSpan = e.target.previousElementSibling;
+                            phoneSpan.textContent = newValue;
+                            e.target.setAttribute('data-value', newValue);
+                            
+                            iziToast.success({
+                                title: 'Success',
+                                message: 'Phone number updated successfully!',
+                                position: 'topRight',
+                            });
+                        } else {
+                            iziToast.error({
+                                title: 'Error',
+                                message: result.message || 'Failed to update phone number',
+                                position: 'topRight',
+                            });
+                        }
+                    } catch (error) {
+                        iziToast.error({
+                            title: 'Error',
+                            message: 'Failed to update phone number',
+                            position: 'topRight',
+                        });
+                    }
+                }
+                
+                // Remove input and show button again
+                this.remove();
+                e.target.style.display = 'inline-block';
+            });
+            
+            // Handle Enter key
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.blur();
+                }
+            });
+            
+            // Handle Escape key
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    this.remove();
+                    e.target.style.display = 'inline-block';
+                }
             });
         }
     });
