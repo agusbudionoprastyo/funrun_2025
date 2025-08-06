@@ -731,9 +731,12 @@ function copyToClipboard() {
             priceDisplay.textContent = 'Rp ' + price.toLocaleString('id-ID');
         }
     }
+    
+    // Event listener untuk order modal price
     document.querySelectorAll('input[name="orderJerseySize"]').forEach(el => {
         if (el) el.addEventListener('change', updateOrderModalPrice);
     });
+    
     // Panggil sekali saat modal dibuka
     const jerseyOrderModal = document.getElementById('jerseyOrderModal');
     if (jerseyOrderModal) {
@@ -741,3 +744,4 @@ function copyToClipboard() {
             if (e.target.id === 'jerseyOrderModal') updateOrderModalPrice();
         });
     }
+});
