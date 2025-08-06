@@ -340,17 +340,7 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Filter and Search Container -->
     <div class="filter-container">
         <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <div class="flex items-center space-x-2">
-                    <label for="status-filter" class="text-sm font-medium text-gray-700">Filter Status:</label>
-                    <select id="status-filter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                        <option value="">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="paid">Paid</option>
-                        <option value="verified">Verified</option>
-                    </select>
-                </div>
-            </div>
+            <div></div>
             <div class="flex items-center space-x-6">
                 <div class="status-counter">
                     <span>Pending:</span>
@@ -701,35 +691,26 @@ if (!isset($_SESSION['user_id'])) {
     // Store original data for filtering
     let originalData = [];
     
-    // Handle status filter
-    document.getElementById('status-filter').addEventListener('change', function() {
-        const selectedStatus = this.value;
-        filterTableByStatus(selectedStatus);
-    });
-    
     // Function to update status counts (from all data, not just visible rows)
     function updateStatusCounts() {
-        const selectedStatus = document.getElementById('status-filter').value;
         let pendingCount = 0;
         let paidCount = 0;
         let verifiedCount = 0;
         let totalCount = 0;
 
-        // Count from all originalData, but apply filter if needed
+        // Count from all originalData
         originalData.forEach(item => {
-            if (selectedStatus === '' || item.status === selectedStatus) {
-                totalCount++;
-                switch(item.status) {
-                    case 'pending':
-                        pendingCount++;
-                        break;
-                    case 'paid':
-                        paidCount++;
-                        break;
-                    case 'verified':
-                        verifiedCount++;
-                        break;
-                }
+            totalCount++;
+            switch(item.status) {
+                case 'pending':
+                    pendingCount++;
+                    break;
+                case 'paid':
+                    paidCount++;
+                    break;
+                case 'verified':
+                    verifiedCount++;
+                    break;
             }
         });
 
