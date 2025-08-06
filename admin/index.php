@@ -34,6 +34,53 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.css" />
     <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
 
+    <style>
+        .editable-jersey, .editable-status {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .editable-jersey:hover, .editable-status:hover {
+            background-color: #f3f4f6 !important;
+            transform: scale(1.05);
+        }
+        
+        .editable-jersey:active, .editable-status:active {
+            transform: scale(0.95);
+        }
+        
+        /* Dropdown styling */
+        .editable-dropdown {
+            border: 2px solid #3b82f6;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.875rem;
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            min-width: 100px;
+        }
+        
+        .editable-dropdown:focus {
+            outline: none;
+            border-color: #1d4ed8;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Ensure status badges maintain their styling */
+        .editable-status.bg-green-100,
+        .editable-status.bg-yellow-100,
+        .editable-status.bg-pink-100,
+        .editable-status.bg-gray-100 {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+
 </head>
 
 <body class="bg-gray-100">
@@ -50,7 +97,7 @@ if (!isset($_SESSION['user_id'])) {
                     Size Jersey
                 </th>
                 <th class="px-6 py-3 font-medium text-center text-gray-900">
-                    Jersey Color
+                    Jersey Color <span class="text-xs text-gray-500">(Click to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Contact
@@ -62,7 +109,7 @@ if (!isset($_SESSION['user_id'])) {
                     Amount
                 </th>
                 <th class="px-6 py-3 font-medium text-center text-gray-900">
-                    Payment Status
+                    Payment Status <span class="text-xs text-gray-500">(Click to edit)</span>
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                 </th>
@@ -144,8 +191,8 @@ if (!isset($_SESSION['user_id'])) {
                         ${item.size_2 ? `<div class="font-normal text-gray-500 uppercase">${item.size_2}</div>` : ''}
                     </th>
                     <th class="px-6 py-4 font-medium text-center text-gray-900 whitespace-nowrap">
-                        ${item.jersey_color_1 ? `<div class="font-normal text-gray-500 uppercase">${item.jersey_color_1}</div>` : ''}
-                        ${item.jersey_color_2 ? `<div class="font-normal text-gray-500 uppercase">${item.jersey_color_2}</div>` : ''}
+                        ${item.jersey_color_1 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_1" data-value="${item.jersey_color_1}" title="Click to edit jersey color">${item.jersey_color_1.toUpperCase()}</div>` : ''}
+                        ${item.jersey_color_2 ? `<div class="editable-jersey" data-transaction-id="${item.transaction_id}" data-field="jersey_color_2" data-value="${item.jersey_color_2}" title="Click to edit jersey color">${item.jersey_color_2.toUpperCase()}</div>` : ''}
                     </th>
                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                         <div class="font-normal text-gray-500">${item.phone_1}</div>
@@ -154,7 +201,7 @@ if (!isset($_SESSION['user_id'])) {
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="text-center px-6 py-4">
-                        <span class="${badge_class}">
+                        <span class="editable-status ${badge_class}" data-transaction-id="${item.transaction_id}" data-field="status" data-value="${item.status}" title="Click to edit payment status">
                             ${item.status}
                         </span>
                     </td>
@@ -332,6 +379,193 @@ if (!isset($_SESSION['user_id'])) {
 
     // Call fetchData to populate the table
     fetchData();
+
+    // Add event listeners for inline editing
+    document.addEventListener('click', function(e) {
+        // Handle jersey color editing
+        if (e.target.classList.contains('editable-jersey')) {
+            const currentValue = e.target.getAttribute('data-value');
+            const transactionId = e.target.getAttribute('data-transaction-id');
+            const field = e.target.getAttribute('data-field');
+            
+            // Create dropdown for jersey colors
+            const colors = ['darkblue', 'purple', 'red', 'green', 'yellow', 'orange', 'pink', 'black', 'white'];
+            const dropdown = document.createElement('select');
+            dropdown.className = 'editable-dropdown';
+            
+            colors.forEach(color => {
+                const option = document.createElement('option');
+                option.value = color;
+                option.textContent = color.toUpperCase();
+                if (color === currentValue) {
+                    option.selected = true;
+                }
+                dropdown.appendChild(option);
+            });
+            
+            // Replace the div with dropdown
+            e.target.style.display = 'none';
+            e.target.parentNode.insertBefore(dropdown, e.target);
+            dropdown.focus();
+            
+            // Handle dropdown change
+            dropdown.addEventListener('change', async function() {
+                const newValue = this.value;
+                try {
+                    const response = await fetch('update_jersey_status.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            transaction_id: transactionId,
+                            field: field,
+                            value: newValue
+                        }),
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        e.target.textContent = newValue.toUpperCase();
+                        e.target.setAttribute('data-value', newValue);
+                        iziToast.success({
+                            title: 'Success',
+                            message: 'Jersey color updated successfully!',
+                            position: 'topRight',
+                        });
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: result.message || 'Failed to update jersey color',
+                            position: 'topRight',
+                        });
+                    }
+                } catch (error) {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to update jersey color',
+                        position: 'topRight',
+                    });
+                }
+                
+                // Remove dropdown and show div again
+                this.remove();
+                e.target.style.display = 'block';
+            });
+            
+            // Handle dropdown blur (cancel edit)
+            dropdown.addEventListener('blur', function() {
+                setTimeout(() => {
+                    this.remove();
+                    e.target.style.display = 'block';
+                }, 100);
+            });
+        }
+        
+        // Handle status editing
+        if (e.target.classList.contains('editable-status')) {
+            const currentValue = e.target.getAttribute('data-value');
+            const transactionId = e.target.getAttribute('data-transaction-id');
+            const field = e.target.getAttribute('data-field');
+            
+            // Create dropdown for status
+            const statuses = ['pending', 'paid', 'verified'];
+            const dropdown = document.createElement('select');
+            dropdown.className = 'editable-dropdown';
+            
+            statuses.forEach(status => {
+                const option = document.createElement('option');
+                option.value = status;
+                option.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+                if (status === currentValue) {
+                    option.selected = true;
+                }
+                dropdown.appendChild(option);
+            });
+            
+            // Replace the span with dropdown
+            e.target.style.display = 'none';
+            e.target.parentNode.insertBefore(dropdown, e.target);
+            dropdown.focus();
+            
+            // Handle dropdown change
+            dropdown.addEventListener('change', async function() {
+                const newValue = this.value;
+                try {
+                    const response = await fetch('update_jersey_status.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            transaction_id: transactionId,
+                            field: field,
+                            value: newValue
+                        }),
+                    });
+                    
+                    const result = await response.json();
+                    if (result.success) {
+                        // Update the status text and badge class
+                        e.target.textContent = newValue;
+                        e.target.setAttribute('data-value', newValue);
+                        
+                        // Update badge class based on new status
+                        let badgeClass = '';
+                        switch (newValue) {
+                            case 'paid':
+                                badgeClass = 'bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
+                                break;
+                            case 'pending':
+                                badgeClass = 'bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
+                                break;
+                            case 'verified':
+                                badgeClass = 'bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
+                                break;
+                            default:
+                                badgeClass = 'bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full';
+                                break;
+                        }
+                        
+                        // Remove old badge classes and add new one
+                        e.target.className = e.target.className.replace(/bg-\w+-100 text-\w+-800/g, '');
+                        e.target.className = e.target.className.replace(/editable-status/, '');
+                        e.target.className = `editable-status ${badgeClass}`;
+                        
+                        iziToast.success({
+                            title: 'Success',
+                            message: 'Payment status updated successfully!',
+                            position: 'topRight',
+                        });
+                    } else {
+                        iziToast.error({
+                            title: 'Error',
+                            message: result.message || 'Failed to update payment status',
+                            position: 'topRight',
+                        });
+                    }
+                } catch (error) {
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Failed to update payment status',
+                        position: 'topRight',
+                    });
+                }
+                
+                // Remove dropdown and show span again
+                this.remove();
+                e.target.style.display = 'inline';
+            });
+            
+            // Handle dropdown blur (cancel edit)
+            dropdown.addEventListener('blur', function() {
+                setTimeout(() => {
+                    this.remove();
+                    e.target.style.display = 'inline';
+                }, 100);
+            });
+        }
+    });
 </script>
 
 </body>
