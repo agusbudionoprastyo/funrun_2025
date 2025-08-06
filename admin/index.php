@@ -240,16 +240,57 @@ if (!isset($_SESSION['user_id'])) {
             padding: 0;
         }
         
+        /* Filter styling */
+        .filter-container {
+            background-color: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .filter-container label {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .filter-container select {
+            background-color: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-container select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .filter-container select:hover {
+            border-color: #9ca3af;
+        }
+        
         /* Responsive padding for different screen sizes */
         @media (max-width: 768px) {
             .table-container {
                 padding: 16px 16px;
+            }
+            
+            .filter-container {
+                padding: 12px;
             }
         }
         
         @media (max-width: 480px) {
             .table-container {
                 padding: 12px 12px;
+            }
+            
+            .filter-container {
+                padding: 8px;
             }
         }
     </style>
@@ -260,6 +301,23 @@ if (!isset($_SESSION['user_id'])) {
 
 <!-- Container for the Table -->
 <div class="table-container">
+    <!-- Filter and Search Container -->
+    <div class="filter-container">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2">
+                    <label for="status-filter" class="text-sm font-medium text-gray-700">Filter Status:</label>
+                    <select id="status-filter" class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                        <option value="verified">Verified</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <table id="pagination-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
         <thead class="bg-blue-100">
             <tr>
@@ -338,6 +396,9 @@ if (!isset($_SESSION['user_id'])) {
         try {
             const response = await fetch('get_transactions.php');
             const data = await response.json(); // Assuming the response is in JSON format
+            
+            // Store original data for filtering
+            originalData = data;
 
             const tableBody = document.querySelector("#pagination-table tbody");
             tableBody.innerHTML = ''; // Clear existing rows
@@ -571,6 +632,38 @@ if (!isset($_SESSION['user_id'])) {
 
     // Call fetchData to populate the table
     fetchData();
+    
+    // Store original data for filtering
+    let originalData = [];
+    
+    // Handle status filter
+    document.getElementById('status-filter').addEventListener('change', function() {
+        const selectedStatus = this.value;
+        filterTableByStatus(selectedStatus);
+    });
+    
+    // Function to filter table by status
+    function filterTableByStatus(status) {
+        const tableBody = document.querySelector("#pagination-table tbody");
+        const rows = tableBody.querySelectorAll("tr");
+        
+        rows.forEach(row => {
+            const statusCell = row.querySelector('.editable-status');
+            if (statusCell) {
+                const rowStatus = statusCell.getAttribute('data-value');
+                if (status === '' || rowStatus === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+        
+        // Update DataTable if it exists
+        if (window.dataTable) {
+            window.dataTable.refresh();
+        }
+    }
 
     // Add event listeners for inline editing
     document.addEventListener('click', function(e) {
