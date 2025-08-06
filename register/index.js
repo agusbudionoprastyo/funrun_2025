@@ -350,12 +350,12 @@ function copyToClipboard() {
             
             if (selectedSize && selectedSize.value === 'xxxl') {
                 displayPrice = price + 10000;
-                priceText = `IDR ${formatPrice(displayPrice)} + Rp10.000`;
+                priceText = `IDR ${formatPrice(displayPrice)} + (10K Surcharge)`;
             }
             
             if (selectedCoupleSize && selectedCoupleSize.value === 'xxxl') {
                 displayPrice = price + 10000;
-                priceText = `IDR ${formatPrice(displayPrice)} + Rp10.000`;
+                priceText = `IDR ${formatPrice(displayPrice)} + (10K Surcharge)`;
             }
             
             priceElement.textContent = priceText;
