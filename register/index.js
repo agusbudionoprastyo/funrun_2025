@@ -174,8 +174,10 @@ function copyToClipboard() {
   const mcouple = document.getElementById('mcouple');
   const lcouple = document.getElementById('lcouple');
   const xlcouple = document.getElementById('xlcouple');
-  const xxlcouple = document.getElementById('xxlcouple');
-  const xxxlcouple = document.getElementById('xxxlcouple');
+  const x2lcouple = document.getElementById('2xlcouple');
+  const x3lcouple = document.getElementById('3xlcouple');
+  const x4lcouple = document.getElementById('4xlcouple');
+  const x5lcouple = document.getElementById('5xlcouple');
 
   const coupleDarkblue = document.getElementById('coupleDarkblue');
   const couplePurple = document.getElementById('couplePurple');
@@ -187,32 +189,36 @@ function copyToClipboard() {
 
   // Hide the Couple Section initially and remove required attributes
   if (coupleContainer.classList.contains('hidden')) {
-    coupleName.removeAttribute('required');
-    coupleMantan.removeAttribute('required');
-    scouple.removeAttribute('required');
-    mcouple.removeAttribute('required');
-    lcouple.removeAttribute('required');
-    xlcouple.removeAttribute('required');
-    xxlcouple.removeAttribute('required');
-    xxxlcouple.removeAttribute('required');
-    coupleDarkblue.removeAttribute('required');
-    couplePurple.removeAttribute('required');
+    if (coupleName) coupleName.removeAttribute('required');
+    if (coupleMantan) coupleMantan.removeAttribute('required');
+    if (scouple) scouple.removeAttribute('required');
+    if (mcouple) mcouple.removeAttribute('required');
+    if (lcouple) lcouple.removeAttribute('required');
+    if (xlcouple) xlcouple.removeAttribute('required');
+    if (x2lcouple) x2lcouple.removeAttribute('required');
+    if (x3lcouple) x3lcouple.removeAttribute('required');
+    if (x4lcouple) x4lcouple.removeAttribute('required');
+    if (x5lcouple) x5lcouple.removeAttribute('required');
+    if (coupleDarkblue) coupleDarkblue.removeAttribute('required');
+    if (couplePurple) couplePurple.removeAttribute('required');
   }
 
   // Show Couple Section and add required attributes when "Couple" radio is checked
   coupleRadio.addEventListener('change', function () {
     if (this.checked) {
       coupleContainer.classList.remove('hidden');
-      coupleName.setAttribute('required', 'true');
-      coupleMantan.setAttribute('required', 'true');
-      scouple.setAttribute('required', 'true');
-      mcouple.setAttribute('required', 'true');
-      lcouple.setAttribute('required', 'true');
-      xlcouple.setAttribute('required', 'true');
-      xxlcouple.setAttribute('required', 'true');
-      xxxlcouple.setAttribute('required', 'true');
-      coupleDarkblue.setAttribute('required', 'true');
-      couplePurple.setAttribute('required', 'true');
+      if (coupleName) coupleName.setAttribute('required', 'true');
+      if (coupleMantan) coupleMantan.setAttribute('required', 'true');
+      if (scouple) scouple.setAttribute('required', 'true');
+      if (mcouple) mcouple.setAttribute('required', 'true');
+      if (lcouple) lcouple.setAttribute('required', 'true');
+      if (xlcouple) xlcouple.setAttribute('required', 'true');
+      if (x2lcouple) x2lcouple.setAttribute('required', 'true');
+      if (x3lcouple) x3lcouple.setAttribute('required', 'true');
+      if (x4lcouple) x4lcouple.setAttribute('required', 'true');
+      if (x5lcouple) x5lcouple.setAttribute('required', 'true');
+      if (coupleDarkblue) coupleDarkblue.setAttribute('required', 'true');
+      if (couplePurple) couplePurple.setAttribute('required', 'true');
     }
   });
 
@@ -220,16 +226,18 @@ function copyToClipboard() {
   singleRadio.addEventListener('change', function () {
     if (this.checked) {
       coupleContainer.classList.add('hidden');
-      coupleName.removeAttribute('required');
-      coupleMantan.removeAttribute('required');
-      scouple.removeAttribute('required');
-      mcouple.removeAttribute('required');
-      lcouple.removeAttribute('required');
-      xlcouple.removeAttribute('required');
-      xxlcouple.removeAttribute('required');
-      xxxlcouple.removeAttribute('required');
-      coupleDarkblue.removeAttribute('required');
-      couplePurple.removeAttribute('required');
+      if (coupleName) coupleName.removeAttribute('required');
+      if (coupleMantan) coupleMantan.removeAttribute('required');
+      if (scouple) scouple.removeAttribute('required');
+      if (mcouple) mcouple.removeAttribute('required');
+      if (lcouple) lcouple.removeAttribute('required');
+      if (xlcouple) xlcouple.removeAttribute('required');
+      if (x2lcouple) x2lcouple.removeAttribute('required');
+      if (x3lcouple) x3lcouple.removeAttribute('required');
+      if (x4lcouple) x4lcouple.removeAttribute('required');
+      if (x5lcouple) x5lcouple.removeAttribute('required');
+      if (coupleDarkblue) coupleDarkblue.removeAttribute('required');
+      if (couplePurple) couplePurple.removeAttribute('required');
     }
   });
 
