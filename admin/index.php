@@ -39,7 +39,7 @@ if (!isset($_SESSION['user_id'])) {
         .table-container {
             width: 100vw;
             max-width: 100vw;
-            padding: 0 24px;
+            padding: 24px 24px;
             margin: 0;
             box-sizing: border-box;
         }
@@ -123,13 +123,13 @@ if (!isset($_SESSION['user_id'])) {
         /* Responsive padding for different screen sizes */
         @media (max-width: 768px) {
             .table-container {
-                padding: 0 16px;
+                padding: 16px 16px;
             }
         }
         
         @media (max-width: 480px) {
             .table-container {
-                padding: 0 12px;
+                padding: 12px 12px;
             }
         }
     </style>
@@ -139,7 +139,7 @@ if (!isset($_SESSION['user_id'])) {
 <body class="bg-gray-100 w-full">
 
 <!-- Container for the Table -->
-<div class="table-container py-6">
+<div class="table-container">
     <table id="pagination-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
         <thead class="bg-blue-100">
             <tr>
@@ -442,7 +442,7 @@ if (!isset($_SESSION['user_id'])) {
             const field = e.target.getAttribute('data-field');
             
             // Create dropdown for jersey colors
-            const colors = ['darkblue', 'purple', 'red', 'green', 'yellow', 'orange', 'pink', 'black', 'white'];
+            const colors = ['darkblue', 'purple'];
             const dropdown = document.createElement('select');
             dropdown.className = 'editable-dropdown';
             
