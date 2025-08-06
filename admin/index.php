@@ -60,14 +60,8 @@ if (!isset($_SESSION['user_id'])) {
         /* Ensure table cells have proper spacing */
         #pagination-table th,
         #pagination-table td {
-            padding: 12px 16px;
+            padding: 16px 16px;
             vertical-align: top;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        /* Remove border from last row */
-        #pagination-table tbody tr:last-child td {
-            border-bottom: none;
         }
         
         /* Make sure the table header spans full width */
@@ -88,6 +82,11 @@ if (!isset($_SESSION['user_id'])) {
         
         #pagination-table tbody tr:nth-child(even) {
             background-color: #f9fafb;
+        }
+        
+        /* Add subtle spacing between rows */
+        #pagination-table tbody tr {
+            margin-bottom: 2px;
         }
         
         /* Hover effect for table rows */
