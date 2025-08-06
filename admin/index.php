@@ -339,23 +339,23 @@ if (!isset($_SESSION['user_id'])) {
 <div class="table-container">
     <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2" id="table-header-bar">
         <div id="datatable-search-box"></div>
-        <div class="flex items-center space-x-6" id="status-badges-bar">
-            <div class="status-counter">
-                <span>Pending:</span>
-                <span id="pending-count" class="text-yellow-600 bg-yellow-100">0</span>
-            </div>
-            <div class="status-counter">
-                <span>Paid:</span>
-                <span id="paid-count" class="text-green-600 bg-green-100">0</span>
-            </div>
-            <div class="status-counter">
-                <span>Verified:</span>
-                <span id="verified-count" class="text-pink-600 bg-pink-100">0</span>
-            </div>
-            <div class="status-counter">
-                <span>Total:</span>
-                <span id="total-count" class="text-blue-600 bg-blue-100">0</span>
-            </div>
+    </div>
+    <div class="flex items-center space-x-6" id="status-badges-bar">
+        <div class="status-counter">
+            <span>Pending:</span>
+            <span id="pending-count" class="text-yellow-600 bg-yellow-100">0</span>
+        </div>
+        <div class="status-counter">
+            <span>Paid:</span>
+            <span id="paid-count" class="text-green-600 bg-green-100">0</span>
+        </div>
+        <div class="status-counter">
+            <span>Verified:</span>
+            <span id="verified-count" class="text-pink-600 bg-pink-100">0</span>
+        </div>
+        <div class="status-counter">
+            <span>Total:</span>
+            <span id="total-count" class="text-blue-600 bg-blue-100">0</span>
         </div>
     </div>
     
