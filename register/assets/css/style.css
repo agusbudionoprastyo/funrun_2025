@@ -172,3 +172,17 @@
     border-color: #ff5b1c;
     box-shadow: 0 0 0 2px rgba(255, 91, 28, 0.2);
   }
+
+  /* Voucher button states */
+  #applyVoucherBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  #removeVoucherBtn {
+    transition: all 0.3s ease;
+  }
+
+  #removeVoucherBtn:hover {
+    background-color: #ef4444 !important;
+  }

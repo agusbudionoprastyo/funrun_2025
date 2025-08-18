@@ -374,6 +374,25 @@ function copyToClipboard() {
                 priceText = `IDR ${formatPrice(price)} <span class="text-red-500 text-sm">${surchargeText}</span>`;
             }
             
+            // Apply voucher discount if available
+            const appliedVoucher = localStorage.getItem('appliedVoucher');
+            const discountAmount = localStorage.getItem('discountAmount');
+            
+            if (appliedVoucher && discountAmount) {
+                const discount = parseInt(discountAmount);
+                const originalPrice = displayPrice;
+                displayPrice = Math.max(0, displayPrice - discount);
+                
+                // Update price text to show discount
+                const originalPriceText = priceText;
+                priceText = `
+                    <span class="line-through text-gray-400">${originalPriceText}</span>
+                    <br>
+                    <span class="text-green-600">IDR ${formatPrice(displayPrice)}</span>
+                    <span class="text-green-600 text-sm">(-${formatPrice(discount)} voucher)</span>
+                `;
+            }
+            
             priceElement.innerHTML = priceText;
 
             itemElement.appendChild(descriptionElement);
@@ -411,30 +430,151 @@ function copyToClipboard() {
         });
     });
 
-    // Voucher code validation
+    // Voucher code validation and apply functionality
     const voucherInput = document.getElementById('voucherCode');
-    if (voucherInput) {
-        voucherInput.addEventListener('input', function() {
-            const voucherCode = this.value.trim().toUpperCase();
-            const validVouchers = ['KOMUNITAS2025', 'RUNNING2025', 'DAFAM2025', 'MANTAN2025'];
+    const applyVoucherBtn = document.getElementById('applyVoucherBtn');
+    const removeVoucherBtn = document.getElementById('removeVoucherBtn');
+    
+    if (voucherInput && applyVoucherBtn && removeVoucherBtn) {
+        // Update valid vouchers based on SQL file
+        const validVouchers = ['SEMARANGRUNNER', 'FAKERUNNER', 'BERLARIBERSAMA', 'PLAYONAMBYAR', 'PLAYONNDESO', 'BESTIFITY', 'DURAKINGRUN', 'SALATIGARB', 'PELARIAN'];
+        
+        // Function to validate voucher
+        function validateVoucher(voucherCode) {
+            voucherCode = voucherCode.trim().toUpperCase();
             
             // Remove existing validation classes
-            this.classList.remove('border-green-500', 'border-red-500', 'border-gray-300');
+            voucherInput.classList.remove('border-green-500', 'border-red-500', 'border-gray-300');
             
             if (voucherCode === '') {
-                this.classList.add('border-gray-300');
-                this.nextElementSibling.textContent = 'Masukkan kode voucher komunitas untuk potongan Rp 15.000';
-                this.nextElementSibling.className = 'text-xs text-gray-500 mt-1';
+                voucherInput.classList.add('border-gray-300');
+                updateVoucherMessage('Masukkan kode voucher komunitas untuk potongan Rp 15.000', 'text-xs text-gray-500 mt-1');
+                return false;
             } else if (validVouchers.includes(voucherCode)) {
-                this.classList.add('border-green-500');
-                this.nextElementSibling.textContent = '✓ Voucher valid! Potongan Rp 15.000 akan diterapkan';
-                this.nextElementSibling.className = 'text-xs text-green-600 mt-1 font-medium';
+                voucherInput.classList.add('border-green-500');
+                updateVoucherMessage('✓ Voucher valid! Potongan Rp 15.000 akan diterapkan', 'text-xs text-green-600 mt-1 font-medium');
+                return true;
             } else {
-                this.classList.add('border-red-500');
-                this.nextElementSibling.textContent = '✗ Voucher tidak valid';
-                this.nextElementSibling.className = 'text-xs text-red-600 mt-1 font-medium';
+                voucherInput.classList.add('border-red-500');
+                updateVoucherMessage('✗ Voucher tidak valid', 'text-xs text-red-600 mt-1 font-medium');
+                return false;
             }
+        }
+        
+        // Function to update voucher message
+        function updateVoucherMessage(message, className) {
+            const messageElement = voucherInput.parentElement.nextElementSibling;
+            if (messageElement && messageElement.tagName === 'P') {
+                messageElement.textContent = message;
+                messageElement.className = className;
+            } else {
+                // Create message element if it doesn't exist
+                const newMessageElement = document.createElement('p');
+                newMessageElement.textContent = message;
+                newMessageElement.className = className;
+                voucherInput.parentElement.parentElement.appendChild(newMessageElement);
+            }
+        }
+        
+        // Function to apply voucher and update pricing
+        function applyVoucher() {
+            const voucherCode = voucherInput.value.trim();
+            if (validateVoucher(voucherCode)) {
+                // Store voucher info in localStorage
+                localStorage.setItem('appliedVoucher', voucherCode);
+                localStorage.setItem('discountAmount', '15000');
+                
+                // Update pricing display
+                updatePricingWithVoucher();
+                
+                // Disable input and button after successful application
+                voucherInput.disabled = true;
+                applyVoucherBtn.disabled = true;
+                applyVoucherBtn.textContent = 'Applied ✓';
+                applyVoucherBtn.className = 'px-4 py-2 bg-green-500 text-white font-semibold rounded-full cursor-not-allowed';
+                
+                // Show remove voucher button
+                removeVoucherBtn.classList.remove('hidden');
+                
+                // Show success message
+                updateVoucherMessage('✓ Voucher berhasil diterapkan! Harga telah diupdate', 'text-xs text-green-600 mt-1 font-medium');
+            }
+        }
+        
+        // Function to remove voucher
+        function removeVoucher() {
+            // Clear localStorage
+            localStorage.removeItem('appliedVoucher');
+            localStorage.removeItem('discountAmount');
+            
+            // Reset input and buttons
+            voucherInput.value = '';
+            voucherInput.disabled = false;
+            voucherInput.classList.remove('border-green-500', 'border-red-500');
+            voucherInput.classList.add('border-gray-300');
+            
+            applyVoucherBtn.disabled = false;
+            applyVoucherBtn.textContent = 'Apply';
+            applyVoucherBtn.className = 'px-4 py-2 bg-[#ff5b1c] text-white font-semibold rounded-full hover:bg-[#e54d1a] transition-colors';
+            
+            removeVoucherBtn.classList.add('hidden');
+            
+            // Update pricing display
+            updatePricingWithVoucher();
+            
+            // Update message
+            updateVoucherMessage('Masukkan kode voucher komunitas untuk potongan Rp 15.000', 'text-xs text-gray-500 mt-1');
+            
+            // Remove discount notification
+            const discountNotification = document.getElementById('discountNotification');
+            if (discountNotification) {
+                discountNotification.remove();
+            }
+        }
+        
+        // Event listeners
+        voucherInput.addEventListener('input', function() {
+            validateVoucher(this.value);
         });
+        
+        applyVoucherBtn.addEventListener('click', applyVoucher);
+        removeVoucherBtn.addEventListener('click', removeVoucher);
+        
+        // Check if voucher was previously applied
+        const appliedVoucher = localStorage.getItem('appliedVoucher');
+        if (appliedVoucher) {
+            voucherInput.value = appliedVoucher;
+            applyVoucher();
+        }
+        
+        // Function to update pricing display with voucher discount
+        function updatePricingWithVoucher() {
+            // Re-render items to show updated pricing
+            if (typeof renderItems === 'function' && typeof data !== 'undefined') {
+                renderItems(data);
+            }
+            
+            // Show discount notification in the UI
+            const discountNotification = document.createElement('div');
+            discountNotification.id = 'discountNotification';
+            discountNotification.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg';
+            discountNotification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                    <span class="text-green-800 text-sm font-medium">Voucher diterapkan! Potongan Rp 15.000</span>
+                </div>
+            `;
+            
+            // Remove existing notification if any
+            const existingNotification = document.getElementById('discountNotification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Add notification after voucher input section
+            const voucherSection = voucherInput.closest('.mt-8');
+            voucherSection.appendChild(discountNotification);
+        }
     }
     })
     .catch(error => console.error('Error:', error));

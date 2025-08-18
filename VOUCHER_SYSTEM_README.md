@@ -11,8 +11,10 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 - Maksimal 20 karakter
 - Field bersifat opsional (tidak required)
 
-### 2. Validasi Real-time
+### 2. Validasi Real-time & Apply Button
 - Validasi otomatis saat user mengetik
+- Button "Apply" untuk menerapkan voucher
+- Button "Remove" untuk menghapus voucher yang sudah diterapkan
 - Border berubah warna sesuai status:
   - **Abu-abu**: Default state
   - **Hijau**: Voucher valid ✓
@@ -20,15 +22,22 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 - Pesan feedback langsung di bawah input
 
 ### 3. Voucher Codes yang Valid
-- `KOMUNITAS2025` - Potongan Rp 15.000
-- `RUNNING2025` - Potongan Rp 15.000  
-- `DAFAM2025` - Potongan Rp 15.000
-- `MANTAN2025` - Potongan Rp 15.000
+- `SEMARANGRUNNER` - Potongan Rp 15.000
+- `FAKERUNNER` - Potongan Rp 15.000
+- `BERLARIBERSAMA` - Potongan Rp 15.000
+- `PLAYONAMBYAR` - Potongan Rp 15.000
+- `PLAYONNDESO` - Potongan Rp 15.000
+- `BESTIFITY` - Potongan Rp 15.000
+- `DURAKINGRUN` - Potongan Rp 15.000
+- `SALATIGARB` - Potongan Rp 15.000
+- `PELARIAN` - Potongan Rp 15.000
 
-### 4. Perhitungan Otomatis
+### 4. Perhitungan Otomatis & Real-time Update
 - Harga otomatis terpotong Rp 15.000 jika voucher valid
+- Update harga secara real-time setelah voucher diterapkan
 - Total amount yang ditampilkan sudah termasuk diskon
 - Informasi diskon ditampilkan di modal payment
+- Visual feedback dengan harga coret dan harga setelah diskon
 
 ## Cara Kerja
 
@@ -66,10 +75,13 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 ## Cara Testing
 
 1. Buka form registrasi
-2. Masukkan salah satu voucher code valid (misal: KOMUNITAS2025)
+2. Masukkan salah satu voucher code valid (misal: SEMARANGRUNNER)
 3. Lihat border berubah hijau dan pesan konfirmasi
-4. Submit form
-5. Di modal payment, lihat breakdown harga dengan diskon
+4. Klik tombol "Apply" untuk menerapkan voucher
+5. Lihat harga langsung terupdate dengan diskon (harga coret + harga baru)
+6. Tombol "Remove" muncul untuk menghapus voucher jika diperlukan
+7. Submit form
+8. Di modal payment, lihat breakdown harga dengan diskon
 
 ## Keamanan
 

@@ -320,10 +320,18 @@
               <input type="text" id="phone" class="mt-2 p-2 w-full border border-gray-300 rounded-full" placeholder="Phone" required>
           </div>
 
-          <!-- Voucher Code -->
+                    <!-- Voucher Code -->
           <div class="mt-8">
-              <p class="text-xs text-gray-500 mt-1">Masukkan kode voucher komunitas untuk potongan Rp 15.000</p>
-              <input type="text" id="voucherCode" class="mt-2 p-2 w-full border border-gray-300 rounded-full" placeholder="Voucher Code" maxlength="20">
+            <p class="text-xs text-gray-500 mt-1">Masukkan kode voucher komunitas untuk potongan Rp 15.000</p>
+            <div class="flex space-x-2 mt-2">
+              <input type="text" id="voucherCode" class="flex-1 p-2 border border-gray-300 rounded-full" placeholder="Voucher Code" maxlength="20">
+              <button type="button" id="applyVoucherBtn" class="px-4 py-2 bg-[#ff5b1c] text-white font-semibold rounded-full hover:bg-[#e54d1a] transition-colors">
+                Apply
+              </button>
+              <button type="button" id="removeVoucherBtn" class="px-4 py-2 bg-gray-500 text-white font-semibold rounded-full hover:bg-gray-600 transition-colors hidden">
+                Remove
+              </button>
+            </div>
           </div>
 
           <input type="hidden" id="transactionid" name="transactionid" value="">
