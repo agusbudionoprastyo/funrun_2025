@@ -403,13 +403,39 @@ function copyToClipboard() {
             }
         });
 
-        // Add event listeners for size changes to update pricing
-        const sizeInputs = document.querySelectorAll('input[name="size"], input[name="coupleSize"]');
-        sizeInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                renderItems(data); // Re-render with updated prices when size changes
-            });
+            // Add event listeners for size changes to update pricing
+    const sizeInputs = document.querySelectorAll('input[name="size"], input[name="coupleSize"]');
+    sizeInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            renderItems(data); // Re-render with updated prices when size changes
         });
+    });
+
+    // Voucher code validation
+    const voucherInput = document.getElementById('voucherCode');
+    if (voucherInput) {
+        voucherInput.addEventListener('input', function() {
+            const voucherCode = this.value.trim().toUpperCase();
+            const validVouchers = ['KOMUNITAS2025', 'RUNNING2025', 'DAFAM2025', 'MANTAN2025'];
+            
+            // Remove existing validation classes
+            this.classList.remove('border-green-500', 'border-red-500', 'border-gray-300');
+            
+            if (voucherCode === '') {
+                this.classList.add('border-gray-300');
+                this.nextElementSibling.textContent = 'Masukkan kode voucher komunitas untuk potongan Rp 15.000';
+                this.nextElementSibling.className = 'text-xs text-gray-500 mt-1';
+            } else if (validVouchers.includes(voucherCode)) {
+                this.classList.add('border-green-500');
+                this.nextElementSibling.textContent = '✓ Voucher valid! Potongan Rp 15.000 akan diterapkan';
+                this.nextElementSibling.className = 'text-xs text-green-600 mt-1 font-medium';
+            } else {
+                this.classList.add('border-red-500');
+                this.nextElementSibling.textContent = '✗ Voucher tidak valid';
+                this.nextElementSibling.className = 'text-xs text-red-600 mt-1 font-medium';
+            }
+        });
+    }
     })
     .catch(error => console.error('Error:', error));
 
@@ -470,7 +496,7 @@ function copyToClipboard() {
     const username = document.getElementById('name').value;
     const mantan = document.getElementById('mantan').value;
     const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
+    const voucherCode = document.getElementById('voucherCode').value;
     const size = document.querySelector('input[name="size"]:checked').value;
     const jerseyColor = document.querySelector('input[name="jerseyColor"]:checked').value;
 
@@ -480,7 +506,7 @@ function copyToClipboard() {
     formData.append('username', username);
     formData.append('mantan', mantan);
     formData.append('phone', phone);
-    formData.append('email', email);
+    formData.append('voucherCode', voucherCode);
     formData.append('size', size);
     formData.append('jerseyColor', jerseyColor);
 
@@ -500,11 +526,18 @@ function copyToClipboard() {
         body: formData 
     })
     .then(response => response.json())
-    .then(data => {
-        console.log(data); 
-        if (data.status === 'success') {
-            localStorage.setItem('registrationSuccess', 'true');
-            localStorage.setItem('transactionid', generatedTransactionId);
+            .then(data => {
+            console.log(data); 
+            if (data.status === 'success') {
+                // Store discount information if applicable
+                if (data.discount_applied) {
+                    localStorage.setItem('discountApplied', 'true');
+                    localStorage.setItem('discountAmount', data.discount_amount);
+                    localStorage.setItem('originalAmount', data.original_amount);
+                }
+                
+                localStorage.setItem('registrationSuccess', 'true');
+                localStorage.setItem('transactionid', generatedTransactionId);
 
             box.classList.remove("expanded");
             registerBtn.classList.remove("hidden");
@@ -541,15 +574,42 @@ function copyToClipboard() {
                         maximumFractionDigits: 0 
                     }).format(totalAmount);
 
+                    // Check if discount was applied
+                    const discountApplied = localStorage.getItem('discountApplied') === 'true';
+                    const discountAmount = localStorage.getItem('discountAmount');
+                    const originalAmount = localStorage.getItem('originalAmount');
+                    
+                    let discountHtml = '';
+                    if (discountApplied) {
+                        const formattedOriginalAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
+                            maximumFractionDigits: 0 
+                        }).format(originalAmount);
+                        const formattedDiscountAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
+                            maximumFractionDigits: 0 
+                        }).format(discountAmount);
+                        
+                        discountHtml = `
+                            <li class="flex justify-between">
+                                <span><strong>Original Amount</strong></span>
+                                <span class="text-right line-through text-gray-500">${formattedOriginalAmount}</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Voucher Discount</strong></span>
+                                <span class="text-right text-green-600">-${formattedDiscountAmount}</span>
+                            </li>
+                        `;
+                    }
+                    
                     transactionDetailsContainer.innerHTML = `
                         <ul>
                             <li class="flex justify-between">
                                 <span><strong>Transaction ID</strong></span>
-                                <span class="text-rigth">${transactionIdFromLocalStorage}</span>
+                                <span class="text-right">${transactionIdFromLocalStorage}</span>
                             </li>
+                            ${discountHtml}
                             <li class="flex justify-between">
                                 <span><strong>Total Amount</strong></span>
-                                <span class="text-rigth"><strong>${formattedAmount}</strong></span>
+                                <span class="text-right"><strong>${formattedAmount}</strong></span>
                             </li>
                             <li class="flex justify-between">
                                 <span><strong>Transaction Date</strong></span>
@@ -606,15 +666,42 @@ function copyToClipboard() {
                       maximumFractionDigits: 0 
                     }).format(totalAmount);
 
+                    // Check if discount was applied
+                    const discountApplied = localStorage.getItem('discountApplied') === 'true';
+                    const discountAmount = localStorage.getItem('discountAmount');
+                    const originalAmount = localStorage.getItem('originalAmount');
+                    
+                    let discountHtml = '';
+                    if (discountApplied) {
+                        const formattedOriginalAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
+                            maximumFractionDigits: 0 
+                        }).format(originalAmount);
+                        const formattedDiscountAmount = 'Rp' + new Intl.NumberFormat('id-ID', {
+                            maximumFractionDigits: 0 
+                        }).format(discountAmount);
+                        
+                        discountHtml = `
+                            <li class="flex justify-between">
+                                <span><strong>Original Amount</strong></span>
+                                <span class="text-right line-through text-gray-500">${formattedOriginalAmount}</span>
+                            </li>
+                            <li class="flex justify-between">
+                                <span><strong>Voucher Discount</strong></span>
+                                <span class="text-right text-green-600">-${formattedDiscountAmount}</span>
+                            </li>
+                        `;
+                    }
+                    
                     transactionDetailsContainer.innerHTML = `
                       <ul>
                           <li class="flex justify-between">
                               <span><strong>Transaction ID</strong></span>
-                              <span class="text-rigth">${transactionIdFromLocalStorage}</span>
+                              <span class="text-right">${transactionIdFromLocalStorage}</span>
                           </li>
+                          ${discountHtml}
                           <li class="flex justify-between">
                               <span><strong>Total Amount</strong></span>
-                              <span class="text-rigth"><strong>${formattedAmount}</strong></span>
+                              <span class="text-right"><strong>${formattedAmount}</strong></span>
                           </li>
                           <li class="flex justify-between">
                               <span><strong>Transaction Date</strong></span>

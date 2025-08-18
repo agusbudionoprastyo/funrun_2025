@@ -150,3 +150,25 @@
   .modal-active {
     display: flex;
   }
+
+  /* Voucher validation styles */
+  .border-green-500 {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 1px #10b981;
+  }
+
+  .border-red-500 {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 1px #ef4444;
+  }
+
+  .border-gray-300 {
+    border-color: #d1d5db !important;
+  }
+
+  /* Voucher input focus states */
+  #voucherCode:focus {
+    outline: none;
+    border-color: #ff5b1c;
+    box-shadow: 0 0 0 2px rgba(255, 91, 28, 0.2);
+  }

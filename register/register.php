@@ -37,7 +37,7 @@ $name = $_POST['username'];
 $size = $_POST['size'];
 $mantan = $_POST['mantan'];
 $phone = $_POST['phone'];
-$email = $_POST['email'];
+$voucherCode = $_POST['voucherCode'];
 $jerseyColor = $_POST['jerseyColor'];
 
 // Generate username dan password untuk pengguna pertama
@@ -49,9 +49,9 @@ $conn->begin_transaction();
 
 try {
     // Proses penyimpanan data untuk pengguna pertama
-    $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, email, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, voucher_code, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssssssss", $transactionId, $name, $mantan, $size, $phone, $email, $username, $password, $jerseyColor);
+    $stmt->bind_param("sssssssss", $transactionId, $name, $mantan, $size, $phone, $voucherCode, $username, $password, $jerseyColor);
     $stmt->execute();
 
     if ($registrationType === 'couple') {
@@ -81,6 +81,19 @@ try {
         throw new Exception('Item tidak tersedia');
     }
 
+    // Voucher code validation and discount calculation
+    $discountAmount = 0;
+    if (!empty($voucherCode)) {
+        // Validasi voucher code (contoh: KOMUNITAS2025, RUNNING2025, dll)
+        $validVouchers = ['KOMUNITAS2025', 'RUNNING2025', 'DAFAM2025', 'MANTAN2025'];
+        
+        if (in_array(strtoupper(trim($voucherCode)), $validVouchers)) {
+            $discountAmount = 15000; // Potongan Rp 15.000
+        } else {
+            throw new Exception('Voucher code tidak valid');
+        }
+    }
+
     // Function to calculate price with surcharge for larger sizes
     function calculatePriceWithSurcharge($basePrice, $size) {
         if ($size === '3xl' || $size === '4xl' || $size === '5xl') {
@@ -103,6 +116,9 @@ try {
         $coupleSize = $_POST['coupleSize'];
         $totalAmount += calculatePriceWithSurcharge($basePrice, $coupleSize) - $basePrice; // Add surcharge for couple's size if needed
     }
+    
+    // Apply voucher discount
+    $totalAmount = max(0, $totalAmount - $discountAmount);
 
     // Proses penyimpanan transaksi
     $query = "INSERT INTO transactions (transaction_id, total_amount, status) VALUES (?, ?, 'pending')";
@@ -132,7 +148,15 @@ try {
     $conn->commit();
 
     // Menutup koneksi
-    echo json_encode(['status' => 'success', 'message' => 'Form submitted successfully']);
+    $response = [
+        'status' => 'success', 
+        'message' => 'Form submitted successfully',
+        'discount_applied' => $discountAmount > 0,
+        'discount_amount' => $discountAmount,
+        'original_amount' => $totalAmount + $discountAmount,
+        'final_amount' => $totalAmount
+    ];
+    echo json_encode($response);
 } catch (Exception $e) {
     // Jika ada error, rollback transaksi
     $conn->rollback();
