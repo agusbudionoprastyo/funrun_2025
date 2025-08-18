@@ -62,9 +62,9 @@ try {
         $coupleUsername = generateCoupleUsername($coupleName);
         
         // Proses penyimpanan data untuk pasangan
-        $query = "INSERT INTO users (transaction_id, name, mantan, size, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, voucher_code, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("sssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $coupleUsername, $password, $coupleJerseyColor);
+        $stmt->bind_param("sssssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $phone, $voucherCode, $coupleUsername, $password, $coupleJerseyColor);
         $stmt->execute();
     }
 
@@ -84,14 +84,23 @@ try {
     // Voucher code validation and discount calculation
     $discountAmount = 0;
     if (!empty($voucherCode)) {
-        // Validasi voucher code (contoh: KOMUNITAS2025, RUNNING2025, dll)
-        $validVouchers = ['KOMUNITAS2025', 'RUNNING2025', 'DAFAM2025', 'MANTAN2025'];
+        // Validasi voucher code sesuai dengan yang ada di frontend
+        $validVouchers = ['SEMARANGRUNNER', 'FAKERUNNER', 'BERLARIBERSAMA', 'PLAYONAMBYAR', 'PLAYONNDESO', 'BESTIFITY', 'DURAKINGRUN', 'SALATIGARB', 'PELARIAN'];
+        
+        // Debug: log voucher code yang diterima
+        error_log("Voucher code received: " . $voucherCode);
+        error_log("Voucher code trimmed and uppercased: " . strtoupper(trim($voucherCode)));
+        error_log("Valid vouchers: " . implode(', ', $validVouchers));
         
         if (in_array(strtoupper(trim($voucherCode)), $validVouchers)) {
             $discountAmount = 15000; // Potongan Rp 15.000
+            error_log("Voucher valid, discount applied: " . $discountAmount);
         } else {
-            throw new Exception('Voucher code tidak valid');
+            error_log("Voucher invalid: " . strtoupper(trim($voucherCode)));
+            throw new Exception('Voucher code tidak valid: ' . strtoupper(trim($voucherCode)));
         }
+    } else {
+        error_log("No voucher code provided");
     }
 
     // Function to calculate price with surcharge for larger sizes

@@ -614,6 +614,13 @@ function copyToClipboard() {
     formData.append('size', size);
     formData.append('jerseyColor', jerseyColor);
 
+    // Debug: log form data
+    console.log('Form data being sent:');
+    console.log('Voucher Code:', voucherCode);
+    console.log('Registration Type:', registrationType);
+    console.log('Username:', username);
+    console.log('Size:', size);
+
     if (registrationType === 'couple') {
         const coupleUsername = document.getElementById('coupleName').value;
         const coupleMantan = document.getElementById('coupleMantan').value;
