@@ -14,7 +14,6 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 ### 2. Validasi Real-time & Apply Button
 - Validasi otomatis saat user mengetik
 - Button "Apply" untuk menerapkan voucher
-- Button "Remove" untuk menghapus voucher yang sudah diterapkan
 - Border berubah warna sesuai status:
   - **Abu-abu**: Default state
   - **Hijau**: Voucher valid ✓
@@ -34,6 +33,7 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 
 ### 4. Perhitungan Otomatis & Real-time Update
 - Harga otomatis terpotong Rp 15.000 jika voucher valid
+- **Surcharge size XXXL (3XL, 4XL, 5XL) ikut terhitung dalam diskon**
 - Update harga secara real-time setelah voucher diterapkan
 - Total amount yang ditampilkan sudah termasuk diskon
 - Informasi diskon ditampilkan di modal payment
@@ -44,9 +44,16 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 ### Frontend (JavaScript)
 1. User memasukkan voucher code
 2. Validasi real-time dengan perubahan border dan pesan
-3. Data voucher dikirim ke backend saat form submission
-4. Informasi diskon disimpan di localStorage
-5. Modal payment menampilkan breakdown harga dengan diskon
+3. **Perhitungan harga: Base price + Surcharge (jika size XXXL) - Voucher discount**
+4. Data voucher dikirim ke backend saat form submission
+5. Informasi diskon disimpan di localStorage
+6. Modal payment menampilkan breakdown harga dengan diskon
+
+### Perhitungan Harga
+- **Base Price**: Harga normal (Single/Couple)
+- **Surcharge**: +Rp 10.000 untuk size 3XL, 4XL, 5XL
+- **Voucher Discount**: -Rp 15.000 dari total (base + surcharge)
+- **Final Price**: Base + Surcharge - Voucher Discount
 
 ### Backend (PHP)
 1. Menerima voucher code dari form
@@ -79,7 +86,7 @@ Sistem voucher code telah ditambahkan ke form registrasi untuk memberikan potong
 3. Lihat border berubah hijau dan pesan konfirmasi
 4. Klik tombol "Apply" untuk menerapkan voucher
 5. Lihat harga langsung terupdate dengan diskon (harga coret + harga baru)
-6. Tombol "Remove" muncul untuk menghapus voucher jika diperlukan
+6. **Test dengan size XXXL: pilih size 3XL/4XL/5XL untuk lihat surcharge ikut terpotong**
 7. Submit form
 8. Di modal payment, lihat breakdown harga dengan diskon
 

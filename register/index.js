@@ -433,9 +433,8 @@ function copyToClipboard() {
     // Voucher code validation and apply functionality
     const voucherInput = document.getElementById('voucherCode');
     const applyVoucherBtn = document.getElementById('applyVoucherBtn');
-    const removeVoucherBtn = document.getElementById('removeVoucherBtn');
     
-    if (voucherInput && applyVoucherBtn && removeVoucherBtn) {
+    if (voucherInput && applyVoucherBtn) {
         // Update valid vouchers based on SQL file
         const validVouchers = ['SEMARANGRUNNER', 'FAKERUNNER', 'BERLARIBERSAMA', 'PLAYONAMBYAR', 'PLAYONNDESO', 'BESTIFITY', 'DURAKINGRUN', 'SALATIGARB', 'PELARIAN'];
         
@@ -493,42 +492,8 @@ function copyToClipboard() {
                 applyVoucherBtn.textContent = 'Applied ✓';
                 applyVoucherBtn.className = 'px-4 py-2 bg-green-500 text-white font-semibold rounded-full cursor-not-allowed';
                 
-                // Show remove voucher button
-                removeVoucherBtn.classList.remove('hidden');
-                
                 // Show success message
                 updateVoucherMessage('✓ Voucher berhasil diterapkan! Harga telah diupdate', 'text-xs text-green-600 mt-1 font-medium');
-            }
-        }
-        
-        // Function to remove voucher
-        function removeVoucher() {
-            // Clear localStorage
-            localStorage.removeItem('appliedVoucher');
-            localStorage.removeItem('discountAmount');
-            
-            // Reset input and buttons
-            voucherInput.value = '';
-            voucherInput.disabled = false;
-            voucherInput.classList.remove('border-green-500', 'border-red-500');
-            voucherInput.classList.add('border-gray-300');
-            
-            applyVoucherBtn.disabled = false;
-            applyVoucherBtn.textContent = 'Apply';
-            applyVoucherBtn.className = 'px-4 py-2 bg-[#ff5b1c] text-white font-semibold rounded-full hover:bg-[#e54d1a] transition-colors';
-            
-            removeVoucherBtn.classList.add('hidden');
-            
-            // Update pricing display
-            updatePricingWithVoucher();
-            
-            // Update message
-            updateVoucherMessage('Masukkan kode voucher komunitas untuk potongan Rp 15.000', 'text-xs text-gray-500 mt-1');
-            
-            // Remove discount notification
-            const discountNotification = document.getElementById('discountNotification');
-            if (discountNotification) {
-                discountNotification.remove();
             }
         }
         
@@ -538,7 +503,6 @@ function copyToClipboard() {
         });
         
         applyVoucherBtn.addEventListener('click', applyVoucher);
-        removeVoucherBtn.addEventListener('click', removeVoucher);
         
         // Check if voucher was previously applied
         const appliedVoucher = localStorage.getItem('appliedVoucher');

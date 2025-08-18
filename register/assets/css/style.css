@@ -178,11 +178,3 @@
     cursor: not-allowed;
     opacity: 0.7;
   }
-
-  #removeVoucherBtn {
-    transition: all 0.3s ease;
-  }
-
-  #removeVoucherBtn:hover {
-    background-color: #ef4444 !important;
-  }
