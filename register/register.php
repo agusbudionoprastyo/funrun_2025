@@ -174,10 +174,14 @@ try {
         ];
         
         // Direct call instead of curl
+        ob_start(); // Start output buffering
         include_once 'process_referral.php';
         
         // Process referral
         $referralProcessed = processReferral($referrerCode, $transactionId, $referredName);
+        
+        // Clear any output from include
+        ob_end_clean();
         
         // Debug: Log referral processing
         error_log("Debug - Referral processing completed for: " . $referrerCode . " - Result: " . ($referralProcessed ? 'SUCCESS' : 'FAILED'));

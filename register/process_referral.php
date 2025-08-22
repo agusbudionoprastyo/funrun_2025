@@ -58,7 +58,8 @@ function processReferral($referrerCode, $transactionId, $referredName) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Only process POST requests when called directly
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && basename($_SERVER['SCRIPT_NAME']) === 'process_referral.php') {
     $referrerCode = $_POST['referrer_code'] ?? '';
     $transactionId = $_POST['transaction_id'] ?? '';
     $referredName = $_POST['referred_name'] ?? '';
@@ -81,7 +82,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo json_encode(['success' => false, 'message' => 'Missing required parameters']);
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
 ?>
