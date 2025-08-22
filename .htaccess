@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Handle dynamic member referral links
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^register/([^/]+)/?$ register/index.html?member=$1 [L,QSA]
+
+# Redirect root to register page
+RewriteRule ^$ register/index.html [L]
+
+# Handle other static files normally
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^.*$ - [L]

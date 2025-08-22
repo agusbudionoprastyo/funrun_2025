@@ -339,6 +339,11 @@ if (!isset($_SESSION['user_id'])) {
 <div class="table-container">
     <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4 gap-2" id="table-header-bar">
         <div id="datatable-search-box"></div>
+        <div class="flex gap-2">
+            <a href="referral_management.php" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm">
+                Referral Management
+            </a>
+        </div>
     </div>
     <div class="flex items-center space-x-6 mb-2" id="status-badges-bar">
         <div class="status-counter">
@@ -373,6 +378,9 @@ if (!isset($_SESSION['user_id'])) {
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Contact <span class="text-xs text-gray-500">(Click phone to edit/add)</span>
+                </th>
+                <th class="px-6 py-3 font-medium text-gray-900">
+                    Referred By
                 </th>
                 <th class="px-6 py-3 font-medium text-gray-900">
                     Transaction Date
@@ -500,6 +508,12 @@ if (!isset($_SESSION['user_id'])) {
                             <div class="ml-1 font-normal text-gray-500">${item.email_1}</div>
                         </div>
                     </th>
+                    <td class="px-6 py-4">
+                        ${item.referred_by ? 
+                            `<span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">${item.referred_by.toUpperCase()}</span>` : 
+                            '<span class="text-gray-400 text-xs">-</span>'
+                        }
+                    </td>
                     <td class="px-6 py-4">${item.transaction_date}</td>
                     <td class="px-6 py-4">${formattedAmount}</td>
                     <td class="text-center px-6 py-4">

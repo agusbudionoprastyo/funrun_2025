@@ -40,6 +40,9 @@ $phone = $_POST['phone'];
 $voucherCode = $_POST['voucherCode'];
 $jerseyColor = $_POST['jerseyColor'];
 
+// Get referral code from URL parameter if available
+$referrerCode = $_POST['referrer_code'] ?? '';
+
 // Generate username dan password untuk pengguna pertama
 $username = generateUsername($name);
 $password = generateRandomPassword();
@@ -49,9 +52,9 @@ $conn->begin_transaction();
 
 try {
     // Proses penyimpanan data untuk pengguna pertama
-    $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, voucher_code, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, voucher_code, username, password, jersey_color, referred_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("sssssssss", $transactionId, $name, $mantan, $size, $phone, $voucherCode, $username, $password, $jerseyColor);
+    $stmt->bind_param("ssssssssss", $transactionId, $name, $mantan, $size, $phone, $voucherCode, $username, $password, $jerseyColor, $referrerCode);
     $stmt->execute();
 
     if ($registrationType === 'couple') {
@@ -62,9 +65,9 @@ try {
         $coupleUsername = generateCoupleUsername($coupleName);
         
         // Proses penyimpanan data untuk pasangan
-        $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, voucher_code, username, password, jersey_color) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO users (transaction_id, name, mantan, size, phone, voucher_code, username, password, jersey_color, referred_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("sssssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $phone, $voucherCode, $coupleUsername, $password, $coupleJerseyColor);
+        $stmt->bind_param("ssssssssss", $transactionId, $coupleName, $coupleMantan, $coupleSize, $phone, $voucherCode, $coupleUsername, $password, $coupleJerseyColor, $referrerCode);
         $stmt->execute();
     }
 
@@ -155,6 +158,25 @@ try {
 
     // Commit transaksi
     $conn->commit();
+    
+    // Save referral tracking if referrer code exists
+    if (!empty($referrerCode)) {
+        $referredName = $registrationType === 'couple' ? $name . ' & ' . $coupleName : $name;
+        
+        $referralData = [
+            'referrer_code' => $referrerCode,
+            'transaction_id' => $transactionId,
+            'referred_name' => $referredName
+        ];
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'process_referral.php');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($referralData));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        curl_close($ch);
+    }
 
     // Menutup koneksi
     $response = [

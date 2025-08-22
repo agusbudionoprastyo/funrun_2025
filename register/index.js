@@ -1,30 +1,5 @@
 // Size Chart Modal Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // URL Parameter Handling for Member Registration Links
-    function getUrlParameter(name) {
-        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        var results = regex.exec(location.search);
-        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-    }
-
-    // Check for member code in URL parameter
-    const urlMemberCode = getUrlParameter('member');
-    if (urlMemberCode) {
-        // Show member registration indicator
-        const memberIndicator = document.createElement('div');
-        memberIndicator.className = 'bg-blue-100 border border-blue-400 text-blue-700 px-4 py-2 rounded mb-4 text-sm';
-        memberIndicator.innerHTML = '<i class="fas fa-user-check mr-2"></i>Member Registration - Referred by: ' + urlMemberCode.toUpperCase();
-        
-        const formContainer = document.querySelector('.p-4');
-        if (formContainer) {
-            formContainer.insertBefore(memberIndicator, formContainer.firstChild);
-        }
-        
-        // Store member code for tracking
-        window.memberReferralCode = urlMemberCode.toUpperCase();
-    }
-
     const sizeChartBtn = document.getElementById('sizeChartBtn');
     const sizeChartModal = document.getElementById('sizeChartModal');
     const closeSizeChartBtn = document.getElementById('closeSizeChartBtn');
@@ -621,6 +596,10 @@ function copyToClipboard() {
 
     const formData = new FormData();
 
+    // Get referral code from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const referrerCode = urlParams.get('member');
+
     const registrationType = document.querySelector('input[name="registrationType"]:checked').value;
     const username = document.getElementById('name').value;
     const mantan = document.getElementById('mantan').value;
@@ -638,22 +617,10 @@ function copyToClipboard() {
     formData.append('voucherCode', voucherCode);
     formData.append('size', size);
     formData.append('jerseyColor', jerseyColor);
-
-    // Track member registration if referred by member
-    if (window.memberReferralCode) {
-        const userCount = registrationType === 'couple' ? 2 : 1;
-        fetch('track_member_registration.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                member_code: window.memberReferralCode,
-                transaction_id: generatedTransactionId,
-                registration_type: registrationType,
-                user_count: userCount
-            })
-        }).catch(error => console.log('Member tracking error:', error));
+    
+    // Add referral code if available
+    if (referrerCode) {
+        formData.append('referrer_code', referrerCode);
     }
 
     // Debug: log form data
