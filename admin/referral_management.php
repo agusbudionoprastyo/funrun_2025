@@ -38,12 +38,12 @@ if (!isset($_SESSION['user_id'])) {
                 <p class="text-3xl font-bold text-green-600" id="total-referrals">0</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Completed</h3>
-                <p class="text-3xl font-bold text-purple-600" id="completed-referrals">0</p>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Total Commission</h3>
+                <p class="text-3xl font-bold text-purple-600" id="total-commission">Rp 0</p>
             </div>
             <div class="bg-white rounded-lg shadow p-6">
-                <h3 class="text-lg font-semibold text-gray-900 mb-2">Pending</h3>
-                <p class="text-3xl font-bold text-yellow-600" id="pending-referrals">0</p>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Pending Commission</h3>
+                <p class="text-3xl font-bold text-yellow-600" id="pending-commission">Rp 0</p>
             </div>
         </div>
 
@@ -57,10 +57,12 @@ if (!isset($_SESSION['user_id'])) {
                         <tr>
                             <th class="px-6 py-3">Referrer Code</th>
                             <th class="px-6 py-3">Referrer Name</th>
+                            <th class="px-6 py-3">Commission Rate</th>
                             <th class="px-6 py-3">Total Referrals</th>
-                            <th class="px-6 py-3">Completed</th>
-                            <th class="px-6 py-3">Pending</th>
-                            <th class="px-6 py-3">Success Rate</th>
+                            <th class="px-6 py-3">Total Commission</th>
+                            <th class="px-6 py-3">Paid Commission</th>
+                            <th class="px-6 py-3">Referral Link</th>
+                            <th class="px-6 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="referral-table-body">
@@ -84,6 +86,14 @@ if (!isset($_SESSION['user_id'])) {
                             <label class="block text-sm font-medium text-gray-700">Referrer Name</label>
                             <input type="text" id="referrer-name" name="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
                         </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Commission Rate (%)</label>
+                            <input type="number" id="commission-rate" name="commission_rate" step="0.01" min="0" max="100" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Commission Amount (Rp)</label>
+                            <input type="number" id="commission-amount" name="commission_amount" step="1000" min="0" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
                     </div>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Add Referrer
@@ -104,8 +114,8 @@ if (!isset($_SESSION['user_id'])) {
                 
                 let totalReferrers = 0;
                 let totalReferrals = 0;
-                let completedReferrals = 0;
-                let pendingReferrals = 0;
+                let totalCommission = 0;
+                let pendingCommission = 0;
                 
                 const tableBody = document.getElementById('referral-table-body');
                 tableBody.innerHTML = '';
@@ -113,32 +123,43 @@ if (!isset($_SESSION['user_id'])) {
                 data.forEach(item => {
                     totalReferrers++;
                     totalReferrals += parseInt(item.total_referrals);
-                    completedReferrals += parseInt(item.completed_referrals);
-                    pendingReferrals += parseInt(item.pending_referrals);
+                    totalCommission += parseFloat(item.total_commission_earned || 0);
+                    pendingCommission += parseFloat(item.total_commission_earned || 0) - parseFloat(item.paid_commissions * (item.commission_amount || 0));
                     
-                    const successRate = item.total_referrals > 0 ? 
-                        ((item.completed_referrals / item.total_referrals) * 100).toFixed(1) : '0.0';
+                    const formattedCommission = new Intl.NumberFormat('id-ID', { 
+                        style: 'currency', 
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                    }).format(item.total_commission_earned || 0);
+                    
+                    const formattedPaidCommission = new Intl.NumberFormat('id-ID', { 
+                        style: 'currency', 
+                        currency: 'IDR',
+                        minimumFractionDigits: 0
+                    }).format(item.paid_commissions * (item.commission_amount || 0));
                     
                     const row = document.createElement('tr');
                     row.className = 'bg-white border-b hover:bg-gray-50';
                     row.innerHTML = `
                         <td class="px-6 py-4 font-medium text-gray-900">${item.code}</td>
                         <td class="px-6 py-4">${item.referrer_name}</td>
-                        <td class="px-6 py-4">${item.total_referrals}</td>
-                        <td class="px-6 py-4">
-                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                ${item.completed_referrals}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                ${item.pending_referrals}
-                            </span>
-                        </td>
                         <td class="px-6 py-4">
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                                ${successRate}%
+                                ${item.commission_rate || 0}%
                             </span>
+                        </td>
+                        <td class="px-6 py-4">${item.total_referrals}</td>
+                        <td class="px-6 py-4 font-medium text-green-600">${formattedCommission}</td>
+                        <td class="px-6 py-4 font-medium text-blue-600">${formattedPaidCommission}</td>
+                        <td class="px-6 py-4">
+                            <a href="${item.referral_link}" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm">
+                                ${item.referral_link}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4">
+                            <button onclick="viewReferrerDetails('${item.code}')" class="bg-blue-500 hover:bg-blue-700 text-white text-xs font-bold py-1 px-2 rounded">
+                                Details
+                            </button>
                         </td>
                     `;
                     tableBody.appendChild(row);
@@ -146,8 +167,16 @@ if (!isset($_SESSION['user_id'])) {
                 
                 document.getElementById('total-referrers').textContent = totalReferrers;
                 document.getElementById('total-referrals').textContent = totalReferrals;
-                document.getElementById('completed-referrals').textContent = completedReferrals;
-                document.getElementById('pending-referrals').textContent = pendingReferrals;
+                document.getElementById('total-commission').textContent = new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(totalCommission);
+                document.getElementById('pending-commission').textContent = new Intl.NumberFormat('id-ID', { 
+                    style: 'currency', 
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(pendingCommission);
                 
             } catch (error) {
                 console.error('Error loading referral stats:', error);
@@ -198,6 +227,11 @@ if (!isset($_SESSION['user_id'])) {
         });
 
         loadReferralStats();
+        
+        // Add function to view referrer details
+        window.viewReferrerDetails = function(code) {
+            window.open('referrer_details.php?code=' + code, '_blank');
+        };
     </script>
 </body>
 </html>

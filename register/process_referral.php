@@ -18,9 +18,65 @@ function validateReferrerCode($code) {
 function saveReferral($referrerCode, $transactionId, $referredName) {
     global $conn;
     
-    $stmt = $conn->prepare("INSERT IGNORE INTO referrals (referrer_code, referred_transaction_id, referred_name) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $referrerCode, $transactionId, $referredName);
-    return $stmt->execute();
+    // Get commission rate and amount for this referrer
+    $stmt = $conn->prepare("SELECT commission_rate, commission_amount FROM referrer_codes WHERE code = ? AND is_active = 1");
+    $stmt->bind_param("s", $referrerCode);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $commissionRate = 0.00;
+    $commissionAmount = 0.00;
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $commissionRate = $row['commission_rate'];
+        $commissionAmount = $row['commission_amount'];
+    }
+    $stmt->close();
+    
+    // Insert referral with commission
+    $stmt = $conn->prepare("INSERT IGNORE INTO referrals (referrer_code, referred_transaction_id, referred_name, commission_amount) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssd", $referrerCode, $transactionId, $referredName, $commissionAmount);
+    $success = $stmt->execute();
+    $stmt->close();
+    
+    if ($success) {
+        // Get the referral ID
+        $stmt = $conn->prepare("SELECT id FROM referrals WHERE referrer_code = ? AND referred_transaction_id = ?");
+        $stmt->bind_param("ss", $referrerCode, $transactionId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $referralId = $row['id'];
+            
+            // Get transaction amount
+            $stmt = $conn->prepare("SELECT total_amount FROM transactions WHERE transaction_id = ?");
+            $stmt->bind_param("s", $transactionId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $baseAmount = $row['total_amount'];
+                
+                // Create commission transaction
+                $stmt = $conn->prepare("INSERT INTO commission_transactions (referrer_code, referral_id, transaction_id, commission_amount, commission_rate, base_amount) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("sisddd", $referrerCode, $referralId, $transactionId, $commissionAmount, $commissionRate, $baseAmount);
+                $stmt->execute();
+                $stmt->close();
+                
+                // Update total commission for referrer
+                $stmt = $conn->prepare("UPDATE referrer_codes SET total_commission = total_commission + ? WHERE code = ?");
+                $stmt->bind_param("ds", $commissionAmount, $referrerCode);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+    }
+    
+    return $success;
 }
 
 function updateUserReferral($transactionId, $referrerCode) {
