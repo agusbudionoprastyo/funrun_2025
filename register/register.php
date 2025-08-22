@@ -43,6 +43,10 @@ $jerseyColor = $_POST['jerseyColor'];
 // Get referral code from URL parameter if available
 $referrerCode = $_POST['referrer_code'] ?? '';
 
+// Debug: Log referral code processing
+error_log("Debug - Referrer code received: " . $referrerCode);
+error_log("Debug - All POST data: " . print_r($_POST, true));
+
 // Generate username dan password untuk pengguna pertama
 $username = generateUsername($name);
 $password = generateRandomPassword();
@@ -169,13 +173,14 @@ try {
             'referred_name' => $referredName
         ];
         
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'process_referral.php');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($referralData));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($ch);
-        curl_close($ch);
+        // Direct call instead of curl
+        include_once 'process_referral.php';
+        
+        // Process referral
+        $referralProcessed = processReferral($referrerCode, $transactionId, $referredName);
+        
+        // Debug: Log referral processing
+        error_log("Debug - Referral processing completed for: " . $referrerCode . " - Result: " . ($referralProcessed ? 'SUCCESS' : 'FAILED'));
     }
 
     // Menutup koneksi

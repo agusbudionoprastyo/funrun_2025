@@ -31,6 +31,33 @@ function updateUserReferral($transactionId, $referrerCode) {
     return $stmt->execute();
 }
 
+function processReferral($referrerCode, $transactionId, $referredName) {
+    global $conn;
+    
+    if (!empty($referrerCode) && !empty($transactionId) && !empty($referredName)) {
+        $validReferrer = validateReferrerCode($referrerCode);
+        
+        if ($validReferrer) {
+            $referralSaved = saveReferral($referrerCode, $transactionId, $referredName);
+            $userUpdated = updateUserReferral($transactionId, $referrerCode);
+            
+            if ($referralSaved && $userUpdated) {
+                error_log("Referral processed successfully for: $referrerCode -> $transactionId");
+                return true;
+            } else {
+                error_log("Failed to save referral for: $referrerCode -> $transactionId");
+                return false;
+            }
+        } else {
+            error_log("Invalid referrer code: $referrerCode");
+            return false;
+        }
+    } else {
+        error_log("Missing required parameters for referral");
+        return false;
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $referrerCode = $_POST['referrer_code'] ?? '';
     $transactionId = $_POST['transaction_id'] ?? '';

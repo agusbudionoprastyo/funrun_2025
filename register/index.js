@@ -599,6 +599,10 @@ function copyToClipboard() {
     // Get referral code from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const referrerCode = urlParams.get('member');
+    
+    // Debug: Log referral code capture
+    console.log('Debug - URL Parameters:', window.location.search);
+    console.log('Debug - Referrer Code:', referrerCode);
 
     const registrationType = document.querySelector('input[name="registrationType"]:checked').value;
     const username = document.getElementById('name').value;
@@ -621,6 +625,9 @@ function copyToClipboard() {
     // Add referral code if available
     if (referrerCode) {
         formData.append('referrer_code', referrerCode);
+        console.log('Debug - Added referrer_code to formData:', referrerCode);
+    } else {
+        console.log('Debug - No referrer_code found, not adding to formData');
     }
 
     // Debug: log form data

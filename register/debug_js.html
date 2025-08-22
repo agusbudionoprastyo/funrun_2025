@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug URL Parameters</title>
+</head>
+<body>
+    <h1>Debug URL Parameters</h1>
+    
+    <div id="debug-info">
+        <h2>URL Information:</h2>
+        <p><strong>Current URL:</strong> <span id="current-url"></span></p>
+        <p><strong>Member Parameter:</strong> <span id="member-param"></span></p>
+        <p><strong>All Parameters:</strong> <span id="all-params"></span></p>
+    </div>
+
+    <div id="test-links">
+        <h2>Test Links:</h2>
+        <ul>
+            <li><a href="?member=ag">Test with member=ag</a></li>
+            <li><a href="?member=admin">Test with member=admin</a></li>
+            <li><a href="?member=dafam">Test with member=dafam</a></li>
+            <li><a href="?member=test&other=value">Test with multiple parameters</a></li>
+        </ul>
+    </div>
+
+    <script>
+        function debugURL() {
+            const url = window.location.href;
+            const urlParams = new URLSearchParams(window.location.search);
+            const member = urlParams.get('member');
+            
+            document.getElementById('current-url').textContent = url;
+            document.getElementById('member-param').textContent = member || 'NOT_FOUND';
+            
+            const allParams = [];
+            for (const [key, value] of urlParams.entries()) {
+                allParams.push(`${key}=${value}`);
+            }
+            document.getElementById('all-params').textContent = allParams.join(', ') || 'NO_PARAMETERS';
+            
+            console.log('Debug Info:', {
+                url: url,
+                member: member,
+                allParams: Object.fromEntries(urlParams)
+            });
+        }
+
+        // Run debug on page load
+        debugURL();
+        
+        // Run debug when URL changes
+        window.addEventListener('popstate', debugURL);
+        
+        // Add click handlers to test links
+        document.querySelectorAll('#test-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = this.href;
+            });
+        });
+    </script>
+</body>
+</html>
