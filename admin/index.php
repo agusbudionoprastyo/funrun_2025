@@ -595,8 +595,7 @@ if (!isset($_SESSION['user_id'])) {
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
         const newStatus = "verified"; // Set status directly to "Verified"
-        const apiKey = "JkGJqE9infpzKbwD6QrmrciZPF1fwt";  // API Key kamu
-        const sender = "6281770019808"; // Nomor pengirim
+        const session = "funrun"; // Session name for the new WhatsApp gateway
         const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
         const message = "*Pembayaran Anda telah diverifikasi!*\n\n_Tunjukkan QR code ini kepada staff kami saat pengambilan_ *RCP* (racepack).\n_Terima kasih atas partisipasi anda._\n\n*Pengambilan Racepack*\n11 Oktober 2025\n10:00 - 19:00 WIB\nHotel Dafam Semarang\n\n*Funrun - Lari Sama Mantan*\nTgl 12 Oktober 2025\nStart 06:00 WIB\n\n*access Runmap*\nhttps://funrun.dafam.cloud";
 
@@ -632,13 +631,33 @@ if (!isset($_SESSION['user_id'])) {
                 // Step 3: Send QR code data URL to backend for saving as an image in the "qrid" folder
                 const qrCodeFileUrl = await saveQRCode(qrCodeDataUrl, transactionId);  // Get the URL of the saved QR code
 
-                // Step 4: Send media message with the URL of the saved QR code to the recipient
-                const url = `https://wapi.dafam.cloud/send-media?api_key=${apiKey}&sender=${sender}&number=${recipientNumber}&media_type=image&caption=${encodeURIComponent(message)}&url=${encodeURIComponent(qrCodeFileUrl)}`;
-                const sendMessageResponse = await fetch(url, { mode: 'no-cors' });
+                // Step 4: Send text message to the recipient via new WhatsApp gateway
+                const whatsappData = {
+                    session: session,
+                    to: recipientNumber,
+                    text: message
+                };
+                
+                const sendMessageResponse = await fetch('https://dev-iptv-wa.appdewa.com/message/send-text', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(whatsappData)
+                });
+
+                if (!sendMessageResponse.ok) {
+                    throw new Error(`WhatsApp API error: ${sendMessageResponse.status}`);
+                }
+
+                const whatsappResult = await sendMessageResponse.json();
+                if (whatsappResult.success === false) {
+                    throw new Error(`WhatsApp API error: ${whatsappResult.message || 'Unknown error'}`);
+                }
 
                 iziToast.success({
                     title: 'Success',
-                    message: 'Payment status updated to Verified, QR code sent!',
+                    message: 'Payment status updated to Verified, WhatsApp message sent!',
                     position: 'topRight',
                 });
                 fetchData(); // Reload data after update
