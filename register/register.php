@@ -1,6 +1,7 @@
 <?php
 // Mengimpor koneksi database
 include('../helper/db.php');
+include('../helper/voucher.php');
 
 function generateRandomPassword() {
     return str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Menghasilkan password 6 digit dengan padding jika kurang
@@ -91,20 +92,19 @@ try {
     // Voucher code validation and discount calculation
     $discountAmount = 0;
     if (!empty($voucherCode)) {
-        // Validasi voucher code sesuai dengan yang ada di frontend
-        $validVouchers = ['SEMARANGRUNNER', 'FAKERUNNER', 'BERLARIBERSAMA', 'PLAYONAMBYAR', 'PLAYONNDESO', 'BESTIFITY', 'DURAKINGRUN', 'SALATIGARB', 'PELARIAN'];
+        // Validasi voucher code dari database
+        $voucherValidation = validateVoucherFromDatabase($voucherCode);
         
         // Debug: log voucher code yang diterima
         error_log("Voucher code received: " . $voucherCode);
-        error_log("Voucher code trimmed and uppercased: " . strtoupper(trim($voucherCode)));
-        error_log("Valid vouchers: " . implode(', ', $validVouchers));
+        error_log("Voucher validation result: " . json_encode($voucherValidation));
         
-        if (in_array(strtoupper(trim($voucherCode)), $validVouchers)) {
-            $discountAmount = 15000; // Potongan Rp 15.000
+        if ($voucherValidation['valid']) {
+            $discountAmount = $voucherValidation['discount_amount'];
             error_log("Voucher valid, discount applied: " . $discountAmount);
         } else {
-            error_log("Voucher invalid: " . strtoupper(trim($voucherCode)));
-            throw new Exception('Voucher code tidak valid: ' . strtoupper(trim($voucherCode)));
+            error_log("Voucher invalid: " . $voucherValidation['message']);
+            throw new Exception($voucherValidation['message']);
         }
     } else {
         error_log("No voucher code provided");
@@ -158,6 +158,12 @@ try {
         $stmt->execute();
     } else {
         throw new Exception('Stok item tidak mencukupi');
+    }
+
+    // Increment voucher usage if voucher was used
+    if (!empty($voucherCode) && $discountAmount > 0) {
+        incrementVoucherUsage($voucherCode);
+        error_log("Voucher usage incremented for: " . $voucherCode);
     }
 
     // Commit transaksi

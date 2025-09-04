@@ -435,8 +435,26 @@ function copyToClipboard() {
     const applyVoucherBtn = document.getElementById('applyVoucherBtn');
     
     if (voucherInput && applyVoucherBtn) {
-        // Update valid vouchers based on SQL file
-        const validVouchers = ['SEMARANGRUNNER', 'FAKERUNNER', 'BERLARIBERSAMA', 'PLAYONAMBYAR', 'PLAYONNDESO', 'BESTIFITY', 'DURAKINGRUN', 'SALATIGARB', 'PELARIAN'];
+        // Fetch valid vouchers from database
+        let validVouchers = [];
+        let voucherDiscounts = {};
+        
+        fetch('get_vouchers.php')
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                validVouchers = data.vouchers.map(v => v.code);
+                data.vouchers.forEach(voucher => {
+                    voucherDiscounts[voucher.code] = voucher.discount_amount;
+                });
+                console.log('Loaded vouchers from database:', validVouchers);
+            } else {
+                console.error('Error loading vouchers:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching vouchers:', error);
+        });
         
         // Function to validate voucher
         function validateVoucher(voucherCode) {
@@ -450,8 +468,9 @@ function copyToClipboard() {
                 updateVoucherMessage('Masukkan kode voucher komunitas untuk potongan Rp 15.000', 'text-xs text-gray-500 mt-1');
                 return false;
             } else if (validVouchers.includes(voucherCode)) {
+                const discountAmount = voucherDiscounts[voucherCode] || 15000;
                 voucherInput.classList.add('border-green-500');
-                updateVoucherMessage('✓ Voucher valid! Potongan Rp 15.000 akan diterapkan', 'text-xs text-green-600 mt-1 font-medium');
+                updateVoucherMessage(`✓ Voucher valid! Potongan Rp ${discountAmount.toLocaleString('id-ID')} akan diterapkan`, 'text-xs text-green-600 mt-1 font-medium');
                 return true;
             } else {
                 voucherInput.classList.add('border-red-500');
@@ -479,9 +498,10 @@ function copyToClipboard() {
         function applyVoucher() {
             const voucherCode = voucherInput.value.trim();
             if (validateVoucher(voucherCode)) {
+                const discountAmount = voucherDiscounts[voucherCode] || 15000;
                 // Store voucher info in localStorage
                 localStorage.setItem('appliedVoucher', voucherCode);
-                localStorage.setItem('discountAmount', '15000');
+                localStorage.setItem('discountAmount', discountAmount.toString());
                 
                 // Update pricing display
                 updatePricingWithVoucher();
@@ -493,7 +513,7 @@ function copyToClipboard() {
                 applyVoucherBtn.className = 'px-4 py-2 bg-green-500 text-white font-semibold rounded-full cursor-not-allowed';
                 
                 // Show success message
-                updateVoucherMessage('✓ Voucher berhasil diterapkan! Harga telah diupdate', 'text-xs text-green-600 mt-1 font-medium');
+                updateVoucherMessage(`✓ Voucher berhasil diterapkan! Potongan Rp ${discountAmount.toLocaleString('id-ID')}`, 'text-xs text-green-600 mt-1 font-medium');
             }
         }
         
@@ -522,10 +542,12 @@ function copyToClipboard() {
             const discountNotification = document.createElement('div');
             discountNotification.id = 'discountNotification';
             discountNotification.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg';
+            const appliedVoucher = localStorage.getItem('appliedVoucher');
+            const discountAmount = localStorage.getItem('discountAmount');
             discountNotification.innerHTML = `
                 <div class="flex items-center">
                     <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                    <span class="text-green-800 text-sm font-medium">Voucher diterapkan! Potongan Rp 15.000</span>
+                    <span class="text-green-800 text-sm font-medium">Voucher ${appliedVoucher} diterapkan! Potongan Rp ${parseInt(discountAmount).toLocaleString('id-ID')}</span>
                 </div>
             `;
             
