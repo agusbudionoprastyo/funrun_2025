@@ -588,7 +588,7 @@ if (!isset($_SESSION['user_id'])) {
     });
 
     // Close the modal
-    document.getElementById('close-modal').addEventListener('click', () => {..
+    document.getElementById('close-modal').addEventListener('click', () => {
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
