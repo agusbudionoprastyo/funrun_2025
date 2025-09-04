@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Price Display</title>
+</head>
+<body>
+    <h1>Debug Price Display</h1>
+    
+    <div id="items-container"></div>
+    
+    <script>
+        console.log('Starting debug...');
+        
+        // Test get_items.php
+        fetch('register/get_items.php')
+        .then(response => {
+            console.log('Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('Items data:', data);
+            
+            const container = document.getElementById('items-container');
+            if (data && data.length > 0) {
+                container.innerHTML = '<p>Items loaded: ' + data.length + '</p>';
+                data.forEach(item => {
+                    container.innerHTML += '<p>Item: ' + item.name + ' - Price: ' + item.price + '</p>';
+                });
+            } else {
+                container.innerHTML = '<p>No items found</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.getElementById('items-container').innerHTML = '<p>Error: ' + error.message + '</p>';
+        });
+        
+        // Test get_vouchers.php
+        fetch('register/get_vouchers.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Vouchers data:', data);
+        })
+        .catch(error => {
+            console.error('Voucher error:', error);
+        });
+    </script>
+</body>
+</html>

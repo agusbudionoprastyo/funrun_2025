@@ -331,9 +331,18 @@ function copyToClipboard() {
     }
 
     // Function to render items dynamically
-    function renderItems(data, voucherDiscounts = {}) {
+    function renderItems(data, voucherDiscountsParam = {}) {
         const container = document.getElementById('items-container');
+        if (!container) {
+            console.error('Items container not found');
+            return;
+        }
         container.innerHTML = ''; // Clear current items before re-rendering
+
+        if (!data || data.length === 0) {
+            console.error('No items data available');
+            return;
+        }
 
         data.forEach(item => {
             const itemElement = document.createElement('div');
@@ -404,8 +413,14 @@ function copyToClipboard() {
 
     // Fetch data and display items initially
     fetch('get_items.php')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Items data loaded:', data);
         // Initial rendering
         renderItems(data, voucherDiscounts);
 
@@ -443,15 +458,15 @@ function copyToClipboard() {
         
         fetch('get_vouchers.php')
         .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                validVouchers = data.vouchers.map(v => v.code);
-                data.vouchers.forEach(voucher => {
+        .then(voucherData => {
+            if (voucherData.status === 'success') {
+                validVouchers = voucherData.vouchers.map(v => v.code);
+                voucherData.vouchers.forEach(voucher => {
                     voucherDiscounts[voucher.code] = voucher.discount_amount;
                 });
                 console.log('Loaded vouchers from database:', validVouchers);
             } else {
-                console.error('Error loading vouchers:', data.message);
+                console.error('Error loading vouchers:', voucherData.message);
             }
         })
         .catch(error => {
@@ -573,7 +588,14 @@ function copyToClipboard() {
         }
     }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+        console.error('Error loading items:', error);
+        // Show error message to user
+        const container = document.getElementById('items-container');
+        if (container) {
+            container.innerHTML = '<p class="text-red-500 text-center">Error loading items. Please refresh the page.</p>';
+        }
+    });
 
 
 
