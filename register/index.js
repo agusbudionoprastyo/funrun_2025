@@ -290,6 +290,10 @@ function copyToClipboard() {
 //     })
 //     .catch(error => console.error('Error:', error));
 
+    // Global variables for voucher data
+    let validVouchers = [];
+    let voucherDiscounts = {};
+
     // Function to format the price
     function formatPrice(price) {
         if (price >= 1000000) {
@@ -331,7 +335,7 @@ function copyToClipboard() {
     }
 
     // Function to render items dynamically
-    function renderItems(data, voucherDiscountsParam = {}) {
+    function renderItems(data, voucherDiscountsParam = voucherDiscounts) {
         const container = document.getElementById('items-container');
         if (!container) {
             console.error('Items container not found');
@@ -422,18 +426,18 @@ function copyToClipboard() {
     .then(data => {
         console.log('Items data loaded:', data);
         // Initial rendering
-        renderItems(data, voucherDiscounts);
+        renderItems(data);
 
         // Event listeners to update prices and descriptions when radio button selection changes
         coupleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data, voucherDiscounts); // Re-render with updated prices and descriptions for "Couple"
+                renderItems(data); // Re-render with updated prices and descriptions for "Couple"
             }
         });
 
         singleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data, voucherDiscounts); // Re-render with updated prices and descriptions for "Single"
+                renderItems(data); // Re-render with updated prices and descriptions for "Single"
             }
         });
 
@@ -441,13 +445,9 @@ function copyToClipboard() {
     const sizeInputs = document.querySelectorAll('input[name="size"], input[name="coupleSize"]');
     sizeInputs.forEach(input => {
         input.addEventListener('change', function() {
-            renderItems(data, voucherDiscounts); // Re-render with updated prices when size changes
+            renderItems(data); // Re-render with updated prices when size changes
         });
     });
-
-    // Global variables for voucher data
-    let validVouchers = [];
-    let voucherDiscounts = {};
 
     // Voucher code validation and apply functionality
     const voucherInput = document.getElementById('voucherCode');
@@ -552,13 +552,13 @@ function copyToClipboard() {
         function updatePricingWithVoucher() {
             // Re-render items to show updated pricing
             if (typeof renderItems === 'function' && typeof data !== 'undefined') {
-                renderItems(data, voucherDiscounts);
+                renderItems(data);
             } else {
                 // If data not available, fetch it again
                 fetch('get_items.php')
                 .then(response => response.json())
                 .then(itemsData => {
-                    renderItems(itemsData, voucherDiscounts);
+                    renderItems(itemsData);
                 })
                 .catch(error => console.error('Error fetching items:', error));
             }
