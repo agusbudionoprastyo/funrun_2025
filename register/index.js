@@ -331,7 +331,7 @@ function copyToClipboard() {
     }
 
     // Function to render items dynamically
-    function renderItems(data) {
+    function renderItems(data, voucherDiscounts = {}) {
         const container = document.getElementById('items-container');
         container.innerHTML = ''; // Clear current items before re-rendering
 
@@ -407,18 +407,18 @@ function copyToClipboard() {
     .then(response => response.json())
     .then(data => {
         // Initial rendering
-        renderItems(data);
+        renderItems(data, voucherDiscounts);
 
         // Event listeners to update prices and descriptions when radio button selection changes
         coupleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data); // Re-render with updated prices and descriptions for "Couple"
+                renderItems(data, voucherDiscounts); // Re-render with updated prices and descriptions for "Couple"
             }
         });
 
         singleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data); // Re-render with updated prices and descriptions for "Single"
+                renderItems(data, voucherDiscounts); // Re-render with updated prices and descriptions for "Single"
             }
         });
 
@@ -426,9 +426,13 @@ function copyToClipboard() {
     const sizeInputs = document.querySelectorAll('input[name="size"], input[name="coupleSize"]');
     sizeInputs.forEach(input => {
         input.addEventListener('change', function() {
-            renderItems(data); // Re-render with updated prices when size changes
+            renderItems(data, voucherDiscounts); // Re-render with updated prices when size changes
         });
     });
+
+    // Global variables for voucher data
+    let validVouchers = [];
+    let voucherDiscounts = {};
 
     // Voucher code validation and apply functionality
     const voucherInput = document.getElementById('voucherCode');
@@ -436,8 +440,6 @@ function copyToClipboard() {
     
     if (voucherInput && applyVoucherBtn) {
         // Fetch valid vouchers from database
-        let validVouchers = [];
-        let voucherDiscounts = {};
         
         fetch('get_vouchers.php')
         .then(response => response.json())
@@ -535,7 +537,15 @@ function copyToClipboard() {
         function updatePricingWithVoucher() {
             // Re-render items to show updated pricing
             if (typeof renderItems === 'function' && typeof data !== 'undefined') {
-                renderItems(data);
+                renderItems(data, voucherDiscounts);
+            } else {
+                // If data not available, fetch it again
+                fetch('get_items.php')
+                .then(response => response.json())
+                .then(itemsData => {
+                    renderItems(itemsData, voucherDiscounts);
+                })
+                .catch(error => console.error('Error fetching items:', error));
             }
             
             // Show discount notification in the UI
