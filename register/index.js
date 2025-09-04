@@ -507,7 +507,12 @@ function copyToClipboard() {
                 const newMessageElement = document.createElement('p');
                 newMessageElement.textContent = message;
                 newMessageElement.className = className;
-                voucherInput.parentElement.parentElement.appendChild(newMessageElement);
+                
+                // Try to append to parent, with fallback
+                const parent = voucherInput.parentElement.parentElement || voucherInput.parentElement;
+                if (parent) {
+                    parent.appendChild(newMessageElement);
+                }
             }
         }
         
@@ -583,8 +588,13 @@ function copyToClipboard() {
             }
             
             // Add notification after voucher input section
-            const voucherSection = voucherInput.closest('.mt-8');
-            voucherSection.appendChild(discountNotification);
+            const voucherSection = voucherInput.closest('.mt-8') || voucherInput.closest('.mt-2') || voucherInput.parentElement.parentElement;
+            if (voucherSection) {
+                voucherSection.appendChild(discountNotification);
+            } else {
+                // Fallback: add to voucher input parent
+                voucherInput.parentElement.appendChild(discountNotification);
+            }
         }
     }
     })
