@@ -389,10 +389,9 @@ function copyToClipboard() {
             
             // Apply voucher discount if available
             const appliedVoucher = localStorage.getItem('appliedVoucher');
-            const discountAmount = localStorage.getItem('discountAmount');
             
-            if (appliedVoucher && discountAmount) {
-                const discount = parseInt(discountAmount);
+            if (appliedVoucher && voucherDiscountsParam[appliedVoucher]) {
+                const discount = voucherDiscountsParam[appliedVoucher];
                 const originalPrice = displayPrice;
                 displayPrice = Math.max(0, displayPrice - discount);
                 
@@ -513,9 +512,9 @@ function copyToClipboard() {
         function applyVoucher() {
             const voucherCode = voucherInput.value.trim();
             if (validateVoucher(voucherCode)) {
-                const discountAmount = voucherDiscounts[voucherCode] || 15000;
+                const discountAmount = voucherDiscounts[voucherCode.toUpperCase()] || 15000;
                 // Store voucher info in localStorage
-                localStorage.setItem('appliedVoucher', voucherCode);
+                localStorage.setItem('appliedVoucher', voucherCode.toUpperCase());
                 localStorage.setItem('discountAmount', discountAmount.toString());
                 
                 // Update pricing display
@@ -526,9 +525,6 @@ function copyToClipboard() {
                 applyVoucherBtn.disabled = true;
                 applyVoucherBtn.textContent = 'Applied ✓';
                 applyVoucherBtn.className = 'px-4 py-2 bg-green-500 text-white font-semibold rounded-full cursor-not-allowed';
-                
-                // Show success message
-                updateVoucherMessage(`✓ Voucher berhasil diterapkan! Potongan Rp ${discountAmount.toLocaleString('id-ID')}`, 'text-xs text-green-600 mt-1 font-medium');
             }
         }
         
@@ -561,32 +557,7 @@ function copyToClipboard() {
                 .catch(error => console.error('Error fetching items:', error));
             }
             
-            // Show simple discount notification
-            const appliedVoucher = localStorage.getItem('appliedVoucher');
-            const discountAmount = localStorage.getItem('discountAmount');
-            
-            // Remove existing notification if any
-            const existingNotification = document.getElementById('discountNotification');
-            if (existingNotification) {
-                existingNotification.remove();
-            }
-            
-            // Create simple notification
-            const discountNotification = document.createElement('div');
-            discountNotification.id = 'discountNotification';
-            discountNotification.className = 'mt-2 p-2 bg-green-100 border border-green-300 rounded text-center';
-            discountNotification.innerHTML = `
-                <span class="text-green-700 text-sm">✓ Voucher ${appliedVoucher} - Potongan Rp ${parseInt(discountAmount).toLocaleString('id-ID')}</span>
-            `;
-            
-            // Add notification after voucher input section
-            const voucherSection = voucherInput.closest('.mt-8') || voucherInput.closest('.mt-2') || voucherInput.parentElement.parentElement;
-            if (voucherSection) {
-                voucherSection.appendChild(discountNotification);
-            } else {
-                // Fallback: add to voucher input parent
-                voucherInput.parentElement.appendChild(discountNotification);
-            }
+            // No additional notification needed - price display is enough
         }
     }
     })
