@@ -415,29 +415,40 @@ function copyToClipboard() {
         });
     }
 
-    // Fetch data and display items initially
-    fetch('get_items.php')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
+    // Fetch both items and vouchers data
+    Promise.all([
+        fetch('get_items.php').then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        }),
+        fetch('get_vouchers.php').then(response => response.json())
+    ])
+    .then(([itemsData, voucherData]) => {
+        console.log('Items data loaded:', itemsData);
+        console.log('Voucher data loaded:', voucherData);
+        
+        // Load voucher data into global variables
+        if (voucherData.status === 'success') {
+            validVouchers = voucherData.vouchers.map(v => v.code);
+            voucherData.vouchers.forEach(voucher => {
+                voucherDiscounts[voucher.code] = voucher.discount_amount;
+            });
+            console.log('Voucher discounts loaded:', voucherDiscounts);
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Items data loaded:', data);
-        // Initial rendering
-        renderItems(data);
+        
+        // Initial rendering with voucher data
+        renderItems(itemsData);
 
         // Event listeners to update prices and descriptions when radio button selection changes
         coupleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data); // Re-render with updated prices and descriptions for "Couple"
+                renderItems(itemsData); // Re-render with updated prices and descriptions for "Couple"
             }
         });
 
         singleRadio.addEventListener('change', function() {
             if (this.checked) {
-                renderItems(data); // Re-render with updated prices and descriptions for "Single"
+                renderItems(itemsData); // Re-render with updated prices and descriptions for "Single"
             }
         });
 
@@ -445,7 +456,7 @@ function copyToClipboard() {
     const sizeInputs = document.querySelectorAll('input[name="size"], input[name="coupleSize"]');
     sizeInputs.forEach(input => {
         input.addEventListener('change', function() {
-            renderItems(data); // Re-render with updated prices when size changes
+            renderItems(itemsData); // Re-render with updated prices when size changes
         });
     });
 
@@ -454,24 +465,6 @@ function copyToClipboard() {
     const applyVoucherBtn = document.getElementById('applyVoucherBtn');
     
     if (voucherInput && applyVoucherBtn) {
-        // Fetch valid vouchers from database
-        
-        fetch('get_vouchers.php')
-        .then(response => response.json())
-        .then(voucherData => {
-            if (voucherData.status === 'success') {
-                validVouchers = voucherData.vouchers.map(v => v.code);
-                voucherData.vouchers.forEach(voucher => {
-                    voucherDiscounts[voucher.code] = voucher.discount_amount;
-                });
-                console.log('Loaded vouchers from database:', validVouchers);
-            } else {
-                console.error('Error loading vouchers:', voucherData.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching vouchers:', error);
-        });
         
         // Function to validate voucher
         function validateVoucher(voucherCode) {
@@ -568,24 +561,23 @@ function copyToClipboard() {
                 .catch(error => console.error('Error fetching items:', error));
             }
             
-            // Show discount notification in the UI
-            const discountNotification = document.createElement('div');
-            discountNotification.id = 'discountNotification';
-            discountNotification.className = 'mt-2 p-3 bg-green-50 border border-green-200 rounded-lg';
+            // Show simple discount notification
             const appliedVoucher = localStorage.getItem('appliedVoucher');
             const discountAmount = localStorage.getItem('discountAmount');
-            discountNotification.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                    <span class="text-green-800 text-sm font-medium">Voucher ${appliedVoucher} diterapkan! Potongan Rp ${parseInt(discountAmount).toLocaleString('id-ID')}</span>
-                </div>
-            `;
             
             // Remove existing notification if any
             const existingNotification = document.getElementById('discountNotification');
             if (existingNotification) {
                 existingNotification.remove();
             }
+            
+            // Create simple notification
+            const discountNotification = document.createElement('div');
+            discountNotification.id = 'discountNotification';
+            discountNotification.className = 'mt-2 p-2 bg-green-100 border border-green-300 rounded text-center';
+            discountNotification.innerHTML = `
+                <span class="text-green-700 text-sm">✓ Voucher ${appliedVoucher} - Potongan Rp ${parseInt(discountAmount).toLocaleString('id-ID')}</span>
+            `;
             
             // Add notification after voucher input section
             const voucherSection = voucherInput.closest('.mt-8') || voucherInput.closest('.mt-2') || voucherInput.parentElement.parentElement;
