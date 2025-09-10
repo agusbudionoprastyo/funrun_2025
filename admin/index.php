@@ -409,6 +409,12 @@ if (!isset($_SESSION['user_id'])) {
 
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
+<!-- Custom Services -->
+<script src="js/whatsapp-service.js"></script>
+<script src="js/qr-service.js"></script>
+<script src="js/transaction-service.js"></script>
+<script src="js/confirmation-service.js"></script>
+
 <!-- Modal HTML -->
 <div id="update-status-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed inset-0 z-50 flex justify-center items-center w-full h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
@@ -592,129 +598,27 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById('update-status-modal').classList.add('hidden');
     });
 
+    const confirmationService = new ConfirmationService();
+
     document.getElementById('verified-btn').addEventListener('click', async (event) => {
         const transactionId = event.target.dataset.transactionId;
-        const newStatus = "verified"; // Set status directly to "Verified"
-        const session = "funrun"; // Session name for the new WhatsApp gateway
-        const recipientNumber = event.target.dataset.phone; // Nomor penerima yang diambil dari dataset tombol
-        const message = "*Pembayaran Anda telah diverifikasi!*\n\n_Tunjukkan QR code ini kepada staff kami saat pengambilan_ *RCP* (racepack).\n_Terima kasih atas partisipasi anda._\n\n*Pengambilan Racepack*\n11 Oktober 2025\n10:00 - 19:00 WIB\nHotel Dafam Semarang\n\n*Funrun - Lari Sama Mantan*\nTgl 12 Oktober 2025\nStart 06:00 WIB\n\n*access Runmap*\nhttps://funrun.dafam.cloud";
+        const recipientNumber = event.target.dataset.phone;
 
-        // Validasi jika nomor penerima ada
         if (!recipientNumber) {
-            console.error('Recipient number is missing!');
-            iziToast.error({
-                title: 'Error',
-                message: 'Recipient number is missing.',
-                position: 'topRight',
-            });
+            confirmationService.showError('Recipient number is missing.');
             return;
         }
 
-        // Start the loading progress bar
-        NProgress.start();
-
         try {
-            // Step 1: Update status transaksi ke "verified"
-            const updateResponse = await fetch('update_transactions.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ transaction_id: transactionId, status: newStatus }),
-            });
-
-            const updateResult = await updateResponse.json();
-            if (updateResult.success) {
-                // Step 2: Generate QR code for transaction ID
-                const qrCodeDataUrl = await generateQRCode(transactionId);  // Generates QR code and returns its Data URL
-
-                // Step 3: Send QR code data URL to backend for saving as an image in the "qrid" folder
-                const qrCodeFileUrl = await saveQRCode(qrCodeDataUrl, transactionId);  // Get the URL of the saved QR code
-
-                // Step 4: Send text message to the recipient via new WhatsApp gateway
-                const whatsappData = {
-                    session: session,
-                    to: recipientNumber,
-                    text: message
-                };
-                
-                const sendMessageResponse = await fetch('https://dev-iptv-wa.appdewa.com/message/send-text', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(whatsappData)
-                });
-
-                if (!sendMessageResponse.ok) {
-                    throw new Error(`WhatsApp API error: ${sendMessageResponse.status}`);
-                }
-
-                const whatsappResult = await sendMessageResponse.json();
-                if (whatsappResult.success === false) {
-                    throw new Error(`WhatsApp API error: ${whatsappResult.message || 'Unknown error'}`);
-                }
-
-                iziToast.success({
-                    title: 'Success',
-                    message: 'Payment status updated to Verified, WhatsApp message sent!',
-                    position: 'topRight',
-                });
-                fetchData(); // Reload data after update
-                document.getElementById('update-status-modal').classList.add('hidden'); // Close modal
-            } else {
-                iziToast.info({
-                    title: 'Info',
-                    message: 'Payment has already been Verified.',
-                    position: 'topRight',
-                });
-            }
+            const result = await confirmationService.processConfirmation(transactionId, recipientNumber);
+            confirmationService.showSuccess(result.message);
+            fetchData();
+            document.getElementById('update-status-modal').classList.add('hidden');
         } catch (error) {
-            console.error('Error updating status or sending message:', error);
-            iziToast.error({
-                title: 'Error',
-                message: 'Error updating status or sending message. Please try again.',
-                position: 'topRight',
-            });
-        } finally {
-            // Complete the progress bar after the process finishes
-            NProgress.done();
+            confirmationService.showError('Error processing confirmation. Please try again.');
         }
     });
 
-    // Function to generate QR code as a data URL
-    function generateQRCode(transactionId) {
-        return new Promise((resolve, reject) => {
-            try {
-                QRCode.toDataURL(transactionId, { width: 500, height: 500 }, (err, url) => {
-                    if (err) reject(err);
-                    else resolve(url);
-                });
-            } catch (err) {
-                reject(err);
-            }
-        });
-    }
-
-    // Function to send the generated QR code to the backend for saving
-    async function saveQRCode(qrCodeDataUrl, transactionId) {
-        const response = await fetch('save_qr_code.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ qr_code_data_url: qrCodeDataUrl, transaction_id: transactionId }),
-        });
-
-        const result = await response.json();
-        if (result.success) {
-            // Return the URL of the saved QR code image
-            return result.file_url;  // The file URL returned by the backend
-        } else {
-            console.error('Failed to save QR code');
-            throw new Error('Failed to save QR code');
-        }
-    }
 
     // Call fetchData to populate the table
     fetchData();
