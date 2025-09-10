@@ -362,6 +362,10 @@ if (!isset($_SESSION['user_id'])) {
             <span>Total:</span>
             <span id="total-count" class="text-blue-600 bg-blue-100">0</span>
         </div>
+        <div class="status-counter">
+            <span>Total Peserta:</span>
+            <span id="total-participants-count" class="text-purple-600 bg-purple-100">0</span>
+        </div>
     </div>
     
     <table id="pagination-table" class="table-auto w-full text-sm text-left text-gray-500 border-collapse">
@@ -632,19 +636,29 @@ if (!isset($_SESSION['user_id'])) {
         let paidCount = 0;
         let verifiedCount = 0;
         let totalCount = 0;
+        let totalParticipantsCount = 0;
 
         // Count from all originalData
         originalData.forEach(item => {
             totalCount++;
+            
+            // Count actual participants (name_1 always exists, name_2 is optional)
+            let participantsInTransaction = 1; // name_1 always exists
+            if (item.name_2 && item.name_2.trim() !== '') {
+                participantsInTransaction = 2; // couple registration
+            }
+            
             switch(item.status) {
                 case 'pending':
                     pendingCount++;
                     break;
                 case 'paid':
                     paidCount++;
+                    totalParticipantsCount += participantsInTransaction; // Add actual participants
                     break;
                 case 'verified':
                     verifiedCount++;
+                    totalParticipantsCount += participantsInTransaction; // Add actual participants
                     break;
             }
         });
@@ -653,6 +667,7 @@ if (!isset($_SESSION['user_id'])) {
         document.getElementById('paid-count').textContent = paidCount;
         document.getElementById('verified-count').textContent = verifiedCount;
         document.getElementById('total-count').textContent = totalCount;
+        document.getElementById('total-participants-count').textContent = totalParticipantsCount;
     }
     
     // Function to filter table by status
